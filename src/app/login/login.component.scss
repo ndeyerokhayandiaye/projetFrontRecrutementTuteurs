@@ -1,0 +1,32 @@
+body {
+  background-image: url('/assets/images/background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  min-height: 100vh;
+  min-width: 200px;
+  background-color: rgba(255, 255, 255, 0.5);
+  background-blend-mode: overlay;
+}
+.cadre {
+  background-color: rgba(93, 91, 91, 0.6);
+  background-blend-mode: overlay;
+  border-radius: 2%;
+  border-left: 13px solid  rgba(255, 255, 255, 0.6);
+}
+.btn-connexion {
+  width: 100%;
+  color: white;
+  background-color: var(--primary-color);
+  font-size: 20px;
+  font-weight: bold;
+}
+.form-control {
+  padding: 2.5%;
+  background-color: rgba(255, 255, 255, 0.3);
+  background-blend-mode: overlay;
+}
