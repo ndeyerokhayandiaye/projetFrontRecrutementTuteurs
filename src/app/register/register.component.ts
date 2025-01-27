@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
     HttpClientModule,
     FormsModule,
     CommonModule
-    // AuthInterceptor,
+   
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -26,8 +26,7 @@ export class RegisterComponent {
     firstName : " ",
     lastName : " ",
     profilePicture: " ",
-    role: "candidate "
-    // role: " "
+    role: "CANDIDATE "
   };
 
   confirmationPassword = " ";
@@ -41,6 +40,7 @@ export class RegisterComponent {
       return;
     }
 
+    console.log('Données envoyées:', this.user);
     this.loginService.register(this.user).subscribe({
       next: response => {
         console.log('Inscription réussie', response);
@@ -50,6 +50,23 @@ export class RegisterComponent {
       }
     });
   }
+
+
+  // register() {
+  //   if (this.user.password.length < 6) {
+  //     console.error('Le mot de passe doit contenir au moins 6 caractères.');
+  //     return;  // Empêche l'envoi si la condition n'est pas remplie
+  //   }
+
+  //   this.loginService.register(this.user).subscribe({
+  //     next: response => {
+  //       console.log('Inscription réussie', response);
+  //     },
+  //     error: err => {
+  //       console.error('Erreur lors de l\'inscription', err);
+  //     }
+  //   });
+  // }
 
 
   onFileSelected(event: any) {

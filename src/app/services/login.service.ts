@@ -12,12 +12,14 @@ export class LoginService {
   constructor(private http: HttpClient) {}
 
   register(userData: any): Observable<any> {
-    return this.http.post<any>(`${baseUrl}/users`, userData)
+    return this.http.post<any>(`${baseUrl}/users`, userData,{ responseType: 'text' as 'json' }, )
   }
 
-  login(credentials: any): Observable<any> {
-    return this.http.post(`${baseUrl}/auth/login`, credentials);
+
+  login(credentials: { email: string; password: string }): Observable<any> {
+    return this.http.post<any>(`${baseUrl}/auth/login`, credentials);
   }
+
 
 
   // login(credentials: any): Observable<LoginResponse> {

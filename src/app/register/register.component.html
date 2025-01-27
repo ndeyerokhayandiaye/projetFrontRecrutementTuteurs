@@ -5,34 +5,40 @@
         <h1 class="text-center fw-bold mb-5 mt-5" style="color:WHITE;">INSCRIPTION</h1>
         <form action="" class="mb-3 px-5"  (ngSubmit)="register()">
           <div class="mb-3">
-            <input type="text" name="lastName" class="form-control" id="lastNameInput"  placeholder="Nom" [(ngModel)]="user.lastName"
-           >
+            <input type="text" name="lastName" class="form-control" id="lastNameInput" [(ngModel)]="user.lastName" placeholder="Nom"
+            [ngModelOptions]="{standalone: true}" >
           </div>
           <div class="mb-3">
-            <input type="text" name="firstName" class="form-control" id="firstNameInput" placeholder="Prénom" [(ngModel)]="user.firstName"
-           >
-          </div>
-          <div class="mb-3">
-            <input type="email" name="email" class="form-control" id="emailInput" placeholder="Email"
-            [(ngModel)]="user.email">
-          </div>
-          <div class="mb-3">
-            <input type="password" name="password" class="form-control" id="passwordInput"
-              placeholder="Mot de passe"  [(ngModel)]="user.password" >
-          </div>
-          <div class="mb-3">
-            <input type="password" name="confirmationpassword" class="form-control" id="confirmationpasswordInput"
-  placeholder="Confirmation mot de passe" [(ngModel)]="confirmationPassword">
+            <input type="text" name="firstName" class="form-control" id="firstNameInput" [(ngModel)]="user.firstName" placeholder="Prénom"
+            [ngModelOptions]="{standalone: true}">
           </div>
 
           <div class="mb-3">
+            <input type="email" name="email" class="form-control" id="emailInput" placeholder="Email"
+            [(ngModel)]="user.email" [ngModelOptions]="{standalone: true}">
+          </div>
+
+          <div class="mb-3">
+            <input type="password" name="password" class="form-control" id="passwordInput"
+              placeholder="Mot de passe"  [(ngModel)]="user.password" [ngModelOptions]="{standalone: true}" minlength="6" required>
+              <small *ngIf="user.password && user.password.length < 6" style="color: red;">
+                Le mot de passe doit contenir au moins 6 caractères.
+              </small>
+          </div>
+
+          <div class="mb-3">
+            <input type="password" name="confirmationpassword" class="form-control" id="confirmationpasswordInput"
+  placeholder="Confirmation mot de passe" [(ngModel)]="confirmationPassword" [ngModelOptions]="{standalone: true}">
+          </div>
+
+          <!-- <div class="mb-3">
             <label for="roleInput" class="form-label" style="color:black;">Sélectionner un rôle</label>
-            <select class="form-control" id="roleInput" [(ngModel)]="user.role">
+            <select class="form-control" id="roleInput" [(ngModel)]="user.role" [ngModelOptions]="{standalone: true}">
               <option value="candidate">Candidat</option>
               <option value="admin">Administrateur</option>
               <option value="user">Utilisateur</option>
             </select>
-          </div>
+          </div> -->
 
           <div class="mb-3">
             <label for="profilePictureInput" class="form-label " style="color:black;">Photo de profil</label>

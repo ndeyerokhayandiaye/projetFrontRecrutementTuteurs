@@ -3,17 +3,17 @@
     <div class="connexion  shadow">
       <div class="cadre shadow  py-3">
         <h1 class="text-center fw-bold mb-5 mt-5" style="color:WHITE;">AUTHENTIFICATION</h1>
-        <form action="" class="mb-3 px-5">
+        <form (ngSubmit)="login()" action="" class="mb-3 px-5">
           <div class="mb-3">
-            <input type="email" name="email" class="form-control" id="emailInput" placeholder="Email"
+            <input type="email" class="form-control" id="emailInput"  [(ngModel)]="user.email" name="email" required
            >
           </div>
           <div class="mb-3">
-            <input type="password" name="password" class="form-control" id="passwordInput"
-              placeholder="Mot de passe" >
+            <input type="password" class="form-control" id="passwordInput"
+              placeholder="Mot de passe"  [(ngModel)]="user.password" name="password" required >
           </div>
           <div class="btn-auth text-center center">
-            <button type="button" class="btn btn-connexion me-3" >Se
+            <button type="submit" class="btn btn-connexion me-3" >Se
               connecter</button>
           </div>
           <P class="text-center mt-3 "><a >Mot de passe oublié</a></P>
