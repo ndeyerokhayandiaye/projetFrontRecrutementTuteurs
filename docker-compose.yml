@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  frontend:
+    build: .
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+  backend:
+    image: openjdk:17
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    command: ["java", "-jar", "backend.jar"]
+    ports:
+      - "8080:8080"

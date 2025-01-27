@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
     HttpClientModule,
     FormsModule,
     CommonModule
-   
+
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -28,8 +28,14 @@ export class RegisterComponent {
     profilePicture: " ",
     role: "CANDIDATE "
   };
-
+// declaration des attributs (pour pouvoir aussi vider les champs apres inscription)
   confirmationPassword = " ";
+  lastName!: string;
+  firstName!: string;
+  email!: string;
+  password!: string;
+  profilePicture!: string;
+
 
   constructor(private loginService: LoginService) {}
 
@@ -44,6 +50,15 @@ export class RegisterComponent {
     this.loginService.register(this.user).subscribe({
       next: response => {
         console.log('Inscription réussie', response);
+
+
+         // Réinitialiser les valeurs des champs
+         this.lastName = '';
+         this.firstName = '';
+         this.email = '';
+         this.password = '';
+         this.confirmationPassword = '';
+         this.profilePicture = '';
       },
       error: err => {
         console.error('Erreur lors de l\'inscription', err);
