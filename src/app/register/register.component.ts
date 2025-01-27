@@ -28,43 +28,47 @@ export class RegisterComponent {
     profilePicture: " ",
     role: "CANDIDATE "
   };
-// declaration des attributs (pour pouvoir aussi vider les champs apres inscription)
+
   confirmationPassword = " ";
-  lastName!: string;
-  firstName!: string;
-  email!: string;
-  password!: string;
-  profilePicture!: string;
+
 
 
   constructor(private loginService: LoginService) {}
 
 
   register() {
+    // Vérifier que les mots de passe correspondent
     if (this.user.password !== this.confirmationPassword) {
       console.error('Les mots de passe ne correspondent pas.');
       return;
     }
 
     console.log('Données envoyées:', this.user);
+
+    // Appeler le service d'inscription
     this.loginService.register(this.user).subscribe({
-      next: response => {
+      next: (response) => {
         console.log('Inscription réussie', response);
 
+        // Réinitialiser l'objet utilisateur après inscription réussie
+        this.user = {
+          email: '',
+          password: '',
+          firstName: '',
+          lastName: '',
+          profilePicture: '',
+           role: " "
+        };
+        this.confirmationPassword = '';  // Réinitialiser le champ de confirmation de mot de passe puisse qu'il ne faisait pas partie de l'objet user
 
-         // Réinitialiser les valeurs des champs
-         this.lastName = '';
-         this.firstName = '';
-         this.email = '';
-         this.password = '';
-         this.confirmationPassword = '';
-         this.profilePicture = '';
       },
-      error: err => {
+      error: (err) => {
         console.error('Erreur lors de l\'inscription', err);
       }
     });
   }
+
+
 
 
   // register() {
