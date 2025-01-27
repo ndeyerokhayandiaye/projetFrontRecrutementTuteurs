@@ -1,17 +1,18 @@
 version: '3.8'
-services:
-  frontend:
-    build: .
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
 
-  backend:
-    image: openjdk:17
+services:
+  angular-app:
+    image: node:18-alpine
+    container_name: projet-angular
     working_dir: /app
     volumes:
-      - ./backend:/app
-    command: ["java", "-jar", "backend.jar"]
+      - .:/app
+    command: sh -c "npm install && npm run build -- --configuration production && npx http-server ./dist/projet-recrutement-tuteurs-frontend -p 80"
     ports:
-      - "8080:8080"
+      - "80:80"
+    networks:
+      - angular-network
+
+networks:
+  angular-network:
+    driver: bridge
