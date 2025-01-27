@@ -3,29 +3,29 @@
     <div class="inscription  shadow">
       <div class="cadre shadow mb-5 mt-5 ">
         <h1 class="text-center fw-bold mb-5 mt-5" style="color:WHITE;">INSCRIPTION</h1>
-        <form action="" class="mb-3 px-5">
+        <form action="" class="mb-3 px-5"  (ngSubmit)="register()">
           <div class="mb-3">
-            <input type="text" name="nom" class="form-control" id="nomInput" placeholder="Nom"
+            <input type="text" name="lastName" class="form-control" id="lastNameInput" placeholder="Nom" [(ngModel)]="user.lastName"
            >
           </div>
           <div class="mb-3">
-            <input type="text" name="prenom" class="form-control" id="prenomInput" placeholder="Prénom"
+            <input type="text" name="firstName" class="form-control" id="firstNameInput" placeholder="Prénom" [(ngModel)]="user.firstName"
            >
           </div>
           <div class="mb-3">
             <input type="email" name="email" class="form-control" id="emailInput" placeholder="Email"
-           >
+            [(ngModel)]="user.email">
           </div>
           <div class="mb-3">
             <input type="password" name="password" class="form-control" id="passwordInput"
-              placeholder="Mot de passe" >
+              placeholder="Mot de passe"  [(ngModel)]="user.password" >
           </div>
           <div class="mb-3">
             <input type="confirmationpassword" name="confirmationpassword" class="form-control" id="confirmationpasswordInput"
               placeholder="Confirmation mot de passe" >
           </div>
           <div class="btn-auth text-center center">
-            <button type="button" class="btn btn-inscription me-3" >S'inscrire</button>
+            <button type="submit" class="btn btn-inscription me-3" >S'inscrire</button>
           </div>
           <p class="login-card-footer-text mt-3 text-center" style="color: white;">Déja un compte ? <a
               style="color: var(--primary-color); cursor:pointer"  >Se connecter</a></p>
@@ -34,3 +34,4 @@
     </div>
   </div>
 </body>
+
