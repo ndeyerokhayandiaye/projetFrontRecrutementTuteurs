@@ -3,31 +3,47 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
   color: #fff;
   background-color: rgba(255, 255, 255, 0.5);
   background-blend-mode: overlay;
   height: 100%;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+
+  // overflow: hidden;
 }
+
 .containerInscription {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  padding: 20px;
 }
+// .inscription {
+//   max-width: 600px; /* Limite la largeur pour éviter le débordement */
+//   width: 100%;
+//   background: rgba(0, 0, 0, 0.7);
+//   padding: 40px;
+//   border-radius: 10px;
+//   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+// }
+
 .cadre {
   background-color: rgba(93, 91, 91, 0.6);
   background-blend-mode: overlay;
   border-radius: 2%;
-  border-left: 13px solid  rgba(255, 255, 255, 0.6);
+  border-left: 13px solid rgba(255, 255, 255, 0.6);
   width: 90vh;
-  height: 90vh;
+  max-width: 100%;
+  padding: 30px;
 }
+
 .btn-inscription {
   width: 100%;
   color: white;

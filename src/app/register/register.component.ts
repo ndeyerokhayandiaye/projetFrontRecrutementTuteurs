@@ -21,19 +21,26 @@ import { CommonModule } from '@angular/common';
 export class RegisterComponent {
 
   user = {
-
     email: '',
     password: '',
     firstName : " ",
     lastName : " ",
     profilePicture: " ",
+    role: "candidate "
     // role: " "
   };
+
+  confirmationPassword = " ";
 
   constructor(private loginService: LoginService) {}
 
 
   register() {
+    if (this.user.password !== this.confirmationPassword) {
+      console.error('Les mots de passe ne correspondent pas.');
+      return;
+    }
+
     this.loginService.register(this.user).subscribe({
       next: response => {
         console.log('Inscription réussie', response);
@@ -43,6 +50,19 @@ export class RegisterComponent {
       }
     });
   }
+
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.user.profilePicture = e.target.result;  // Converti en base64
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
 
 
 }
