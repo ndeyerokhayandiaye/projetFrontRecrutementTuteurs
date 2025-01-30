@@ -1,24 +1,27 @@
 <body>
-  <div class="containerConnexion ">
-    <div class="connexion  shadow">
-      <div class="cadre shadow  py-3">
+  <div class="containerConnexion">
+    <div class="connexion shadow">
+      <div class="cadre shadow py-3">
         <h1 class="text-center fw-bold mb-5 mt-5" style="color:WHITE;">AUTHENTIFICATION</h1>
-        <form (ngSubmit)="login()" action="" class="mb-3 px-5">
+        <form (ngSubmit)="login()" class="mb-3 px-5">
           <div class="mb-3">
-            <input type="email" class="form-control" id="emailInput"  [(ngModel)]="user.email" name="email" required
-           >
+            <input type="email" class="form-control" id="emailInput" [(ngModel)]="user.email" name="email"
+              placeholder="Email" [ngModelOptions]="{standalone: true}" (input)="validateEmail()" (blur)="validateEmail()">
+            <small *ngIf="verifEmail" style="color: red;">{{ verifEmail }}</small>
           </div>
           <div class="mb-3">
-            <input type="password" class="form-control" id="passwordInput"
-              placeholder="Mot de passe"  [(ngModel)]="user.password" name="password" required >
+            <input type="password" class="form-control" id="passwordInput" placeholder="Mot de passe"
+              [(ngModel)]="user.password" name="password" [ngModelOptions]="{standalone: true}"
+              (input)="validatePassword()" (blur)="validatePassword()">
+            <small *ngIf="verifPassword" style="color: red;">{{ verifPassword }}</small>
           </div>
           <div class="btn-auth text-center center">
-            <button type="submit" class="btn btn-connexion me-3" >Se
-              connecter</button>
+            <button type="submit" class="btn btn-connexion me-3">Se connecter</button>
           </div>
-          <P class="text-center mt-3 "><a >Mot de passe oublié</a></P>
-          <p class="login-card-footer-text mt-3 text-center" style="color: white;">Vous n'avez pas de compte ? <a
-              style="color: var(--primary-color); cursor:pointer"  >Creer un compte</a></p>
+          <p class="text-center mt-3"><a>Mot de passe oublié</a></p>
+          <p class="login-card-footer-text mt-3 text-center" style="color: white;">
+            Vous n'avez pas de compte ? <a style="color: var(--primary-color); cursor:pointer">Créer un compte</a>
+          </p>
         </form>
       </div>
     </div>

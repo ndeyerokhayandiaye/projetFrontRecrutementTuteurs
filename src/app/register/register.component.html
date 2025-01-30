@@ -1,59 +1,57 @@
 <body>
   <div class="containerInscription  ">
-    <!-- <div class="inscription "> -->
       <div class="cadre shadow mb-5 mt-5 ">
         <h1 class="text-center fw-bold mb-5 mt-5" style="color:WHITE;">INSCRIPTION</h1>
-        <form action="" class="mb-3 px-5"  (ngSubmit)="register()" >
+        <form action="" class="mb-3 px-5" (ngSubmit)="register()">
+
           <div class="mb-3">
-            <input type="text" name="lastName" class="form-control" id="lastNameInput" [(ngModel)]="user.lastName" placeholder="Nom"
-            [ngModelOptions]="{standalone: true}" >
+            <input type="text" name="lastName" class="form-control" id="lastNameInput" [(ngModel)]="user.lastName"
+              placeholder="Nom" [ngModelOptions]="{standalone: true}" (input)="validateNom()" (blur)="validateNom()">
+            <small *ngIf="verifNom" style="color: red;">{{ verifNom }}</small>
           </div>
+
           <div class="mb-3">
-            <input type="text" name="firstName" class="form-control" id="firstNameInput" [(ngModel)]="user.firstName" placeholder="Prénom"
-            [ngModelOptions]="{standalone: true}">
+            <input type="text" name="firstName" class="form-control" id="firstNameInput" [(ngModel)]="user.firstName"
+              placeholder="Prénom" [ngModelOptions]="{standalone: true}" (input)="validatePrenom()" (blur)="validatePrenom()">
+            <small *ngIf="verifPrenom" style="color: red;">{{ verifPrenom }}</small>
           </div>
 
           <div class="mb-3">
             <input type="email" name="email" class="form-control" id="emailInput" placeholder="Email"
-            [(ngModel)]="user.email" [ngModelOptions]="{standalone: true}">
+              [(ngModel)]="user.email" [ngModelOptions]="{standalone: true}" (input)="validateEmail()" (blur)="validateEmail()">
+            <small *ngIf="verifEmail" style="color: red;">{{ verifEmail }}</small>
           </div>
 
           <div class="mb-3">
             <input type="password" name="password" class="form-control" id="passwordInput"
-              placeholder="Mot de passe"  [(ngModel)]="user.password" [ngModelOptions]="{standalone: true}" minlength="6" required>
-              <small *ngIf="user.password && user.password.length < 6" style="color: red;">
-                Le mot de passe doit contenir au moins 6 caractères.
-              </small>
+              placeholder="Mot de passe" [(ngModel)]="user.password" [ngModelOptions]="{standalone: true}"
+              (input)="validatePassword()" (blur)="validatePassword()">
+            <small *ngIf="verifPassword" style="color: red;">{{ verifPassword }}</small>
           </div>
 
           <div class="mb-3">
             <input type="password" name="confirmationpassword" class="form-control" id="confirmationpasswordInput"
-  placeholder="Confirmation mot de passe" [(ngModel)]="confirmationPassword" [ngModelOptions]="{standalone: true}">
+              placeholder="Confirmation mot de passe" [(ngModel)]="confirmationPassword" [ngModelOptions]="{standalone: true}"
+              (input)="validateConfirmationPassword()" (blur)="validateConfirmationPassword()">
+            <small *ngIf="verifConfirmationPassword" style="color: red;">{{ verifConfirmationPassword }}</small>
           </div>
 
           <div class="mb-3">
-            <label for="roleInput" class="form-label" style="color:black;">Sélectionner un rôle</label>
-            <select class="form-control" id="roleInput" [(ngModel)]="user.role" [ngModelOptions]="{standalone: true}">
-              <option value="candidate">Candidat</option>
-              <option value="admin">Administrateur</option>
-              <option value="user">Utilisateur</option>
-            </select>
-          </div>
-
-          <div class="mb-3">
-            <label for="profilePictureInput" class="form-label " style="color:black;">Photo de profil</label>
+            <label for="profilePictureInput" class="form-label" style="color:black;">Photo de profil</label>
             <input type="file" class="form-control" id="profilePictureInput" (change)="onFileSelected($event)">
           </div>
 
-
           <div class="btn-auth text-center center">
-            <button type="submit" class="btn btn-inscription me-3" >S'inscrire</button>
+            <button type="submit" class="btn btn-inscription me-3">S'inscrire</button>
           </div>
-          <p class="login-card-footer-text mt-3 text-center fw-bold" style="color: white;">Déja un compte ? <a
-              style="color: var(--primary-color); cursor:pointer"  >Se connecter</a></p>
+
+          <p class="login-card-footer-text mt-3 text-center fw-bold" style="color: white;">
+            Déjà un compte ? <a style="color: var(--primary-color); cursor:pointer">Se connecter</a>
+          </p>
+
         </form>
+
       </div>
-    <!-- </div> -->
   </div>
 </body>
 
