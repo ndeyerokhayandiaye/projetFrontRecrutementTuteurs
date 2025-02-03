@@ -37,7 +37,7 @@
           </div>
 
           <div class="mb-3">
-            <label for="profilePictureInput" class="form-label" style="color:black;">Photo de profil</label>
+            <label for="profilePictureInput" class="form-label" style="color:rgb(56, 56, 56);">Photo de profil</label>
             <input type="file" class="form-control" id="profilePictureInput" (change)="onFileSelected($event)">
           </div>
 
@@ -46,7 +46,7 @@
           </div>
 
           <p class="login-card-footer-text mt-3 text-center fw-bold" style="color: white;">
-            Déjà un compte ? <a style="color: var(--primary-color); cursor:pointer">Se connecter</a>
+            Déjà un compte ? <a style="color: var(--primary-color); cursor:pointer" routerLink="/login" >Se connecter</a>
           </p>
 
         </form>

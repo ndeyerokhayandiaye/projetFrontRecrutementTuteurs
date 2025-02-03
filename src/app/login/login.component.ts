@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LoginService } from '../services/login.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -12,7 +12,8 @@ import Swal from 'sweetalert2';
   imports: [
     HttpClientModule,
     FormsModule,
-    CommonModule
+    CommonModule,
+    RouterModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'

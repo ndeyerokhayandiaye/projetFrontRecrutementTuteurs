@@ -1,18 +1,14 @@
-version: '3.8'
-
+# docker-compose.yml
 services:
   angular-app:
-    image: node:18-alpine
-    container_name: projet-angular
-    working_dir: /app
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: angular-dev
+    ports:
+      - "4200:4200"
     volumes:
       - .:/app
-    command: sh -c "npm install && npm run build -- --configuration production && npx http-server ./dist/projet-recrutement-tuteurs-frontend -p 80"
-    ports:
-      - "80:80"
-    networks:
-      - angular-network
-
-networks:
-  angular-network:
-    driver: bridge
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development

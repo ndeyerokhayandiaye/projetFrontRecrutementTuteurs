@@ -1,0 +1,22 @@
+# Dockerfile.dev
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Installation des dépendances globales
+RUN npm install -g @angular/cli@17.3.11
+
+# Copie des fichiers de configuration
+COPY package*.json ./
+
+# Installation des dépendances du projet
+RUN npm install
+
+# Copie du reste du code source
+COPY . .
+
+# Exposition du port
+EXPOSE 4200
+
+# Configuration pour permettre l'accès depuis l'extérieur du container
+CMD ["ng", "serve", "--host", "0.0.0.0", "--poll=2000", "--disable-host-check"]

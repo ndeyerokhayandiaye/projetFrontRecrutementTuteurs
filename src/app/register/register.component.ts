@@ -4,13 +4,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
     HttpClientModule,
     FormsModule,
-    CommonModule
+    CommonModule,
+    RouterModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -41,6 +43,7 @@ export class RegisterComponent implements OnInit {
     if (!localStorage.getItem("userConnect")) {
       localStorage.setItem('userConnect', JSON.stringify(""));
     }
+
   }
      // Validation nom
   validateNom() {
@@ -130,6 +133,7 @@ export class RegisterComponent implements OnInit {
         this.confirmationPassword = '';  // Réinitialiser le champ de confirmation de mot de passe puisse qu'il ne faisait pas partie de l'objet user
       },
       error: (err) => {
+        this.Alert('Erreur', 'Erreur lors de l\'inscription', 'warning');
         console.error('Erreur lors de l\'inscription', err);
       }
     });
