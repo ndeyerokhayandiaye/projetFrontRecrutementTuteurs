@@ -100,7 +100,7 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    // appel de toutes les fonctions pour les validations champs
+    // Vérifications des champs
     this.validateNom();
     this.validatePrenom();
     this.validateEmail();
@@ -111,17 +111,17 @@ export class RegisterComponent implements OnInit {
       this.Alert('Erreur', 'Veuillez remplir tous les champs correctement', 'warning');
       return;
     }
-// affichage des donnees au niveau de la console pour tester
-    console.log('Données envoyées:', this.user);
 
- // Appeler le service d'inscription
+    // Appel du service d'inscription
     this.loginService.register(this.user).subscribe({
       next: (response) => {
         this.Alert("Inscription réussie👏🏽", "Vous êtes bien inscrit", "success");
-  // Sauvegarde des informations de connexion dans le localStorage
+
+        // Sauvegarder l'email et le mot de passe dans le localStorage pour la connexion immédiate
         localStorage.setItem('email', this.user.email);
-        localStorage.setItem('isLoggedIn', 'true');
-  // Réinitialiser l'objet utilisateur après inscription réussie (vider les champs apres inscription)
+        localStorage.setItem('password', this.user.password);
+
+        // Réinitialiser les champs après inscription
         this.user = {
           email: '',
           password: '',
@@ -130,7 +130,7 @@ export class RegisterComponent implements OnInit {
           profilePicture: '',
           role: "CANDIDATE"
         };
-        this.confirmationPassword = '';  // Réinitialiser le champ de confirmation de mot de passe puisse qu'il ne faisait pas partie de l'objet user
+        this.confirmationPassword = '';
       },
       error: (err) => {
         this.Alert('Erreur', 'Erreur lors de l\'inscription', 'warning');
@@ -138,6 +138,7 @@ export class RegisterComponent implements OnInit {
       }
     });
   }
+
 
   onFileSelected(event: any) {
     const file = event.target.files[0];

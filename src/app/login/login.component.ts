@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -18,9 +18,9 @@ import Swal from 'sweetalert2';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
-  user = {
+  credentials = {
     email: '',
     password: ''
   };
@@ -30,12 +30,25 @@ export class LoginComponent {
 
   constructor(private loginService: LoginService, private router: Router) {}
 
+  ngOnInit(): void {
+    // Vérifier si l'email et le mot de passe sont stockés dans le localStorage
+    const savedEmail = localStorage.getItem('email');
+    const savedPassword = localStorage.getItem('password');
+
+    if (savedEmail && savedPassword) {
+      this.credentials.email = savedEmail;
+      this.credentials.password = savedPassword;
+    } else {
+      this.credentials = { email: '', password: '' };
+    }
+  }
+
    // Validation email
   validateEmail() {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!this.user.email.trim()) {
+    if (!this. credentials.email.trim()) {
       this.verifEmail = "L'email est requis.";
-    } else if (!emailPattern.test(this.user.email)) {
+    } else if (!emailPattern.test(this. credentials.email)) {
       this.verifEmail = "Entrez une adresse e-mail valide.";
     } else {
       this.verifEmail = '';
@@ -43,9 +56,9 @@ export class LoginComponent {
   }
  // Validation password
   validatePassword() {
-    if (!this.user.password.trim()) {
+    if (!this. credentials.password.trim()) {
       this.verifPassword = "Le mot de passe est requis.";
-    } else if (this.user.password.length < 6) {
+    } else if (this. credentials.password.length < 6) {
       this.verifPassword = "Le mot de passe doit contenir au moins 6 caractères.";
     } else {
       this.verifPassword = '';
@@ -53,7 +66,7 @@ export class LoginComponent {
   }
 
   login() {
-      // appel de toutes les fonctions pour les validations champs
+    // appel de toutes les fonctions pour les validations champs
     this.validateEmail();
     this.validatePassword();
 
@@ -61,18 +74,32 @@ export class LoginComponent {
       this.Alert('Erreur', 'Veuillez remplir tous les champs correctement.', 'warning');
       return;
     }
-//  Appeler le service de connexion
-    this.loginService.login(this.user).subscribe({
+
+    // Appeler le service de connexion
+    this.loginService.login(this.credentials).subscribe({
       next: (response) => {
-        console.log('Connexion réussie', response);
-        localStorage.setItem('authToken', response.token);
-        this.Alert("Succès", "Connexion réussie !", "success");
-        // redirider la page aprés la connexion
-        this.router.navigate(['/accueil']);
+        this.Alert("Connexion réussie !", "Bienvenue sur la plateforme", "success");
+
+        // Sauvegarde du rôle et des infos utilisateur
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('email', response.email);
+        localStorage.setItem('role', response.role); // Stocke le rôle pour redirection
+        // localStorage.setItem('authToken', response.token);
+
+        // Redirection en fonction du rôle
+        if (response.role === 'ADMIN') {
+          this.router.navigate(['/admin-dashboard']);
+        } else {
+          this.router.navigate(['/accueil']);
+        }
+
+        // Après connexion réussie, supprimer les informations d'inscription pour ne pas les pré-remplir plus tard
+        localStorage.removeItem('email');
+        localStorage.removeItem('password');
       },
       error: (err) => {
+        this.Alert('Erreur', 'Email ou mot de passe incorrect', 'error');
         console.error('Erreur de connexion', err);
-        this.Alert("Erreur", "Échec de la connexion. Vérifiez vos identifiants.", "error");
       }
     });
   }

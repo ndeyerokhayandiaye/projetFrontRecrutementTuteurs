@@ -20,6 +20,16 @@ export class LoginService {
     return this.http.post<any>(`${baseUrl}/auth/login`, credentials);
   }
 
+    // Récupérer les informations d'un utilisateur par son email
+    getUserByEmail(email: string): Observable<any> {
+      return this.http.get<any>(`${baseUrl}/users/${email}`);
+    }
+
+    // Mettre à jour le profil utilisateur
+    updateUser(email: string, userData: any): Observable<any> {
+      return this.http.put<any>(`${baseUrl}/users/${email}`, userData);
+    }
+
 
 
   // login(credentials: any): Observable<LoginResponse> {
