@@ -4,6 +4,8 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AnnonceComponent } from './annonce/annonce.component';
 import { ProfilComponent } from './profil/profil.component';
+import { AdminComponent } from './admin/admin.component';
+import { adminRoutes } from './admin/admin.routes';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'accueil', pathMatch: 'full' },
@@ -12,4 +14,12 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'annonce', component: AnnonceComponent },
   { path: 'profil', component: ProfilComponent},
+
+
+
+
+    { path: 'admin', children: adminRoutes },
+    { path: 'admin', loadChildren: () => import('./admin/admin.routes').then(m => m.adminRoutes) },
+
+
 ];

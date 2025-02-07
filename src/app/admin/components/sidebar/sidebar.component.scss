@@ -1,0 +1,21 @@
+nav {
+  width: 250px;
+  height: 100vh;
+  background: var(--primary-color);
+  color: white;
+  padding: 20px;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  margin: 15px 0;
+}
+a {
+  color: white;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
