@@ -8,12 +8,17 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
      RouterModule,
-
-
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent {
+
+  // toggleSidebar() {
+  //   const sidebar = document.querySelector('.sidebar');
+  //   if (sidebar) {
+  //     sidebar.classList.toggle('open');
+  //   }
+  // }
 
 }

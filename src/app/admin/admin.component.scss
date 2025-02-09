@@ -1,10 +1,39 @@
-.admin-layout {
+ /* Assure que l'admin prend toute la hauteur */
+ .admin-layout {
   display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-.admin-content {
-  margin-left: 250px;
-  padding: 20px;
-  flex-grow: 1;
+/* Conteneur principal : sidebar à gauche, contenu à droite */
+.admin-container {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  overflow: hidden; /* Évite les débordements */
 }
+
+/* Sidebar : Largeur fixe */
+.sidebar {
+  width: 250px;
+  min-width: 250px;
+  background-color: #343a40; /* Couleur du sidebar */
+  color: white;
+  height: calc(100vh - 56px); /* Ajuste selon la navbar */
+  overflow-y: auto; /* Permet le scroll si besoin */
+}
+
+/* Contenu principal */
+.admin-content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  height: calc(100vh - 56px); /* Ajuste la hauteur pour éviter de dépasser */
+
+
+  margin-left: 250px; /* Décaler le contenu pour éviter qu'il ne colle à la sidebar */
+  padding: 20px;
+}
+
+
 

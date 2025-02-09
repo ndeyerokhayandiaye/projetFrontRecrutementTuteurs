@@ -1,9 +1,15 @@
 <div class="admin-layout">
-  <!-- Sidebar -->
-  <app-sidebar></app-sidebar>
+  <!-- Navbar -->
+  <app-navbar (sidebarToggle)="toggleSidebar()"></app-navbar>
 
-  <!-- Contenu principal -->
-  <div class="admin-content">
-    <router-outlet></router-outlet>
+  <!-- Conteneur principal (Sidebar + Contenu) -->
+  <div class="admin-container">
+    <!-- Sidebar -->
+    <app-sidebar class="sidebar" [class.hidden]="isSidebarHidden"></app-sidebar>
+
+    <!-- Contenu principal -->
+    <div class="admin-content mt-5 bg-secondary">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>
