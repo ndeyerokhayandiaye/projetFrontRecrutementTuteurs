@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -14,11 +14,5 @@ import { RouterModule } from '@angular/router';
 })
 export class SidebarComponent {
 
-  // toggleSidebar() {
-  //   const sidebar = document.querySelector('.sidebar');
-  //   if (sidebar) {
-  //     sidebar.classList.toggle('open');
-  //   }
-  // }
-
+  @Input() isHidden = false;
 }

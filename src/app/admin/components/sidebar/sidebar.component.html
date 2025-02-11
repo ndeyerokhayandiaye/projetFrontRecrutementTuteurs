@@ -1,96 +1,41 @@
-<!-- Bouton Menu Burger (visible sur mobile) -->
-<!-- <button class="btn btn-dark d-md-none position-fixed top-0 start-0 m-3"
-        type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">
-  <i class="fas fa-bars"></i>
-</button> -->
-
-<!-- Sidebar Principal (Desktop) -->
-<nav class="d-none d-md-flex flex-column bg-dark text-white vh-100 p-3 sidebar">
-  <div class="text-center mb-3">
-    <img src="https://via.placeholder.com/100" alt="Profil" class="rounded-circle img-fluid">
-    <h5 class="mt-2">Admin</h5>
+<!-- Sidebar -->
+<nav class="sidebar" [class.hidden]="isHidden">
+  <div class="sidebar-header">
+    <h5>Admin</h5>
   </div>
 
-  <ul class="nav flex-column flex-grow-1">
+  <ul class="nav flex-column">
     <li class="nav-item">
-      <a class="nav-link text-white" routerLink="/admin/dashboard">
+      <a class="nav-link" routerLink="/admin/dashboard">
         <i class="fas fa-tachometer-alt me-2"></i> Dashboard
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link text-white" routerLink="/admin/annonces">
+      <a class="nav-link" routerLink="/admin/annonces">
         <i class="fas fa-bullhorn me-2"></i> Annonces
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link text-white" routerLink="/admin/candidats">
+      <a class="nav-link" routerLink="/admin/candidats">
         <i class="fas fa-users me-2"></i> Candidats
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link text-white" routerLink="/admin/annees-academiques">
+      <a class="nav-link" routerLink="/admin/annees-academiques">
         <i class="fas fa-calendar-alt me-2"></i> Années Académiques
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link text-white" routerLink="/admin/notifications">
+      <a class="nav-link" routerLink="/admin/notifications">
         <i class="fas fa-bell me-2"></i> Notifications
       </a>
     </li>
   </ul>
 
   <!-- Bouton de Déconnexion -->
-  <div class="mt-auto">
-    <a class="nav-link text-white" routerLink="/logout">
+  <div class="sidebar-footer">
+    <a class="nav-link" routerLink="/logout">
       <i class="fas fa-sign-out-alt me-2"></i> Déconnexion
     </a>
   </div>
 </nav>
-
-<!-- Sidebar Offcanvas (Mobile) -->
-<div class="offcanvas offcanvas-start bg-dark text-white" id="sidebarMenu">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title">Menu</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
-  </div>
-  <div class="offcanvas-body">
-    <ul class="nav flex-column flex-grow-1">
-      <li class="nav-item">
-        <a class="nav-link text-white" routerLink="/admin/dashboard">
-          <i class="fas fa-tachometer-alt me-2"></i> Dashboard
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" routerLink="/admin/annonces">
-          <i class="fas fa-bullhorn me-2"></i> Annonces
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" routerLink="/admin/candidats">
-          <i class="fas fa-users me-2"></i> Candidats
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" routerLink="/admin/annees-academiques">
-          <i class="fas fa-calendar-alt me-2"></i> Années Académiques
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white" routerLink="/admin/notifications">
-          <i class="fas fa-bell me-2"></i> Notifications
-        </a>
-      </li>
-    </ul>
-
-    <!-- Bouton de Déconnexion-->
-    <div class="mt-auto">
-      <a class="nav-link text-white" routerLink="/logout">
-        <i class="fas fa-sign-out-alt me-2"></i> Déconnexion
-      </a>
-    </div>
-  </div>
-</div>
-
-
-
-

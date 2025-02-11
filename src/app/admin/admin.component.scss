@@ -1,39 +1,35 @@
- /* Assure que l'admin prend toute la hauteur */
- .admin-layout {
+.admin-layout {
   display: flex;
   flex-direction: column;
   height: 100vh;
+
+
 }
 
-/* Conteneur principal : sidebar à gauche, contenu à droite */
-.admin-container {
-  display: flex;
-  flex: 1;
-  width: 100%;
-  overflow: hidden; /* Évite les débordements */
-}
-
-/* Sidebar : Largeur fixe */
-.sidebar {
-  width: 250px;
-  min-width: 250px;
-  background-color: #343a40; /* Couleur du sidebar */
-  color: white;
-  height: calc(100vh - 56px); /* Ajuste selon la navbar */
-  overflow-y: auto; /* Permet le scroll si besoin */
-}
-
-/* Contenu principal */
 .admin-content {
   flex-grow: 1;
   padding: 20px;
-  overflow-y: auto;
-  height: calc(100vh - 56px); /* Ajuste la hauteur pour éviter de dépasser */
+  margin-top: 56px; /* Ajuste selon la hauteur de la navbar */
+  transition: margin-left 0.3s ease;
 
 
-  margin-left: 250px; /* Décaler le contenu pour éviter qu'il ne colle à la sidebar */
-  padding: 20px;
+  // LOY XOLATE LAA YAKO YOK PR CONTENU BI BAGNA LALL SIDEBAR BI
+  margin-left: 13%;
 }
 
 
+/* Décaler le contenu lorsque la sidebar est ouverte */
+.sidebar:not(.hidden) + .admin-content {
+  margin-left: 250px;
+}
 
+/* Sur les petits écrans */
+@media (max-width: 768px) {
+  .admin-content {
+    margin-left: 0;
+  }
+
+  .sidebar:not(.hidden) + .admin-content {
+    margin-left: 250px;
+  }
+}

@@ -15,7 +15,12 @@ export class NavbarComponent {
   @Output() sidebarToggle = new EventEmitter<void>();
 
   toggleSidebar() {
-    this.sidebarToggle.emit(); // Envoie un signal pour afficher/cacher la sidebar
+    this.sidebarToggle.emit();
   }
 
+  // @Output() sidebarToggle = new EventEmitter<void>();
+
+  // toggleSidebar() {
+  //   this.sidebarToggle.emit(); // Envoie un signal pour afficher/cacher la sidebar
+  // }
 }
