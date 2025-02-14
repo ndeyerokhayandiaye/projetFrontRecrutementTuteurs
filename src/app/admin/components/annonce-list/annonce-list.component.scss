@@ -1,0 +1,27 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+mat-form-field {
+  width: 300px;
+}
+
+.custom-button {
+  background-color: orange !important; /* Forcer la couleur */
+  color: white !important;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: darkorange !important; /* Changement de couleur au survol */
+  }
+
+  &:focus {
+    outline: none;
+  }
+}

@@ -52,7 +52,7 @@
 .card-link {
   display: inline-block;
   text-decoration: none;
-  background: #007bff;
+  background: var(--primary-color);
   color: white;
   padding: 8px 16px;
   border-radius: 8px;
@@ -60,5 +60,5 @@
 }
 
 .card-link:hover {
-  background: #0056b3;
+  background: #af650a;
 }
