@@ -10,6 +10,7 @@ import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AnnonceService } from '../../services/annonce.service';
+import { RouterModule } from '@angular/router';
 
 
 @Component({
@@ -24,7 +25,8 @@ import { AnnonceService } from '../../services/annonce.service';
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    RouterModule,
 
   ],
   templateUrl: './annonce-form.component.html',

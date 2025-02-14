@@ -9,6 +9,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-annonce-list',
@@ -23,7 +24,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
         MatFormFieldModule,
         MatInputModule,
         MatPaginatorModule,
-        MatTableModule
+        MatTableModule,
+        RouterModule,
+
   ],
   templateUrl: './annonce-list.component.html',
   styleUrl: './annonce-list.component.scss'
