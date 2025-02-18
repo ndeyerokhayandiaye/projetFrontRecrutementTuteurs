@@ -54,4 +54,43 @@ updateAnnonce(id: number, annonceData: any): Observable<any> {
 deleteAnnonce(id: number): Observable<any> {
   return this.http.delete<any>(`${baseUrl}/job-announcements/${id}`, { headers: this.getAuthHeaders() });
 }
+
+
+
+
+
+
+
+
+
+  // Ajouter une année académique
+  addAcademicYear(formData: any): Observable<any> {
+    return this.http.post<any>(`${baseUrl}/academic-years`,formData);
+  }
+  // Récupérer toutes les années académiques
+  getAllAcademicYears(): Observable<any[]> {
+    return this.http.get<any[]>(`${baseUrl}/academic-years`, { headers: this.getAuthHeaders() });
+  }
+
+  // Récupérer une année académique par ID
+  getAcademicYearById(id: string): Observable<any> {
+    return this.http.get<any>(`${baseUrl}/academic-years/${id}`, { headers: this.getAuthHeaders() });
+  }
+
+  // Mettre à jour une année académique
+  updateAcademicYear(id: string, data: any): Observable<any> {
+    return this.http.put<any>(`${baseUrl}/academic-years/${id}`, data, { headers: this.getAuthHeaders() });
+  }
+
+ 
+
+  // updateAcademicYear(id: string, data: any): Observable<any> {
+  //   return this.http.put(`${this.baseUrl}/academic-years/${id}`, data);
+  // }
+
+
+  // Supprimer une année académique
+  deleteAcademicYear(id: string): Observable<any> {
+    return this.http.delete<any>(`${baseUrl}/academic-years/${id}`, { headers: this.getAuthHeaders() });
+  }
 }

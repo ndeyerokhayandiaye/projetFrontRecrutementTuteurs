@@ -38,22 +38,41 @@ export class AnnonceFormComponent implements OnInit {
   annonceForm: FormGroup;
   isEditing = false;
   dataSource: any[] = [];
-  displayedColumns: string[] = ['title', 'description', 'salary', 'actions'];
+  displayedColumns: string[] = ['id','title', 'description', 'actions'];
 
   constructor(private fb: FormBuilder, private annonceService: AnnonceService) {
+    // this.annonceForm = this.fb.group({
+
+    //   title: ['', Validators.required],
+    //   description: ['', Validators.required],
+    //   // requirements: ['', Validators.required],
+    //   // location: ['', Validators.required],
+    //   // salary: ['', Validators.required],
+    //   postedAt: ['', Validators.required],
+    //   deadline: ['', Validators.required]
+    // });
+
     this.annonceForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      requirements: ['', Validators.required],
-      location: ['', Validators.required],
-      salary: ['', Validators.required],
       postedAt: ['', Validators.required],
-      deadline: ['', Validators.required]
+      deadline: ['', Validators.required],
+      academicYearId: ['3fa85f64-5717-4562-b3fc-2c963f66afa6', Validators.required], // Exemple
+      status: ['DRAFT', Validators.required], // Statut par défaut
+      createdById: ['3fa85f64-5717-4562-b3fc-2c963f66afa6', Validators.required], // Remplace par un vrai ID
     });
+
+
   }
+
+
 
   ngOnInit(): void {
   }
+
+
+
+
 
   // saveAnnonce(): void {
   //   if (this.annonceForm.valid) {
@@ -77,6 +96,7 @@ export class AnnonceFormComponent implements OnInit {
         // Supprimer l'id pour éviter l'erreur
         delete formData.id;
       }
+      console.log('Données envoyées:/', formData);
 
       if (this.isEditing) {
         this.annonceService.updateAnnonce(formData.id, formData).subscribe(() => {
