@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
@@ -10,13 +10,18 @@ import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AnnonceService } from '../../services/annonce.service';
-import { RouterModule } from '@angular/router';
-
+import { Router, RouterModule } from '@angular/router';
+import { AcademicYear } from '../annee-academique-list/annee-academique-list.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { LoginService } from '../../../services/login.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-annonce-form',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatToolbarModule,
@@ -27,101 +32,102 @@ import { RouterModule } from '@angular/router';
     MatPaginatorModule,
     MatTableModule,
     RouterModule,
-
+    MatSelectModule,
+    MatOptionModule,
+    MatButtonModule,
   ],
   templateUrl: './annonce-form.component.html',
   styleUrl: './annonce-form.component.scss'
 })
-
 export class AnnonceFormComponent implements OnInit {
-
-  annonceForm: FormGroup;
+  academicYears: AcademicYear[] = [];
+  filteredAcademicYears: AcademicYear[] = [];
+  searchQuery: string = '';
+  loading = false;
+  errorMessage: string | null = null;
+  annonces: any[] = [];
   isEditing = false;
-  dataSource: any[] = [];
-  displayedColumns: string[] = ['id','title', 'description', 'actions'];
-
-  constructor(private fb: FormBuilder, private annonceService: AnnonceService) {
-    // this.annonceForm = this.fb.group({
-
-    //   title: ['', Validators.required],
-    //   description: ['', Validators.required],
-    //   // requirements: ['', Validators.required],
-    //   // location: ['', Validators.required],
-    //   // salary: ['', Validators.required],
-    //   postedAt: ['', Validators.required],
-    //   deadline: ['', Validators.required]
-    // });
-
-    this.annonceForm = this.fb.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required],
-      postedAt: ['', Validators.required],
-      deadline: ['', Validators.required],
-      academicYearId: ['3fa85f64-5717-4562-b3fc-2c963f66afa6', Validators.required], // Exemple
-      status: ['DRAFT', Validators.required], // Statut par défaut
-      createdById: ['3fa85f64-5717-4562-b3fc-2c963f66afa6', Validators.required], // Remplace par un vrai ID
-    });
+  annonceForm!: FormGroup;
+  selectedAnnonceId: number | null = null;
+  displayedColumns: string[] = ['id', 'title', 'description', 'actions'];
+  dataSource: any[] = []; // Ou l'initialiser avec les données appropriées
+  userId: string | null = null;
 
 
-  }
-
-
+  constructor(private fb: FormBuilder, private annonceService: AnnonceService, private router: Router,private loginService: LoginService,
+) {}
 
   ngOnInit(): void {
+    this.loadAcademicYears();
+    this.annonceForm = this.fb.group({
+      title: ['', [Validators.required, Validators.minLength(3)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      publicationDate: ['', Validators.required],
+      closingDate: ['', Validators.required],
+      status: ['DRAFT', Validators.required],
+      academicYearId: ['', Validators.required],
+      createdById: this.userId,
+
+    });
   }
 
-
-
-
-
-  // saveAnnonce(): void {
-  //   if (this.annonceForm.valid) {
-  //     if (this.isEditing) {
-  //       this.annonceService.updateAnnonce(this.annonceForm.value.id, this.annonceForm.value).subscribe(() => {
-  //         this.resetForm();
-  //       });
-  //     } else {
-  //       this.annonceService.addAnnonce(this.annonceForm.value).subscribe(() => {
-  //         this.resetForm();
-  //       });
-  //     }
-  //   }
-  // }
-
-  saveAnnonce(): void {
-    if (this.annonceForm.valid) {
-      const formData = this.annonceForm.value;
-
-      if (!this.isEditing) {
-        // Supprimer l'id pour éviter l'erreur
-        delete formData.id;
-      }
-      console.log('Données envoyées:/', formData);
-
-      if (this.isEditing) {
-        this.annonceService.updateAnnonce(formData.id, formData).subscribe(() => {
-          this.resetForm();
-        });
-      } else {
-        this.annonceService.addAnnonce(formData).subscribe(() => {
-          this.resetForm();
-        });
-      }
+  ajoutAnnonce() {
+    if (this.annonceForm.invalid) {
+      Swal.fire('Erreur', 'Veuillez remplir correctement tous les champs.', 'error');
+      return;
     }
+
+    const annonceData = {
+      title: this.annonceForm.value.title,
+      description: this.annonceForm.value.description,
+      publicationDate: new Date(this.annonceForm.value.publicationDate).toISOString(),
+      closingDate: new Date(this.annonceForm.value.closingDate).toISOString(),
+      status: this.annonceForm.value.status,
+      academicYearId: this.annonceForm.value.academicYearId
+    };
+
+
+    console.log('Annonce envoyée:', annonceData);
+    console.log('Données envoyées:', JSON.stringify(annonceData));
+
+    this.annonceService.addAnnonce(annonceData).subscribe({
+      next: (response) => {
+        Swal.fire('Succès', 'Annonce ajoutée avec succès', 'success');
+        this.annonceForm.reset();
+      },
+      error: (err) => {
+        console.error('Erreur lors de l\'ajout', err);
+        Swal.fire('Erreur', 'Échec de l\'ajout de l\'annonce', 'error');
+      }
+    });
   }
 
-  resetForm(): void {
-    this.isEditing = false;
+  resetForm() {
     this.annonceForm.reset();
   }
-
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.dataSource = this.dataSource.filter(annonce =>
-      annonce.titre.toLowerCase().includes(filterValue) ||
+      annonce.title.toLowerCase().includes(filterValue) ||
       annonce.description.toLowerCase().includes(filterValue)
     );
+  }
+
+  loadAcademicYears() {
+    this.loading = true;
+    this.annonceService.getAllAcademicYears().subscribe({
+      next: (data: AcademicYear[]) => {
+        this.loading = false;
+        this.academicYears = data;
+        this.filteredAcademicYears = data;
+      },
+      error: (error) => {
+        this.loading = false;
+        this.errorMessage = 'Erreur lors du chargement des années académiques';
+        console.error(error);
+      }
+    });
   }
 
 }

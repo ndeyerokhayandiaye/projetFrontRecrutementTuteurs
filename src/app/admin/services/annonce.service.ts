@@ -20,42 +20,50 @@ export class AnnonceService {
 //   });
 // }
 
+// private getAuthHeaders(): HttpHeaders {
+//   const token = localStorage.getItem('token'); // Récupération du token depuis le localStorage
+//   console.log('Token JWT:', token); // Vérifie si le token est récupéré correctement
+//   return new HttpHeaders({
+//     'Authorization': `Bearer ${token}`, // Ajout du token dans l'en-tête
+//     'Content-Type': 'application/json'
+//   });
+// }
+
+
+
+
 private getAuthHeaders(): HttpHeaders {
-  const token = localStorage.getItem('token'); // Récupération du token depuis le localStorage
-  console.log('Token JWT:', token); // Vérifie si le token est récupéré correctement
+  const token = localStorage.getItem('token');
+  if (!token) {
+    console.error('Aucun token trouvé !');
+    return new HttpHeaders(); // Retourne un en-tête vide pour éviter les erreurs
+  }
   return new HttpHeaders({
-    'Authorization': `Bearer ${token}`, // Ajout du token dans l'en-tête
+    'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json'
   });
 }
 
 
+
+
 // Ajouter une annonce
-addAnnonce(annonceData: any): Observable<any> {
-  return this.http.post<any>(`${baseUrl}/job-announcements`, annonceData, { headers: this.getAuthHeaders() });
+addAnnonce(annonce: any): Observable<any> {
+  return this.http.post<any>(`${baseUrl}/job-announcements`, annonce, { headers: this.getAuthHeaders() });
 }
 
-// Récupérer toutes les annonces
+
 getAnnonces(): Observable<any[]> {
   return this.http.get<any[]>(`${baseUrl}/job-announcements`, { headers: this.getAuthHeaders() });
 }
 
-// Récupérer une annonce par ID
-getAnnonceById(id: number): Observable<any> {
-  return this.http.get<any>(`${baseUrl}/job-announcements/${id}`, { headers: this.getAuthHeaders() });
+updateAnnonce(id: number, annonce: any): Observable<any> {
+  return this.http.put<any>(`${baseUrl}/job-announcements/${id}`, annonce, { headers: this.getAuthHeaders() });
 }
 
-// Mettre à jour une annonce
-updateAnnonce(id: number, annonceData: any): Observable<any> {
-  return this.http.put<any>(`${baseUrl}/job-announcements/${id}`, annonceData, { headers: this.getAuthHeaders() });
-}
-
-// Supprimer une annonce
 deleteAnnonce(id: number): Observable<any> {
   return this.http.delete<any>(`${baseUrl}/job-announcements/${id}`, { headers: this.getAuthHeaders() });
 }
-
-
 
 
 
@@ -81,13 +89,6 @@ deleteAnnonce(id: number): Observable<any> {
   updateAcademicYear(id: string, data: any): Observable<any> {
     return this.http.put<any>(`${baseUrl}/academic-years/${id}`, data, { headers: this.getAuthHeaders() });
   }
-
- 
-
-  // updateAcademicYear(id: string, data: any): Observable<any> {
-  //   return this.http.put(`${this.baseUrl}/academic-years/${id}`, data);
-  // }
-
 
   // Supprimer une année académique
   deleteAcademicYear(id: string): Observable<any> {

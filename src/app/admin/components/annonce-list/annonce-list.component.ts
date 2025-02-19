@@ -10,22 +10,26 @@ import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-annonce-list',
   standalone: true,
   imports: [
-    CommonModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-        MatToolbarModule,
-        MatCardModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatPaginatorModule,
-        MatTableModule,
-        RouterModule,
+   CommonModule,
+      ReactiveFormsModule,
+      MatButtonModule,
+      MatToolbarModule,
+      MatCardModule,
+      MatIconModule,
+      MatFormFieldModule,
+      MatInputModule,
+      MatPaginatorModule,
+      MatTableModule,
+      RouterModule,
+      MatSelectModule,
+      MatOptionModule,
 
   ],
   templateUrl: './annonce-list.component.html',

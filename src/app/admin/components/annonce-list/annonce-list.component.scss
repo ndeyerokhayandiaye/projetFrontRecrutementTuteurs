@@ -1,3 +1,83 @@
+.table {
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  text-align: center;
+}
+
+.btn {
+  margin: 5px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.alert {
+  margin-top: 20px;
+}
+
+.Sauvegarder{
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.modifier{
+  background-color: var(--primary-color);
+  color: white;
+
+}
+
+
+.search-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.add-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.search-input {
+  width: 300px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -25,3 +105,7 @@ mat-form-field {
     outline: none;
   }
 }
+
+
+
+

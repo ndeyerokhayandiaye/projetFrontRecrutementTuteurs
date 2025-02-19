@@ -86,6 +86,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('role', response.role); // Stocke le rôle pour redirection
         // localStorage.setItem('authToken', response.token);
         localStorage.setItem('token', response.token); // AJOUT DU TOKEN
+        localStorage.setItem('userId', response.id); // Sauvegarde l'ID utilisateur dans localStorage
 
         // Redirection en fonction du rôle
         if (response.role === 'ADMIN') {

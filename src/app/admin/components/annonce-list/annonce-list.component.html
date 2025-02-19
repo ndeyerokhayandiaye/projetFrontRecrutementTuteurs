@@ -1,5 +1,96 @@
+<!-- <div class="form-container">
+  <div class="d-flex justify-content-between align-items-center search-container mt-4 ">
+    <button class="btn add-button" [routerLink]="'/admin/annees-academiques/nouvelle'" >
+       Ajouter une Annonce
+    </button>
+
+    <div class="form-group">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearch()"
+        class="form-control search-input"
+        placeholder="Rechercher une année académique"
+      />
+    </div>
+  </div>
+
+  <h2 class="text-center mt-5 ">Liste des Annonces</h2>
+
+
+  <table class="table table-striped  mt-5">
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Description</th>
+        <th>Pulication</th>
+        <th>Date de fin</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let annonce of filteredAnnonce">
+        <td>{{annonce.title }}</td>
+        <td>{{annonce.description }}</td>
+        <td>{{annonce.publicationDate | date: 'shortDate' }}</td>
+        <td>{{annonce.closingDate | date: 'shortDate' }}</td>
+        <td>{{annonce.status }}</td>
+        <td>
+          <button (click)="deleteAcademicYear(year.id)" class="btn btn-danger">Supprimer</button>
+          <button data-bs-toggle="modal" data-bs-target="#modificationAnnonce"
+            class="btn modifier" (click)="openModal(annoce)">
+            Modifier
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="loading">Chargement...</div>
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+</div>
+
+<div class="modal fade" id="modificationAnnonce" tabindex="-1" aria-labelledby="modificationAnnonceLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editAcademicYearModalLabel">Modifier l'annonce</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="modificationAcademicYear()">
+          <div class="mb-3">
+            <label for="yearName" class="form-label">Nom de l'année académique :</label>
+            <input id="yearName" [(ngModel)]="selectedYear.yearName" name="yearName" class="form-control" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="startDate" class="form-label">Date de début :</label>
+            <input id="startDate" [(ngModel)]="selectedYear.startDate" name="startDate" type="date" class="form-control" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="endDate" class="form-label">Date de fin :</label>
+            <input id="endDate" [(ngModel)]="selectedYear.endDate" name="endDate" type="date" class="form-control" required />
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn Sauvegarder">Sauvegarder</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+
+
+
 <div class="header">
-  <button mat-button color="primary" [routerLink]="'/admin/annonces/nouvelle'"  >Ajouter une Annonce</button>
+  <button mat-button color="primary" [routerLink]="'/admin/annonces/nouvelle'">Ajouter une Annonce</button>
   <mat-form-field appearance="outline">
     <mat-label>Rechercher une annonce</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex: Vente de maïs">
@@ -7,6 +98,7 @@
 </div>
 
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef> ID </th>
     <td mat-cell *matCellDef="let element"> {{element.id}} </td>
