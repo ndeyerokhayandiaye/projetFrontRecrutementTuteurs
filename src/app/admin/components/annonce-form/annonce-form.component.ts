@@ -61,13 +61,12 @@ export class AnnonceFormComponent implements OnInit {
     this.loadAcademicYears();
     this.annonceForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', [Validators.required, Validators.minLength(10)]],
+      description: ['', [Validators.required, Validators.minLength(5)]],
       publicationDate: ['', Validators.required],
       closingDate: ['', Validators.required],
       status: ['DRAFT', Validators.required],
       academicYearId: ['', Validators.required],
       createdById: this.userId,
-
     });
   }
 

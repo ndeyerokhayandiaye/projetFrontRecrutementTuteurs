@@ -18,15 +18,20 @@
   margin-top: 20px;
 }
 
-.Sauvegarder{
-  background-color: var(--primary-color);
-  color: white;
-}
-
 .modifier{
   background-color: var(--primary-color);
   color: white;
 
+}
+
+.add-button {
+  background-color: var(--primary-color);
+  color: white !important;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 
@@ -37,23 +42,14 @@
   margin-bottom: 15px;
 }
 
-.add-button {
+.Sauvegarder{
   background-color: var(--primary-color);
   color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
 }
 
 .search-input {
   width: 300px;
 }
-
-
-
-
 
 
 
