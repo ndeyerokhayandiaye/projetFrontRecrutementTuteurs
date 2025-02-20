@@ -118,4 +118,6 @@ export class AnneeAcademiqueListComponent implements OnInit {
           timer: 1500
         });
       }
+
+      
 }

@@ -75,6 +75,10 @@ button mat-icon {
   font-size: 20px;
 }
 
+.bi-arrow-left{
+  cursor: pointer;
+}
+
 @media (max-width: 768px) {
   .admin-container {
     padding: 10px;

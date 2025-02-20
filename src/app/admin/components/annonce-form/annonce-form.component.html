@@ -1,6 +1,7 @@
 <div class="admin-container">
-  <h1>Ajout Annonces</h1>
-
+     <!-- Icône de retour en arrière -->
+ <i class="bi bi-arrow-left" [routerLink]="'/admin/annonces'"></i>
+  <h1 class="mt-3">Ajout Annonces</h1>
   <form [formGroup]="annonceForm" (ngSubmit)="ajoutAnnonce()" class="annonce-form">
     <mat-form-field appearance="fill">
       <mat-label>Titre</mat-label>

@@ -31,8 +31,8 @@
     <tbody>
       <tr *ngFor="let year of filteredAcademicYears">
         <td>{{ year.yearName }}</td>
-        <td>{{ year.startDate | date: 'shortDate' }}</td>
-        <td>{{ year.endDate | date: 'shortDate' }}</td>
+        <td>{{ year.startDate |date:'dd MMMM yyyy' }}</td>
+        <td>{{ year.endDate | date:'dd MMMM yyyy' }}</td>
         <td>
           <button (click)="deleteAcademicYear(year.id)" class="btn btn-danger">Supprimer</button>
           <button data-bs-toggle="modal" data-bs-target="#editAcademicYearModal"
@@ -54,7 +54,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editAcademicYearModalLabel">Modifier l'année académique</h5>
+        <h5 class="modal-title mt-5" id="editAcademicYearModalLabel">Modifier l'année académique</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
       </div>
       <div class="modal-body">

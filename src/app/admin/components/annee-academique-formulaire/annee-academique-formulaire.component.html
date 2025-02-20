@@ -1,5 +1,7 @@
 <div class="form-container">
-  <h2>Année Académique</h2>
+   <!-- Icône de retour en arrière -->
+ <button type="button" class=" btn-outline-secondary" ><i class="bi bi-arrow-left" [routerLink]="'/admin/annees-academiques'"></i></button>
+  <h2 class="mt-3"> Ajouter Année Académique</h2>
   <form [formGroup]="academicYearForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="yearName">Année</label>

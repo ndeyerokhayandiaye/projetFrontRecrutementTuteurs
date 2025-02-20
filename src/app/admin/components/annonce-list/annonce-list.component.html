@@ -6,28 +6,35 @@
   </mat-form-field>
 </div>
 
-<h2 class="text-center mt-5 ">Liste des Annonces</h2>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 mt-5">
+<h2 class="text-center mt-4 ">Liste des Annonces</h2>
+<table mat-table [dataSource]="dataSource" class=" mt-4 table table-striped">
 
   <ng-container matColumnDef="title">
-    <th mat-header-cell *matHeaderCellDef> Titre </th>
+    <th mat-header-cell *matHeaderCellDef class="gras"> Titre </th>
     <td mat-cell *matCellDef="let element"> {{element.title}} </td>
   </ng-container>
 
   <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef> Description </th>
+    <th mat-header-cell *matHeaderCellDef class="gras"> Description </th>
     <td mat-cell *matCellDef="let element"> {{element.description}} </td>
   </ng-container>
 
   <ng-container matColumnDef="publicationDate">
-    <th mat-header-cell *matHeaderCellDef>Date de Publication </th>
+    <th mat-header-cell *matHeaderCellDef class="gras">Date de Publication </th>
     <td mat-cell *matCellDef="let element">
       {{ element.publicationDate | date:'dd MMMM yyyy' }}
     </td>
   </ng-container>
 
+  <ng-container matColumnDef="closingDate">
+    <th mat-header-cell *matHeaderCellDef class="gras">Date de fermeture </th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.closingDate | date:'dd MMMM yyyy' }}
+    </td>
+  </ng-container>
+
   <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <th mat-header-cell *matHeaderCellDef class="gras"> Actions </th>
     <td mat-cell *matCellDef="let element">
       <button  class="btn btn-danger"  (click)="deleteAnnonce(element.id)">Supprimer</button>
       <button data-bs-toggle="modal" data-bs-target="#editAcademicYearModal"class="btn modifier" (click)="editAnnonce(element)" data-bs-target="#annonceModal">Modifier</button>

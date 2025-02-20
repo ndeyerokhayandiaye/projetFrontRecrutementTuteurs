@@ -43,7 +43,7 @@ import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http'
 
 export class AnnonceListComponent {
   annonces: any[] = [];
-  displayedColumns: string[] = ['title', 'id', 'publicationDate', 'actions'];
+  displayedColumns: string[] = ['title', 'id', 'publicationDate', 'closingDate' ,'actions'];
 
   dataSource: any[] = [];
   annonceForm!: FormGroup;

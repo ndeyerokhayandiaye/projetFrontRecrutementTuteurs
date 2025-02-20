@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { baseUrl } from '../../../services/url';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
   standalone: true,
   imports: [ReactiveFormsModule,
     CommonModule,
+    RouterModule,
   ],
   templateUrl: './annee-academique-formulaire.component.html',
   styleUrl: './annee-academique-formulaire.component.scss'
