@@ -28,6 +28,7 @@ export const allGuardGuard: CanActivateFn = (route, state) => {
       title: 'Accès refusé',
       text: 'Vous n\'avez pas les permissions nécessaires pour accéder à cette page.',
       confirmButtonColor: '#1E1E1E',
+      timer: 1500
     });
     router.navigate(['/accueil']);
     return false;

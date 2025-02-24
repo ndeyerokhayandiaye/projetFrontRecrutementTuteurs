@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { baseUrl } from './url';
+import { Router } from '@angular/router';
 // import { HttpClientModule } from '@angular/common/http';
 
 @Injectable({
@@ -9,7 +10,7 @@ import { baseUrl } from './url';
 })
 export class LoginService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private router: Router) {}
 
 
   // Fonction pour récupérer le token depuis le stockage local
@@ -44,6 +45,13 @@ export class LoginService {
       return this.http.get<any>(`${baseUrl}/users/${email}`);
     }
 
+    logout(): void {
+      localStorage.removeItem('token'); // Supprime le token d'authentification
+      localStorage.removeItem('email'); // Supprime le token d'authentification
+      localStorage.removeItem('userId'); // Supprime le token d'authentification
+      localStorage.removeItem('role'); // Supprime le token d'authentification
+      this.router.navigate(['/login']); // Redirige vers la page de connexion
+    }
 
 
     // Mettre à jour le profil utilisateur
