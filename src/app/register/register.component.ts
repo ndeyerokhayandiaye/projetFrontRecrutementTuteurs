@@ -120,6 +120,7 @@ export class RegisterComponent implements OnInit {
         // Sauvegarder l'email et le mot de passe dans le localStorage pour la connexion immédiate
         localStorage.setItem('email', this.user.email);
         localStorage.setItem('password', this.user.password);
+        localStorage.setItem('userId', response.id); // Stocke l'ID utilisateur renvoyé par l'API
 
         // Réinitialiser les champs après inscription
         this.user = {

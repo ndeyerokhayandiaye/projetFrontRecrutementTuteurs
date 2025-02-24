@@ -48,7 +48,7 @@ export class AnnonceComponent implements OnInit {
   annonceParPage = 6;
   pageActuelle = 1;
 
-  
+
   postulerForm: FormGroup;
   isSubmitting = false;
   isAuthenticated = false; // Stocke l'état de connexion
@@ -104,6 +104,7 @@ export class AnnonceComponent implements OnInit {
   get totalPages(): number {
     return Math.ceil(this.annonces.length / this.annonceParPage);
   }
+  
 
   toBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
