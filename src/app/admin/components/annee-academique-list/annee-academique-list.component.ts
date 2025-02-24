@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AnnonceService } from '../../services/annonce.service';
 import Swal from 'sweetalert2';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 export interface AcademicYear {
   id: string;
@@ -15,7 +16,7 @@ export interface AcademicYear {
 @Component({
   selector: 'app-annee-academique-list',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, FormsModule,RouterModule,],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule,RouterModule,MatPaginatorModule,],
   templateUrl: './annee-academique-list.component.html',
   styleUrls: ['./annee-academique-list.component.scss'],
 })
@@ -119,5 +120,5 @@ export class AnneeAcademiqueListComponent implements OnInit {
         });
       }
 
-      
+
 }

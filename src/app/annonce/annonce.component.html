@@ -9,7 +9,7 @@
   </section>
 
   <!-- Section Fonctionnalités -->
-  <section class="features">
+  <!-- <section class="features">
       <div class="feature">
           <h3>Pour les Tuteurs</h3>
           <p>Proposez vos services, gérez vos disponibilités et trouvez des étudiants motivés.</p>
@@ -25,10 +25,45 @@
           <p>Notre équipe est là pour vous aider à tout moment. Posez-nous vos questions !</p>
           <a href="#" class="feature-link">Contactez-nous</a>
       </div>
+  </section> -->
+
+
+
+
+  <h2 class="text-center mt-5"> Nos Dernières Annonces</h2>
+
+  <section class="annonces  ">
+    <div *ngFor="let annonce of annonces" class="annonce-card ">
+      <h3>{{ annonce.title }}</h3>
+      <p>{{ annonce.description }}</p>
+      <p><strong>Date de publication :</strong> {{ annonce.publicationDate | date:'dd/MM/yyyy' }}</p>
+      <p><strong>Date de fermeture :</strong> {{ annonce.closingDate | date:'dd/MM/yyyy' }}</p>
+      <a class="cta-button" data-bs-toggle="modal" data-bs-target="#postulerModal">Postuler</a>
+
+    </div>
   </section>
 
-  <!-- Section Témoignages (Optionnelle) -->
-  <section class="testimonials">
+
+     <!-- pagination -->
+<div class="d-flex flex-wrap justify-content-center my-5" >
+  <button class="btn_pagination pagiColor me-2" [disabled]="pageActuelle === 1" (click)="pageActuelle = pageActuelle - 1">
+    Précédent
+  </button>
+  <button class="btn_pagination pagiColor_num  ms-2 " *ngFor="let page of pages" (click)="pageActuelle = page">
+    {{ page }}
+  </button>
+  <button class="btn_pagination pagiColor  ms-2 " [disabled]="pageActuelle === totalPages" (click)="pageActuelle = pageActuelle + 1">
+    Suivant
+  </button>
+</div>
+<!-- fin pagination -->
+
+
+
+
+ <!-- Section Témoignages-->
+  <section class="testimonials mt-5">
+
       <h2>Ce que disent nos utilisateurs</h2>
       <div class="testimonial">
           <p>"Grâce à cette plateforme, j'ai trouvé un tuteur génial pour mes cours de mathématiques. Je recommande !"</p>
@@ -39,7 +74,148 @@
           <p class="author">- Jean, Tuteur</p>
       </div>
   </section>
+
+
 </body>
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="postulerModal" tabindex="-1" aria-labelledby="postulerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="postulerModalLabel">Postuler à l'annonce</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="postulerForm" (ngSubmit)="submitPostulation()">
+          <div class="mb-3">
+            <label class="form-label">Type d'Application</label>
+            <select class="form-select" formControlName="applicationType">
+              <option value="NEW">Nouvelle candidature</option>
+              <option value="RENEWEL">Renouvellement</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Diplôme (PDF uniquement)</label>
+            <input type="file" class="form-control" (change)="onFileChange($event, 'diplome')">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">CV (PDF uniquement)</label>
+            <input type="file" class="form-control" (change)="onFileChange($event, 'cv')">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Lettre de motivation (PDF uniquement)</label>
+            <input type="file" class="form-control" (change)="onFileChange($event, 'lettreMotivation')">
+          </div>
+
+          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Envoi en cours...' : 'Envoyer la candidature' }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

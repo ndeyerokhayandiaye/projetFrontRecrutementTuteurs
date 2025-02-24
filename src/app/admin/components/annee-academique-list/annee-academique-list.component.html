@@ -10,7 +10,7 @@
         [(ngModel)]="searchQuery"
         (ngModelChange)="onSearch()"
         class="form-control search-input"
-        placeholder="Rechercher une année académique"
+        placeholder="Rechercher Ex: 2020-2021"
       />
     </div>
   </div>
@@ -48,6 +48,9 @@
   <div *ngIf="loading">Chargement...</div>
   <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
 </div>
+
+<mat-paginator class="mt-5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
 
 <!-- Modal Bootstrap -->
 <div class="modal fade" id="editAcademicYearModal" tabindex="-1" aria-labelledby="editAcademicYearModalLabel" aria-hidden="true">

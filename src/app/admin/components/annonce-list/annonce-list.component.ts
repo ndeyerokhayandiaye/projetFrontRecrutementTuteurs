@@ -56,7 +56,7 @@ export class AnnonceListComponent {
     private academicYearService:  AnnonceService,
     private fb: FormBuilder,
     private http: HttpClient
-  ) {}
+  ) {} 
 
 
   ngOnInit(): void {
