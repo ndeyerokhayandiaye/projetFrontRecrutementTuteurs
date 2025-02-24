@@ -48,6 +48,7 @@ export class AnnonceComponent implements OnInit {
   annonceParPage = 6;
   pageActuelle = 1;
 
+  
   postulerForm: FormGroup;
   isSubmitting = false;
   isAuthenticated = false; // Stocke l'état de connexion
