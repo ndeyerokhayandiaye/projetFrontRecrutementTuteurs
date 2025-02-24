@@ -13,6 +13,7 @@ export const allGuardGuard: CanActivateFn = (route, state) => {
       title: 'Oops',
       text: 'Connectez-vous pour accéder à cet espace.',
       confirmButtonColor: '#1E1E1E',
+      timer: 1500
     });
     router.navigate(['/accueil']);
     return false;
@@ -32,7 +33,6 @@ export const allGuardGuard: CanActivateFn = (route, state) => {
     router.navigate(['/accueil']);
     return false;
   }
-
   // Si l'utilisateur est connecté et a le rôle requis, autorise l'accès
   return true;
 };
