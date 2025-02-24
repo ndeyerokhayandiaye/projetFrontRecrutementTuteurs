@@ -51,7 +51,7 @@ export class AnnonceComponent implements OnInit {
   postulerForm: FormGroup;
   isSubmitting = false;
   isAuthenticated = false; // Stocke l'état de connexion
-  selectedFiles: { [key: string]: File } = {};
+  // selectedFiles: { [key: string]: File } = {};
 
   constructor(
     private fb: FormBuilder,
@@ -65,10 +65,6 @@ export class AnnonceComponent implements OnInit {
       diplome: [null, Validators.required],
       cv: [null, Validators.required],
       lettreMotivation: [null, Validators.required],
-      // announcementId: ['', Validators.required],
-      // academicYearId: ['', Validators.required],
-      // applicationType: ['NEW', Validators.required],
-      // documents: ['', Validators.required],
 
     });
   }
