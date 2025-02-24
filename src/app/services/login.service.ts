@@ -47,10 +47,10 @@ export class LoginService {
 
     logout(): void {
       localStorage.removeItem('token'); // Supprime le token d'authentification
-      localStorage.removeItem('email'); // Supprime le token d'authentification
-      localStorage.removeItem('userId'); // Supprime le token d'authentification
-      localStorage.removeItem('role'); // Supprime le token d'authentification
-      this.router.navigate(['/login']); // Redirige vers la page de connexion
+      localStorage.removeItem('email');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('role');
+      this.router.navigate(['/login']);
     }
 
 
