@@ -61,23 +61,28 @@ nav ul li a {
   border-radius: 5px;
   text-decoration: none;
   transition: background 0.3s;
+  cursor: pointer;
 }
 
 .cta-button:hover {
-  background-color: #c70039;
+  background-color: #bc6f0a;
 }
 
-.features {
-  display: flex;
+.annonces {
+  // display: flex;
+  display: grid;
+  grid-template-columns: 30%  30%  30%;
+  // gap: 2%;
   justify-content: space-around;
   padding: 40px 20px;
   background: white;
   text-align: center;
 }
 
-.feature {
+.annonce-card {
   max-width: 300px;
   padding: 20px;
+  margin-bottom:15%;
   border: 1px solid #ddd;
   border-radius: 10px;
   background: #fff;
@@ -112,6 +117,7 @@ nav ul li a {
 
 .feature-link:hover {
   background-color: var(--primary-color);
+  color: white;
 }
 
 .testimonials {
@@ -153,6 +159,30 @@ footer {
   padding: 15px 0;
   margin-top: 20px;
 }
+
+
+.btn_pagination{
+  color: #0A2640;
+  font-size: 18px;
+
+}
+
+.btn_pagination:hover{
+  color: var(--primary-color);
+  font-size: 18px;
+
+}
+
+.pagiColor_num {
+  background-color: var(--primary-color);
+  color: white;
+  /* border: 1.5px solid #FFC107; */
+  /* color: #FFC107; */
+}
+
+
+
+
 
 
 

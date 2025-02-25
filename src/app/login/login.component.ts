@@ -75,6 +75,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+
     // Appeler le service de connexion
     this.loginService.login(this.credentials).subscribe({
       next: (response) => {
@@ -84,10 +85,10 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('email', response.email);
         localStorage.setItem('role', response.role); // Stocke le rôle pour redirection
-        // localStorage.setItem('authToken', response.token);
-        localStorage.setItem('token', response.token); // AJOUT DU TOKEN
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userId', response.id); // Sauvegarde l'utilisateur dans localStorage
 
-        // Redirection en fonction du rôle
+
         if (response.role === 'ADMIN') {
           this.router.navigate(['/admin/dashboard']);
         } else {

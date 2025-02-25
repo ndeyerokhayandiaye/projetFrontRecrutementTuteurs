@@ -1,1 +1,50 @@
-<p>candidats-list works!</p>
+<div class="d-flex justify-content-between align-items-center search-container mt-4 ">
+ <div>
+
+ </div>
+
+  <div class="form-group">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      (ngModelChange)="onSearch()"
+      class="form-control search-input"
+      placeholder="Rechercher"
+    />
+  </div>
+</div>
+
+
+
+<!-- <div class="header">
+  <button mat-button class=" add-button" [routerLink]="'/admin/annonces/nouvelle'">Ajouter une Annonce</button>
+  <mat-form-field appearance="outline">
+    <mat-label>Rechercher une annonce</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex: offre d'emploi">
+  </mat-form-field>
+</div> -->
+
+
+
+
+<div>
+  <h2 class="mt-3">Liste des candidats</h2>
+  <table class="table-striped ">
+    <tr>
+      <th>Email</th>
+      <th>Nom</th>
+      <th>Actions</th>
+    </tr>
+    <tr *ngFor="let user of users">
+      <td>{{ user.firstName}}</td>
+      <td>{{ user.email }}</td>
+
+      <td>
+        <!-- <button class="edit" (click)="editUser(user)">Modifier</button> -->
+        <button class="delete" (click)="deleteUser(user.email)">Supprimer</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<mat-paginator class="mt-5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

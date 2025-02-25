@@ -1,1 +1,94 @@
-<p>annee-academique-list works!</p>
+<div class="form-container">
+  <div class="d-flex justify-content-between align-items-center search-container mt-4 ">
+    <button class="btn add-button" [routerLink]="'/admin/annees-academiques/nouvelle'" >
+       Ajouter une Année Académique
+    </button>
+
+    <div class="form-group">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearch()"
+        class="form-control search-input"
+        placeholder="Rechercher Ex: 2020-2021"
+      />
+    </div>
+  </div>
+
+  <h2 class="text-center mt-5 ">Liste des Années Académiques</h2>
+
+
+  <!-- Tableau des années académiques -->
+  <table class="table table-striped  mt-5">
+    <thead>
+      <tr>
+        <th>Année</th>
+        <th>Date de Début</th>
+        <th>Date de Fin</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let year of filteredAcademicYears">
+        <td>{{ year.yearName }}</td>
+        <td>{{ year.startDate |date:'dd MMMM yyyy' }}</td>
+        <td>{{ year.endDate | date:'dd MMMM yyyy' }}</td>
+        <td>
+          <button (click)="deleteAcademicYear(year.id)" class="btn btn-danger">Supprimer</button>
+          <button data-bs-toggle="modal" data-bs-target="#editAcademicYearModal"
+            class="btn modifier" (click)="openModal(year)">
+            Modifier
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Message de chargement ou d'erreur -->
+  <div *ngIf="loading">Chargement...</div>
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+</div>
+
+<mat-paginator class="mt-5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+
+<!-- Modal Bootstrap -->
+<div class="modal fade" id="editAcademicYearModal" tabindex="-1" aria-labelledby="editAcademicYearModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title mt-5" id="editAcademicYearModalLabel">Modifier l'année académique</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulaire -->
+        <form (ngSubmit)="modificationAcademicYear()">
+          <div class="mb-3">
+            <label for="yearName" class="form-label">Nom de l'année académique :</label>
+            <input id="yearName" [(ngModel)]="selectedYear.yearName" name="yearName" class="form-control" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="startDate" class="form-label">Date de début :</label>
+            <input id="startDate" [(ngModel)]="selectedYear.startDate" name="startDate" type="date" class="form-control" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="endDate" class="form-label">Date de fin :</label>
+            <input id="endDate" [(ngModel)]="selectedYear.endDate" name="endDate" type="date" class="form-control" required />
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn Sauvegarder">Sauvegarder</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+

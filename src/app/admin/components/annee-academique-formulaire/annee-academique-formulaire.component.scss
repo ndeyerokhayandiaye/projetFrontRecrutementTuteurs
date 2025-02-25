@@ -1,0 +1,77 @@
+.form-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input.form-control {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.btn {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+
+/* Message d'erreur */
+.error-message {
+  font-size: 12px;
+  color: red;
+  margin-top: 5px;
+}
+
+/* Style des champs invalides */
+input.form-control.ng-invalid.ng-touched {
+  border-color: red;
+}
+
+
+
+/* Ajout de la classe pour les champs invalides */
+.is-invalid {
+  border-color: red;
+}
+
+/* Message d'erreur */
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.error-message small {
+  display: block;
+}
