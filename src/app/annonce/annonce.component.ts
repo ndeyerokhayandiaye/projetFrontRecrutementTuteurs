@@ -17,6 +17,9 @@ import { AnnonceService } from '../admin/services/annonce.service';
 import * as bootstrap from 'bootstrap';
 import { LoginService } from '../services/login.service';
 import Swal from 'sweetalert2';
+import { HeaderComponent } from '../header/header.component';
+import { LoginComponent } from '../login/login.component';
+import { FooterComponent } from '../footer/footer.component';
 
 
 @Component({
@@ -37,7 +40,12 @@ import Swal from 'sweetalert2';
     MatSelectModule,
     MatOptionModule,
     HttpClientModule,
+    HeaderComponent,
+    LoginComponent,
+    RouterModule,
+    FooterComponent,
   ],
+
   templateUrl: './annonce.component.html',
   styleUrl: './annonce.component.scss'
 })
@@ -47,6 +55,8 @@ export class AnnonceComponent implements OnInit {
 
   annonceParPage = 6;
   pageActuelle = 1;
+
+  selectedAnnonce: any = null;
 
 
   postulerForm: FormGroup;
@@ -63,24 +73,35 @@ export class AnnonceComponent implements OnInit {
   ) {
     this.postulerForm = this.fb.group({
       applicationType: ['', Validators.required],
-      diplome: [null, Validators.required],
-      cv: [null, Validators.required],
-      lettreMotivation: [null, Validators.required],
+      diplome: [null],
+      cv: [null],
+      lettreMotivation: [null],
+    }, { validators: this.atLeastOneDocumentValidator });
+  }
 
-    });
+  atLeastOneDocumentValidator(group: FormGroup): { [key: string]: any } | null {
+    const diplome = group.get('diplome')?.value;
+    const cv = group.get('cv')?.value;
+    const lettreMotivation = group.get('lettreMotivation')?.value;
+
+    // Vérifier si au moins un document est fourni
+    if (!diplome && !cv && !lettreMotivation) {
+      return { 'atLeastOneDocumentRequired': true };
+    }
+
+    return null;
   }
 
 
 
   ngOnInit(): void {
     this.loadAnnonces();
-    this.isAuthenticated = this.loginService.isLoggedIn(); // Verifie si l'utilisateur est connecté
+    // this.isAuthenticated = this.loginService.isLoggedIn(); // Verifie si l'utilisateur est connecté
   }
 
   loadAnnonces() {
     this.annonceService.getAnnonces().subscribe({
       next: (data) => {
-        console.log("Données récupérées :", data);
         this.annonces = data;
         this.dataSource = data;
       },
@@ -96,6 +117,10 @@ export class AnnonceComponent implements OnInit {
     return this.annonces.slice(indexDebut, indexFin);
   }
 
+  openPostulerModal(annonce: any) {
+    this.selectedAnnonce = annonce;
+  }
+
   get pages(): number[] {
     const totalPages = Math.ceil(this.annonces.length / this.annonceParPage);
     return Array.from({ length: totalPages }, (_, index) => index + 1);
@@ -104,29 +129,36 @@ export class AnnonceComponent implements OnInit {
   get totalPages(): number {
     return Math.ceil(this.annonces.length / this.annonceParPage);
   }
-  
+
 
   toBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result!.toString().split(',')[1]);
+      reader.onload = () => {
+        // Nous gardons le préfixe data:application/pdf;base64, cette fois
+        resolve(reader.result!.toString());
+      };
       reader.onerror = error => reject(error);
     });
   }
+
 
   async submitPostulation() {
 
     if (!this.isAuthenticated) {
       Swal.fire("warning", "Vous devez être connecté pour postuler !", "warning");
-
-      this.router.navigate(['/login']);
+      window.location.href = "/login";
       return;
     }
 
     if (this.postulerForm.invalid) {
-      Swal.fire("error", "Veuillez remplir tous les champs !", "error");
 
+      if (this.postulerForm.errors?.['atLeastOneDocumentRequired']) {
+        Swal.fire("Erreur", "Veuillez fournir au moins un document (Diplôme, CV ou Lettre de motivation) !", "error");
+      } else {
+        Swal.fire("Erreur", "Veuillez remplir tous les champs obligatoires !", "error");
+      }
       return;
     }
 
@@ -146,7 +178,7 @@ export class AnnonceComponent implements OnInit {
         documents.push({
           base64Content: await this.toBase64(diplomeFile),
           originalFilename: diplomeFile.name,
-          documentType: "DIPLOME"
+          documentType: "DIPLOMA"
         });
       }
       if (cvFile) {
@@ -160,13 +192,13 @@ export class AnnonceComponent implements OnInit {
         documents.push({
           base64Content: await this.toBase64(lettreMotivationFile),
           originalFilename: lettreMotivationFile.name,
-          documentType: "LETTRE-MOTIVATION"
+          documentType: "MOTIVATION_LETTER"
         });
       }
 
       const payload = {
-        announcementId: "",
-        academicYearId: "",
+        announcementId: this.selectedAnnonce.id || "",  // Utiliser l'ID de l'annonce sélectionnée
+        academicYearId: this.selectedAnnonce.academicYearId || "",  // Utiliser l'academicYearId de l'annonce
         applicationType: applicationType.toUpperCase(),
         documents: documents,
 
@@ -174,7 +206,26 @@ export class AnnonceComponent implements OnInit {
 
       this.annonceService.postuler(payload).subscribe({
         next: response => {
-          Swal.fire("Succès", "Candidature envoyée avec succès !", "success");
+          Swal.fire({
+            title: "Succès",
+            text: "Candidature envoyée avec succès !",
+            icon: "success",
+            confirmButtonColor: "#FF6600"
+          }).then(() => {
+            // Ce code s'exécute après que l'utilisateur a cliqué sur "OK"
+            this.postulerForm.reset();
+            this.isSubmitting = false;
+            this.selectedAnnonce = null;
+            window.location.reload();
+            // Fermer le modal
+            // const modalElement = document.getElementById('postulerModal');
+            // if (modalElement) {
+            //   const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            //   if (modalInstance) {
+            //     modalInstance.hide();
+            //   }
+            // }
+          });
 
           this.postulerForm.reset();
           this.isSubmitting = false;

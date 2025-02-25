@@ -81,18 +81,21 @@ export class LoginComponent implements OnInit {
       next: (response) => {
         this.Alert("Connexion réussie !", "Bienvenue sur la plateforme", "success");
 
+        console.log('Réponse de connexion:', response);
+        
         // Sauvegarde du rôle et des infos utilisateur
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('email', response.email);
-        localStorage.setItem('role', response.role); // Stocke le rôle pour redirection
+        localStorage.setItem('role', response.role);
         localStorage.setItem('token', response.token);
-        localStorage.setItem('userId', response.id); // Sauvegarde l'utilisateur dans localStorage
+        localStorage.setItem('userConnect', JSON.stringify(response));
 
+        console.log('email:', localStorage.getItem('email'));
+        
 
         if (response.role === 'ADMIN') {
           this.router.navigate(['/admin/dashboard']);
         } else {
-          this.router.navigate(['/accueil']);
+          this.router.navigate(['/annonce']);
         }
 
         // Après connexion réussie, supprimer les informations d'inscription pour ne pas les pré-remplir plus tard

@@ -1,3 +1,51 @@
-.container-fluid{
-  
+.login-btn {
+    border-color: #FF6600;
+    background-color: #FF6600;
 }
+
+.color-me {
+    color: #FF6600 !important;
+    font-weight: bold;
+    text-decoration: underline;
+}
+.dropdown {
+    position: relative;
+  }
+  
+  .profile-btn {
+    display: block;
+    padding: 5px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    img {
+      border: 2px solid #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+  }
+  
+  .dropdown-menu {
+    min-width: 200px;
+    padding: 8px 0;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 8px;
+    
+    .dropdown-item {
+      padding: 8px 15px;
+      
+      i {
+        margin-right: 8px;
+        width: 20px;
+        text-align: center;
+      }
+      
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+    }
+  }

@@ -1,294 +1,123 @@
-<body>
-  <!-- Section Hero (Bannière principale) -->
-  <section class="hero">
-      <div class="hero-content">
-          <h2>Recrutez ou Devenez Tuteur sur Notre Plateforme</h2>
-          <p>Que vous soyez un tuteur qualifié ou un étudiant à la recherche d'aide, nous vous connectons pour un apprentissage réussi.</p>
-          <a href="#" class="cta-button">Commencer maintenant</a>
+<body class="container-fluid">
+  <app-header></app-header>
+
+  <div class="annonces-header text-center my-5">
+    <h2 class="fw-bold">Nos Dernières Annonces</h2>
+    <p class="text-muted">Découvrez les opportunités de tutorat disponibles à l'UNCHK</p>
+  </div>
+
+  <div class="container mb-5">
+    <div class="row justify-content-center">
+      <div *ngFor="let annonce of getAnnoncePage()" class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm hover-effect">
+          <div class="card-header text-white" style="background-color: #FF6600;">
+            <h5 class="card-title mb-0">{{ annonce.title }}</h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text">{{ annonce.description }}</p>
+            <div class="mb-2">
+              <span class="badge bg-light text-dark mb-2">
+                <i class="bi bi-calendar-event me-1"></i>
+                Publication: {{ annonce.publicationDate | date:'dd/MM/yyyy HH:mm' }}
+              </span>
+              <span class="badge bg-warning text-dark">
+                <i class="bi bi-alarm me-1"></i>
+                Clôture: {{ annonce.closingDate | date:'dd/MM/yyyy HH:mm' }}
+              </span>
+            </div>
+          </div>
+          <div class="card-footer bg-white border-0 text-center">
+            <button class="btn  w-75" data-bs-toggle="modal" data-bs-target="#postulerModal"
+              style="color: #FF6600; border-color: #FF6600;" (click)="openPostulerModal(annonce)">
+              <i class="bi bi-send me-2"></i>Postuler
+            </button>
+          </div>
+        </div>
       </div>
-  </section>
-
-  <!-- Section Fonctionnalités -->
-  <!-- <section class="features">
-      <div class="feature">
-          <h3>Pour les Tuteurs</h3>
-          <p>Proposez vos services, gérez vos disponibilités et trouvez des étudiants motivés.</p>
-          <a href="#" class="feature-link">Devenir tuteur</a>
-      </div>
-      <div class="feature">
-          <h3>Pour les Étudiants</h3>
-          <p>Trouvez le tuteur idéal pour vos besoins, que ce soit en mathématiques, langues, sciences, etc.</p>
-          <a href="#" class="feature-link">Trouver un tuteur</a>
-      </div>
-      <div class="feature">
-          <h3>Support 24/7</h3>
-          <p>Notre équipe est là pour vous aider à tout moment. Posez-nous vos questions !</p>
-          <a href="#" class="feature-link">Contactez-nous</a>
-      </div>
-  </section> -->
-
-
-
-
-  <h2 class="text-center mt-5"> Nos Dernières Annonces</h2>
-
-  <section class="annonces  ">
-    <div *ngFor="let annonce of annonces" class="annonce-card ">
-      <h3>{{ annonce.title }}</h3>
-      <p>{{ annonce.description }}</p>
-      <p><strong>Date de publication :</strong> {{ annonce.publicationDate | date:'dd/MM/yyyy' }}</p>
-      <p><strong>Date de fermeture :</strong> {{ annonce.closingDate | date:'dd/MM/yyyy' }}</p>
-      <a class="cta-button" data-bs-toggle="modal" data-bs-target="#postulerModal">Postuler</a>
-
     </div>
-  </section>
+  </div>
 
-
-     <!-- pagination -->
-<div class="d-flex flex-wrap justify-content-center my-5" >
-  <button class="btn_pagination pagiColor me-2" [disabled]="pageActuelle === 1" (click)="pageActuelle = pageActuelle - 1">
-    Précédent
-  </button>
-  <button class="btn_pagination pagiColor_num  ms-2 " *ngFor="let page of pages" (click)="pageActuelle = page">
-    {{ page }}
-  </button>
-  <button class="btn_pagination pagiColor  ms-2 " [disabled]="pageActuelle === totalPages" (click)="pageActuelle = pageActuelle + 1">
-    Suivant
-  </button>
-</div>
-<!-- fin pagination -->
-
-
-
-
- <!-- Section Témoignages-->
-  <section class="testimonials mt-5">
-
-      <h2>Ce que disent nos utilisateurs</h2>
-      <div class="testimonial">
-          <p>"Grâce à cette plateforme, j'ai trouvé un tuteur génial pour mes cours de mathématiques. Je recommande !"</p>
-          <p class="author">- Marie, Étudiante</p>
-      </div>
-      <div class="testimonial">
-          <p>"En tant que tuteur, j'ai pu trouver des étudiants motivés et organiser mes horaires facilement."</p>
-          <p class="author">- Jean, Tuteur</p>
-      </div>
-  </section>
-
+  <!-- Pagination améliorée -->
+  <nav aria-label="Navigation des annonces" class="my-5">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="pageActuelle === 1">
+        <button class="page-link" (click)="pageActuelle = pageActuelle - 1" aria-label="Précédent">
+          <span aria-hidden="true">&laquo;</span>
+        </button>
+      </li>
+      <li class="page-item" *ngFor="let page of pages" [class.active]="pageActuelle === page">
+        <button class="page-link" (click)="pageActuelle = page">{{ page }}</button>
+      </li>
+      <li class="page-item" [class.disabled]="pageActuelle === totalPages">
+        <button class="page-link" (click)="pageActuelle = pageActuelle + 1" aria-label="Suivant">
+          <span aria-hidden="true">&raquo;</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
 
 </body>
+<!-- Footer -->
+<app-footer></app-footer>
 
-
-
-
-
-
-<!-- Modal -->
-<div class="modal fade" id="postulerModal" tabindex="-1" aria-labelledby="postulerModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<!-- Modal de candidature amélioré -->
+<div class="modal fade transparent-backdrop" id="postulerModal" tabindex="-1" aria-labelledby="postulerModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header text-white" style="background-color: #FF6600;">
         <h5 class="modal-title" id="postulerModalLabel">Postuler à l'annonce</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="postulerForm" (ngSubmit)="submitPostulation()">
-          <div class="mb-3">
-            <label class="form-label">Type d'Application</label>
+          <div class="mb-4">
+            <label class="form-label fw-bold">Type de candidature</label>
             <select class="form-select" formControlName="applicationType">
+              <option value="" disabled selected>Sélectionnez le type</option>
               <option value="NEW">Nouvelle candidature</option>
-              <option value="RENEWEL">Renouvellement</option>
+              <option value="RENEWAL">Renouvellement</option>
             </select>
+            <div class="form-text">Indiquez s'il s'agit d'une nouvelle candidature ou d'un renouvellement.</div>
           </div>
 
-          <div class="mb-3">
-            <label class="form-label">Diplôme (PDF uniquement)</label>
-            <input type="file" class="form-control" (change)="onFileChange($event, 'diplome')">
+          <div class="mb-4">
+            <label class="form-label fw-bold">Diplôme <span class="text-muted">(PDF uniquement)</span></label>
+            <div class="input-group">
+              <input type="file" class="form-control" (change)="onFileChange($event, 'diplome')">
+              <span class="input-group-text"><i class="bi bi-file-earmark-pdf" style="color: #FF6600;"></i></span>
+            </div>
           </div>
 
-          <div class="mb-3">
-            <label class="form-label">CV (PDF uniquement)</label>
-            <input type="file" class="form-control" (change)="onFileChange($event, 'cv')">
+          <div class="mb-4">
+            <label class="form-label fw-bold">CV <span class="text-muted">(PDF uniquement)</span></label>
+            <div class="input-group">
+              <input type="file" class="form-control" (change)="onFileChange($event, 'cv')">
+              <span class="input-group-text"><i class="bi bi-file-earmark-person" style="color: #FF6600;"></i></span>
+            </div>
           </div>
 
-          <div class="mb-3">
-            <label class="form-label">Lettre de motivation (PDF uniquement)</label>
-            <input type="file" class="form-control" (change)="onFileChange($event, 'lettreMotivation')">
+          <div class="mb-4">
+            <label class="form-label fw-bold">Lettre de motivation <span class="text-muted">(PDF
+                uniquement)</span></label>
+            <div class="input-group">
+              <input type="file" class="form-control" (change)="onFileChange($event, 'lettreMotivation')">
+              <span class="input-group-text"><i class="bi bi-file-earmark-text" style="color: #FF6600;"></i></span>
+            </div>
+          </div>
+          <div class="text-muted mb-3">
+            <small>* Au moins un document est requis pour la candidature.</small>
           </div>
 
-          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
-            {{ isSubmitting ? 'Envoi en cours...' : 'Envoyer la candidature' }}
-          </button>
+          <div class="d-grid">
+            <button type="submit" class="btn text-white" style="background-color: #FF6600;border-color: #FF6600;"
+              [disabled]="isSubmitting || postulerForm.invalid">
+              <span *ngIf="isSubmitting" class=" me-2" role="status" aria-hidden="true"></span>
+              {{ isSubmitting ? 'Envoi en cours...' : 'Envoyer la candidature' }}
+            </button>
+          </div>
         </form>
       </div>
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <body>
-
-    <section class="hero">
-        <div class="hero-content">
-            <h2>Découvrez nos offres exclusives</h2>
-            <p>Ne manquez pas cette opportunité incroyable. Inscrivez-vous dès maintenant !</p>
-            <a href="#" class="cta-button">En savoir plus</a>
-        </div>
-    </section>
-    <section class="features">
-        <div class="feature">
-            <h3>Offres Exceptionnelles</h3>
-            <p>Des réductions incroyables disponibles pour une durée limitée.</p>
-        </div>
-        <div class="feature">
-            <h3>Qualité Garantie</h3>
-            <p>Nos produits sont soigneusement sélectionnés pour vous offrir le meilleur.</p>
-        </div>
-        <div class="feature">
-            <h3>Support 24/7</h3>
-            <p>Une équipe dédiée pour répondre à toutes vos questions.</p>
-        </div>
-    </section>
-    <footer>
-        <p>&copy; 2025 Annonce Spéciale. Tous droits réservés.</p>
-    </footer>
-</body> -->
-
-
-
-
-
-
-
-<!-- <body>
-    <div class="container">
-        <h1>Annonce Spéciale</h1>
-        <p>Ne manquez pas cette opportunité incroyable. Inscrivez-vous dès maintenant pour profiter de nos offres exclusives !</p>
-        <a href="#" class="cta-button">En savoir plus</a>
-    </div>
-</body>
-</html> -->
-
-
-
-
-
-
-<!-- <body>
-    <div class="announcement-container">
-        <img src="/assets/images/background.jpg" class="announcement-img" alt="Annonce Image">
-        <h1>🚀 Conférence Tech 2025</h1>
-        <p><strong>📅 Date :</strong> 12 Mars 2025 | <strong>📍 Lieu :</strong> Paris, France</p>
-        <p>Rejoignez-nous pour la conférence tech incontournable de l'année ! Découvrez les dernières tendances en matière de technologie, d'intelligence artificielle et d'innovation. Des experts renommés partageront leurs expériences et leurs connaissances pour vous inspirer.</p>
-        <p><strong>Intervenants :</strong> Jean Dupont, Marie Curie, Elon Musk</p>
-        <p><strong>Tarif :</strong> Gratuit pour les étudiants, 50€ pour les professionnels</p>
-        <a href="#" class="btn">S'inscrire maintenant</a>
-    </div>
-</body>
- -->

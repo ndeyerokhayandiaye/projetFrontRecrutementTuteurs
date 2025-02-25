@@ -1,26 +1,64 @@
 <app-header></app-header>
+
 <body>
 
-      <!-- Carousel Start -->
-      <div class="container-fluid p-0 pb-5 mb-5">
-        <div id="header-carousel" class="carousel slide carousel-fade" data-ride="carousel">
+    <!-- Carousel Start -->
+    <div class="container-fluid p-0 pb-5 mb-5">
+        <div id="header-carousel" class="carousel slide carousel-fade">
             <ol class="carousel-indicators">
-                <li data-target="#header-carousel" data-slide-to="0" class="active"></li>
-                <li data-target="#header-carousel" data-slide-to="1"></li>
-                <li data-target="#header-carousel" data-slide-to="2"></li>
+                <li data-bs-target="#header-carousel" data-bs-slide-to="0" class="active"></li>
+                <li data-bs-target="#header-carousel" data-bs-slide-to="1"></li>
+                <li data-bs-target="#header-carousel" data-bs-slide-to="2"></li>
             </ol>
             <div class="carousel-inner">
-                <div class="carousel-item active" style="min-height: 300px;">
-                    <img class="position-relative w-100" src="/assets/images/image-accueil.jpg" style="min-height: 300px; object-fit: cover;">
+                <div class="carousel-item active" style="max-height: 800px;">
+                    <img class="position-relative w-100" src="/assets/images/image-accueil.jpg"
+                        style="object-fit: cover;">
                     <div class="carousel-caption d-flex align-items-center justify-content-center">
-                        <div class="p-5" style="width: 100%; max-width: 900px;">
-                            <h5 class="text-white text-uppercase mb-md-3">meilleur service</h5>
-                            <h1 class="display-3 text-white mb-md-4">Devenez tuteur sur notre plateforme!</h1>
-                            <a href="" class="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold mt-2">Voir plus</a>
+                        <div class="p-5 text-center" style="width: 100%; ">
+                            <h1 class="text-white mb-md-4">Bienvenue sur la plateforme de recrutement de l'UNCHK</h1>
+                            <h5 class="text-white mb-md-3">Votre carriere de tuteur demarre</h5>
+                            <a href="/annonce"
+                                class="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold mt-2">Maintenant</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ajoutez d'autres éléments carousel-item ici -->
+                <div class="carousel-item" style="max-height: 800px;">
+                    <img class="position-relative w-100" src="/assets/images/image-accueil-1.jpg"
+                        style=" object-fit: cover;">
+                    <div class="carousel-caption d-flex align-items-center justify-content-center">
+                        <div class="p-5 text-center" style="width: 100%; ">
+                            <h1 class="text-white mb-md-4">Devenez tuteur dès aujourd'hui</h1>
+                            <h5 class="text-white mb-md-3">Partagez vos connaissances</h5>
+                            <a href="/annonce"
+                                class="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold mt-2">Postuler</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item" style="max-height: 800px;">
+                    <img class="position-relative w-100" src="/assets/images/image-accueil-2.jpg"
+                        style=" object-fit: cover;">
+                    <div class="carousel-caption d-flex align-items-center justify-content-center">
+                        <div class="p-5 text-center" style="width: 100%; ">
+                            <h1 class="text-white mb-md-4">Opportunités de tutorat</h1>
+                            <h5 class="text-white mb-md-3">Des avantages exclusifs vous attendent</h5>
+                            <a href="/annonce"
+                                class="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold mt-2">Découvrir</a>
                         </div>
                     </div>
                 </div>
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Précédent</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Suivant</span>
+            </button>
         </div>
     </div>
     <!-- Carousel End -->
@@ -30,22 +68,29 @@
     <div class="container-fluid py-5">
         <div class="container py-5">
             <div class="row align-items-center">
-                <div class="col-lg-5">
-                    <img class="img-fluid rounded mb-4 mb-lg-0 w-100 h-100" src="/assets/images/background.jpg" alt="" >
+                <div class="col-lg-5" data-animation="animate__fadeInLeft">
+                    <img class="img-fluid rounded mb-4 mb-lg-0 w-100 h-100" src="/assets/images/background.jpg" alt="">
                 </div>
-                <div class="col-lg-7">
+                <div class="col-lg-7" data-animation="animate__fadeInRight">
                     <div class="text-left mb-4">
-                        <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Apropos</h5>
-                        <h1>Une méthode innovante pour trouver le tuteur idéal </h1>
+                        <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">À propos</h5>
+                        <h1>Rejoignez l'équipe pédagogique de l'UNCHK</h1>
                     </div>
-                    <p>Vous êtes un expert dans votre domaine et vous souhaitez partager vos connaissances ? Notre plateforme vous offre l'opportunité de devenir tuteur et de guider les apprenants vers la réussite. Que vous soyez disponible à temps partiel ou à temps plein, nous vous aidons à trouver des étudiants qui ont besoin de votre expertise.</p>
-                    <h6>Pourquoi devenir tuteur chez nous ?</h6>
+                    <p>Vous êtes passionné par la transmission du savoir et expert dans votre domaine académique ?
+                        L'Université Numérique Cheikh Hamidou Kane (UNCHK) recherche des tuteurs qualifiés pour
+                        accompagner nos étudiants vers l'excellence. Notre plateforme de recrutement simplifie
+                        votre candidature et vous permet de valoriser vos compétences dans un environnement
+                        universitaire stimulant.</p>
+                    <h6>Avantages de rejoindre notre corps de tuteurs :</h6>
                     <ul>
-                      <li>Une flexibilité totale dans vos horaires</li>
-                      <li>L'opportunité de partager votre passion et de faire une réelle différence</li>
-                      <li>Une plateforme conviviale et facile à utiliser pour gérer vos sessions de tutorat</li>
-                  </ul>
-                    <a href="" class="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold mt-2">Nous Rejoindre</a>
+                        <li>Intégration à une institution académique reconnue</li>
+                        <li>Rémunération attractive et valorisation de votre expertise</li>
+                        <li>Horaires adaptables à vos disponibilités</li>
+                        <li>Opportunités de développement professionnel</li>
+                        <li>Contribution active à la formation de la nouvelle génération</li>
+                    </ul>
+                    <a href="/annonce" class="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold mt-2">Postuler
+                        maintenant</a>
                 </div>
             </div>
         </div>
@@ -53,162 +98,72 @@
     <!-- About End -->
 
 
-    <!-- Courses Start -->
     <div class="container-fluid py-5">
         <div class="container py-5">
-            <div class="text-center mb-5">
-                <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Cours</h5>
-                <h1>Cours populaires</h1>
+            <div class="text-center mb-5" data-animation="animate__fadeInDown">
+                <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Opportunités</h5>
+                <h1>Postes de tutorat disponibles</h1>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="rounded overflow-hidden mb-2">
-                        <img class="img-fluid" src="img/course-1.jpg" alt="">
-                        <div class="bg-secondary p-4">
-                            <div class="d-flex justify-content-between mb-3">
-                                <small class="m-0"><i class="fa fa-users text-primary mr-2"></i>25 Etudiants</small>
-                                <small class="m-0"><i class="far fa-clock text-primary mr-2"></i>01h 30m</small>
+                <div class="col-lg-4 col-md-6 mb-4" data-animation="animate__fadeInUp" data-animation-delay="100">
+                    <div class="rounded overflow-hidden mb-2 position-relative">
+                        <!-- Image en arrière-plan -->
+                        <div class="position-relative"
+                            style="height: 250px; background: url('/assets/images/annonce-1.png') no-repeat center center; background-size: cover;">
+
+                            <div class="position-absolute w-100 h-100" style="background-color: rgba(0, 0, 0, 0.2);">
                             </div>
-                            <a class="h5" href="">Web design & development cours Debutant</a>
-                            <div class="border-top mt-4 pt-4">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="m-0"><i class="fa fa-star text-primary mr-2"></i>4.5 <small>(250)</small></h6>
-                                    <h5 class="m-0">$99</h5>
-                                </div>
+
+                            <div
+                                class="position-absolute text-white p-4 w-100 h-100 d-flex flex-column justify-content-end">
+                                <a class="h5 text-white" href="">Tuteur en Développement Web (HTML, CSS, JavaScript)</a>
                             </div>
                         </div>
+
                     </div>
+
                 </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="rounded overflow-hidden mb-2">
-                        <img class="img-fluid" src="img/course-2.jpg" alt="">
-                        <div class="bg-secondary p-4">
-                            <div class="d-flex justify-content-between mb-3">
-                                <small class="m-0"><i class="fa fa-users text-primary mr-2"></i>25 Etudiants</small>
-                                <small class="m-0"><i class="far fa-clock text-primary mr-2"></i>01h 30m</small>
+                <div class="col-lg-4 col-md-6 mb-4" data-animation="animate__fadeInUp" data-animation-delay="300">
+                    <div class="rounded overflow-hidden mb-2 position-relative">
+                        <!-- Image en arrière-plan -->
+                        <div class="position-relative"
+                            style="height: 250px; background: url('/assets/images/annonce-2.png') no-repeat center center; background-size: cover;">
+
+                            <div class="position-absolute w-100 h-100" style="background-color: rgba(0, 0, 0, 0.2);">
                             </div>
-                            <a class="h5" href="">Web design & development cours pour debutant</a>
-                            <div class="border-top mt-4 pt-4">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="m-0"><i class="fa fa-star text-primary mr-2"></i>4.5 <small>(250)</small></h6>
-                                    <h5 class="m-0">$99</h5>
-                                </div>
+
+                            <div
+                                class="position-absolute text-white p-4 w-100 h-100 d-flex flex-column justify-content-end">
+                                <a class="h5 text-white" href="">Tuteur en Mathématiques pour L1 et L2</a>
                             </div>
                         </div>
+
                     </div>
+
                 </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="rounded overflow-hidden mb-2">
-                        <img class="img-fluid" src="img/course-3.jpg" alt="">
-                        <div class="bg-secondary p-4">
-                            <div class="d-flex justify-content-between mb-3">
-                                <small class="m-0"><i class="fa fa-users text-primary mr-2"></i>25 Etudiants</small>
-                                <small class="m-0"><i class="far fa-clock text-primary mr-2"></i>01h 30m</small>
+                <div class="col-lg-4 col-md-6 mb-4" data-animation="animate__fadeInUp" data-animation-delay="500">
+                    <div class="rounded overflow-hidden mb-2 position-relative">
+                        <!-- Image en arrière-plan -->
+                        <div class="position-relative"
+                            style="height: 250px; background: url('/assets/images/annonce-3.png') no-repeat center center; background-size: cover;">
+
+                            <div class="position-absolute w-100 h-100" style="background-color: rgba(0, 0, 0, 0.2);">
                             </div>
-                            <a class="h5" href="">Web design & development cours pour debutant</a>
-                            <div class="border-top mt-4 pt-4">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="m-0"><i class="fa fa-star text-primary mr-2"></i>4.5 <small>(250)</small></h6>
-                                    <h5 class="m-0">$99</h5>
-                                </div>
+
+                            <div
+                                class="position-absolute text-white p-4 w-100 h-100 d-flex flex-column justify-content-end">
+                                <a class="h5 text-white" href="">Tuteur en Anglais académique et scientifique</a>
                             </div>
                         </div>
+
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="rounded overflow-hidden mb-2">
-                        <img class="img-fluid" src="img/course-4.jpg" alt="">
-                        <div class="bg-secondary p-4">
-                            <div class="d-flex justify-content-between mb-3">
-                                <small class="m-0"><i class="fa fa-users text-primary mr-2"></i>25 Etudiants</small>
-                                <small class="m-0"><i class="far fa-clock text-primary mr-2"></i>01h 30m</small>
-                            </div>
-                            <a class="h5" href="">Web design & development cours pour debutant</a>
-                            <div class="border-top mt-4 pt-4">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="m-0"><i class="fa fa-star text-primary mr-2"></i>4.5 <small>(250)</small></h6>
-                                    <h5 class="m-0">$99</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="rounded overflow-hidden mb-2">
-                        <img class="img-fluid" src="img/course-5.jpg" alt="">
-                        <div class="bg-secondary p-4">
-                            <div class="d-flex justify-content-between mb-3">
-                                <small class="m-0"><i class="fa fa-users text-primary mr-2"></i>25 Etudiants</small>
-                                <small class="m-0"><i class="far fa-clock text-primary mr-2"></i>01h 30m</small>
-                            </div>
-                            <a class="h5" href="">Web design & development cours pour debutant</a>
-                            <div class="border-top mt-4 pt-4">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="m-0"><i class="fa fa-star text-primary mr-2"></i>4.5 <small>(250)</small></h6>
-                                    <h5 class="m-0">$99</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="rounded overflow-hidden mb-2">
-                        <img class="img-fluid" src="img/course-6.jpg" alt="">
-                        <div class="bg-secondary p-4">
-                            <div class="d-flex justify-content-between mb-3">
-                                <small class="m-0"><i class="fa fa-users text-primary mr-2"></i>25 Etudiants</small>
-                                <small class="m-0"><i class="far fa-clock text-primary mr-2"></i>01h 30m</small>
-                            </div>
-                            <a class="h5" href="">Web design & development cours pour debutant</a>
-                            <div class="border-top mt-4 pt-4">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="m-0"><i class="fa fa-star text-primary mr-2"></i>4.5 <small>(250)</small></h6>
-                                    <h5 class="m-0">$99</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-    <!-- Courses End -->
 
-
-    <!-- Registration Start -->
-    <div class="container-fluid bg-registration py-5" style="margin: 90px 0;">
-        <div class="container py-5">
-            <div class="row align-items-center">
-                <div class="col-lg-7 mb-5 mb-lg-0">
-                    <div class="mb-4">
-                        <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Besoin d'enseigner</h5>
-                        <h1 class="text-white">Profitez d'une prime exclusive de 30 % en tant que nouveau tuteur !</h1>
-                    </div>
-                    <p class="text-white">
-                      Inscrivez-vous dès aujourd'hui et recevez une prime de bienvenue de 30 % sur vos premiers gains. Une opportunité idéale pour débuter votre aventure de tutorat avec un avantage financier supplémentaire ! 🚀</p>
-                    <ul class="list-inline text-white m-0">
-                        <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>Bonus attractif : Profitez d'une prime de 30 % pour bien démarrer.</li>
-                        <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>Flexibilité totale : Enseignez selon votre emploi du temps.</li>
-                        <li class="py-2"><i class="fa fa-check text-primary mr-3"></i>Opportunités variées : Trouvez facilement des apprenants à accompagner.</li>
-                    </ul>
-                </div>
-                <div class="col-lg-5">
-                    <div class="card border-0">
-                        <div class="card-header bg-light text-center p-4">
-                            <h1 class="m-0">S'inscrire maintenant</h1>
-                        </div>
-                        <div class="card-body rounded-bottom bg-primary p-5">
-                            <form>
-                                <div>
-                                    <button class="btn btn-dark btn-block border-0 py-3 fw-bold" routerLink="/register" type="submit">S'inscrire</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Registration End -->
+    <!-- Footer -->
+    <app-footer></app-footer>
 
 </body>

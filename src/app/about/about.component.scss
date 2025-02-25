@@ -1,0 +1,100 @@
+// Styles pour la page À propos
+$primary: #FF6600;
+$secondary: #F2F1F8;
+$light: #FFFFFF;
+$dark: #44425A;
+
+.team-social {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .5s;
+    opacity: 0;
+}
+
+.team-item:hover .team-social {
+    opacity: 1;
+}
+
+.testimonial-carousel .owl-dots {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.testimonial-carousel .owl-dot {
+    position: relative;
+    display: inline-block;
+    margin: 0 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #dddddd;
+    
+    &.active {
+        background: var(--primary);
+    }
+}
+
+// Animations pour les sections lors du scroll
+.fadeInUp {
+    animation: fadeInUp 1s ease-out forwards;
+    visibility: hidden;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+        visibility: visible;
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+    }
+}
+
+// Style pour la bannière
+.bg-primary {
+    position: relative;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.2);
+    }
+}
+
+// Style pour les chiffres clés
+[data-toggle="counter-up"] {
+    font-weight: bold;
+}
+
+/* Importer Animate.css */
+@import 'animate.css';
+
+/* Masquer les éléments avant l'animation */
+[data-animation] {
+  opacity: 0;
+}
+
+/* Rendre visible lorsque l'animation est déclenchée */
+.animate__animated {
+  opacity: 1;
+}
+
+/* Délais d'animation personnalisés */
+@for $i from 1 through 10 {
+  .animate__animated[data-animation-delay="#{$i * 100}"] {
+    animation-delay: #{$i * 0.1}s;
+  }
+}
