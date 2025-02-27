@@ -17,33 +17,36 @@ import * as bootstrap from 'bootstrap';
 import { AnnonceService } from '../../../services/annonce.service';
 import { AcademicYear } from '../annee-academique-list/annee-academique-list.component';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { baseUrl } from '../../../services/url';
 
 @Component({
   selector: 'app-annonce-list',
   standalone: true,
   imports: [
-   CommonModule,
-      ReactiveFormsModule,
-      MatButtonModule,
-      MatToolbarModule,
-      MatCardModule,
-      MatIconModule,
-      MatFormFieldModule,
-      MatInputModule,
-      MatPaginatorModule,
-      MatTableModule,
-      RouterModule,
-      MatSelectModule,
-      MatOptionModule,
-      HttpClientModule,
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatCardModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatPaginatorModule,
+    MatTableModule,
+    RouterModule,
+    MatSelectModule,
+    MatOptionModule,
+    HttpClientModule,
   ],
   templateUrl: './annonce-list.component.html',
   styleUrl: './annonce-list.component.scss'
 })
 
 export class AnnonceListComponent {
+  isFormOpen: boolean = false;
   annonces: any[] = [];
-  displayedColumns: string[] = ['title', 'id', 'publicationDate', 'closingDate' ,'actions'];
+  displayedColumns: string[] = ['title', 'id', 'publicationDate', 'closingDate', 'actions'];
+  private modalInstance: any;
 
   dataSource: any[] = [];
   annonceForm!: FormGroup;
@@ -53,10 +56,10 @@ export class AnnonceListComponent {
 
   constructor(
     private annonceService: AnnonceService,
-    private academicYearService:  AnnonceService,
+    private academicYearService: AnnonceService,
     private fb: FormBuilder,
     private http: HttpClient
-  ) {} 
+  ) { }
 
 
   ngOnInit(): void {
@@ -99,6 +102,7 @@ export class AnnonceListComponent {
 
   editAnnonce(annonce: any) {
     this.selectedAnnonce = annonce;
+    this.isFormOpen = true;
     this.annonceForm.patchValue({
       title: annonce.title,
       description: annonce.description,
@@ -109,8 +113,9 @@ export class AnnonceListComponent {
     });
 
     setTimeout(() => {
-      const modal = new bootstrap.Modal(document.getElementById('annonceModal')!);
-      modal.show();
+      // Stocker l'instance du modal
+      this.modalInstance = new bootstrap.Modal(document.getElementById('annonceModal')!);
+      this.modalInstance.show();
     }, 100);
   }
 
@@ -139,29 +144,66 @@ export class AnnonceListComponent {
       'Content-Type': 'application/json'
     });
 
-    this.http.put(`http://localhost:8080/api/job-announcements/${updatedAnnonce.id}`, updatedAnnonce, { headers })
+    this.http.put(`${baseUrl}/job-announcements/${updatedAnnonce.id}`, updatedAnnonce, { headers })
       .subscribe(
         (response) => {
           console.log("Annonce mise à jour avec succès !", response);
-          Swal.fire('Succès', 'Annonce modifiée avec succès', 'success');
+          Swal.fire('Succès', 'Annonce modifiée avec succès', 'success').then(() => {
+            this.closeModal();
+            this.closeModal();
+            this.loadAnnonces();
+            this.closeModal();
+          }
+          );
           this.loadAnnonces();
           this.closeModal();
         },
         (error: any) => {
           console.error("Erreur lors de la mise à jour :", error);
-          Swal.fire('Erreur', 'Échec de la modification', 'error');
+          Swal.fire('Erreur', 'Échec de la modification', 'error').then(() => {
+            this.closeModal();
+            this.closeModal();
+            this.closeModal();
+            this.loadAnnonces();
+            this.closeModal();
+
+          });
         }
       );
   }
 
   closeModal() {
     this.selectedAnnonce = null;
+    this.isFormOpen = false;
     this.annonceForm.reset();
-    const modal = document.getElementById('annonceModal');
-    if (modal) {
-      (modal as any).classList.remove('show');
-      document.body.classList.remove('modal-open');
+  
+    // Utiliser l'instance stockée pour fermer le modal
+    if (this.modalInstance) {
+      this.modalInstance.hide();
+      this.modalInstance = null;
     }
+  
+    // Nettoyage supplémentaire
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+    
+    // Supprimer le backdrop manuellement si nécessaire
+    const backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+      backdrop.remove();
+    }
+  }
+
+
+  showFullDescription(annonce: any) {
+    this.selectedAnnonce = annonce;
+
+    // Utiliser setTimeout pour s'assurer que le modal est correctement initialisé
+    setTimeout(() => {
+      const modal = new bootstrap.Modal(document.getElementById('descriptionModal')!);
+      modal.show();
+    }, 100);
   }
 
   applyFilter(event: Event) {
