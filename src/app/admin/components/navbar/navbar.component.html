@@ -1,12 +1,13 @@
 <nav class="navbar ">
   <!-- Bouton menu burger -->
-  <button class="navbar-toggler" (click)="toggleSidebar()">
-    <span class="navbar-toggler-icon"></span>
+  <button class="navbar-toggler " (click)="toggleSidebar()">
+    <span class="navbar-toggler-icon text-white"></span>
   </button>
 
   <!-- Profil à droite -->
   <div class="navbar-profile">
-    <img src="https://via.placeholder.com/40" alt="Profil" class="profile-image">
-    <span class="profile-name">Admin</span>
+    <a href="/dashboard/admin-profil" class="profile-name"><img [src]="userAvatar" alt="Profil" class="profile-image"
+        (error)="onImageError($event)">
+    </a>
   </div>
 </nav>

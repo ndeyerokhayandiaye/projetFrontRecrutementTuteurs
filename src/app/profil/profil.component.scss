@@ -1,41 +1,89 @@
-.profile-container {
-  max-width: 500px;
-  margin: auto;
-  text-align: center;
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-pic-container {
+  position: relative;
 }
 
 .profile-card {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  height: 100%;
 }
 
-.profile-pic {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-input {
-  width: 100%;
-  padding: 8px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-button {
-  background: #007bff;
+.status-accepted {
+  background-color: #28a745;
   color: white;
-  border: none;
-  padding: 10px;
-  margin-top: 10px;
-  cursor: pointer;
-  border-radius: 5px;
 }
 
-button:hover {
-  background: #0056b3;
+.status-rejected {
+  background-color: #dc3545;
+  color: white;
+}
+
+.status-pending {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.status-canceled {
+  background-color: #6c757d;
+  color: white;
+}
+
+// Style pour les documents
+.dropdown-item {
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+// Style pour les cellules de tableau avec titre tronqué
+.title-cell {
+  max-width: 200px;
+  position: relative;
+  
+  .btn-link {
+    color: #FF6600;
+    
+    &:hover {
+      color: darken(#FF6600, 10%);
+    }
+  }
+}
+
+// Styles pour le modal
+.modal-header {
+  border-bottom: 0;
+}
+
+.modal-footer {
+  border-top: 0;
+}
+
+.list-group-item {
+  border-left: 0;
+  border-right: 0;
+  
+  &:first-child {
+    border-top: 0;
+  }
+  
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+// Animation pour le modal
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out;
+  transform: translate(0, -50px);
+}
+
+.modal.show .modal-dialog {
+  transform: none;
 }

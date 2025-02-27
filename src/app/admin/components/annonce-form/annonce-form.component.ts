@@ -9,7 +9,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AnnonceService } from '../../services/annonce.service';
+import { AnnonceService } from '../../../services/annonce.service';
 import { Router, RouterModule } from '@angular/router';
 import { AcademicYear } from '../annee-academique-list/annee-academique-list.component';
 import { MatSelectModule } from '@angular/material/select';

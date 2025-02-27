@@ -13,7 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterModule } from '@angular/router';
-import { AnnonceService } from '../admin/services/annonce.service';
+import { AnnonceService } from '../services/annonce.service';
 import * as bootstrap from 'bootstrap';
 import { LoginService } from '../services/login.service';
 import Swal from 'sweetalert2';
@@ -61,9 +61,7 @@ export class AnnonceComponent implements OnInit {
 
   postulerForm: FormGroup;
   isSubmitting = false;
-  isAuthenticated = false; // Stocke l'état de connexion
-  // selectedFiles: { [key: string]: File } = {};
-
+  isAuthenticated = false;
   constructor(
     private fb: FormBuilder,
     private annonceService: AnnonceService,
@@ -96,14 +94,33 @@ export class AnnonceComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAnnonces();
-    // this.isAuthenticated = this.loginService.isLoggedIn(); // Verifie si l'utilisateur est connecté
+    this.isAuthenticated = this.loginService.isLoggedIn();
+
+    // Configurer l'écouteur d'événement pour le modal une seule fois
+    const modalElement = document.getElementById('postulerModal');
+    if (modalElement) {
+      modalElement.addEventListener('hidden.bs.modal', this.handleModalClose.bind(this));
+    }
+  }
+  handleModalClose() {
+    this.postulerForm.reset();
+    this.resetFileInputs();
+    this.selectedAnnonce = null;
+  }
+
+  ngOnDestroy() {
+    const modalElement = document.getElementById('postulerModal');
+    if (modalElement) {
+      modalElement.removeEventListener('hidden.bs.modal', this.handleModalClose.bind(this));
+    }
   }
 
   loadAnnonces() {
     this.annonceService.getAnnonces().subscribe({
       next: (data) => {
-        this.annonces = data;
-        this.dataSource = data;
+        // Filtrer uniquement les annonces avec status "PUBLISHED"
+        this.annonces = data.filter(annonce => annonce.status === 'PUBLISHED');
+        this.dataSource = this.annonces;
       },
       error: (error) => {
         console.error('Erreur lors du chargement des annonces', error);
@@ -118,8 +135,23 @@ export class AnnonceComponent implements OnInit {
   }
 
   openPostulerModal(annonce: any) {
+    console.log('Annonce sélectionnée:', annonce);
+
+    // Réinitialiser complètement le formulaire et les fichiers
+    this.postulerForm.reset();
+    this.resetFileInputs();
+
     this.selectedAnnonce = annonce;
   }
+
+  resetFileInputs() {
+    // Réinitialiser visuellement les input file
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    fileInputs.forEach((input) => {
+      (input as HTMLInputElement).value = '';
+    });
+  }
+
 
   get pages(): number[] {
     const totalPages = Math.ceil(this.annonces.length / this.annonceParPage);
@@ -136,7 +168,7 @@ export class AnnonceComponent implements OnInit {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        // Nous gardons le préfixe data:application/pdf;base64, cette fois
+        // Nous gardons le préfixe data:application/pdf;base64,
         resolve(reader.result!.toString());
       };
       reader.onerror = error => reject(error);
@@ -145,15 +177,14 @@ export class AnnonceComponent implements OnInit {
 
 
   async submitPostulation() {
-
     if (!this.isAuthenticated) {
-      Swal.fire("warning", "Vous devez être connecté pour postuler !", "warning");
-      window.location.href = "/login";
+      Swal.fire("warning", "Vous devez être connecté pour postuler !", "warning").then(() => {
+        window.location.href = "/login";
+      });
       return;
     }
 
     if (this.postulerForm.invalid) {
-
       if (this.postulerForm.errors?.['atLeastOneDocumentRequired']) {
         Swal.fire("Erreur", "Veuillez fournir au moins un document (Diplôme, CV ou Lettre de motivation) !", "error");
       } else {
@@ -168,8 +199,6 @@ export class AnnonceComponent implements OnInit {
     const diplomeFile = this.postulerForm.get('diplome')?.value;
     const cvFile = this.postulerForm.get('cv')?.value;
     const lettreMotivationFile = this.postulerForm.get('lettreMotivation')?.value;
-
-
 
     try {
       const documents = [];
@@ -197,14 +226,14 @@ export class AnnonceComponent implements OnInit {
       }
 
       const payload = {
-        announcementId: this.selectedAnnonce.id || "",  // Utiliser l'ID de l'annonce sélectionnée
-        academicYearId: this.selectedAnnonce.academicYearId || "",  // Utiliser l'academicYearId de l'annonce
+        announcementId: this.selectedAnnonce.id || "",  // ID de l'annonce sélectionnée
+        academicYearId: this.selectedAnnonce.academicYearId || "",  // academicYearId de l'annonce
         applicationType: applicationType.toUpperCase(),
         documents: documents,
-
       };
 
       this.annonceService.postuler(payload).subscribe({
+        // Dans la partie success du submitPostulation
         next: response => {
           Swal.fire({
             title: "Succès",
@@ -212,46 +241,51 @@ export class AnnonceComponent implements OnInit {
             icon: "success",
             confirmButtonColor: "#FF6600"
           }).then(() => {
-            // Ce code s'exécute après que l'utilisateur a cliqué sur "OK"
+            // Fermer le modal
+            const modalElement = document.getElementById('postulerModal');
+            if (modalElement) {
+              const modalInstance = bootstrap.Modal.getInstance(modalElement);
+              if (modalInstance) {
+                modalInstance.hide();
+              }
+            }
+
+            // Réinitialiser complètement
             this.postulerForm.reset();
+            this.resetFileInputs();
             this.isSubmitting = false;
             this.selectedAnnonce = null;
-            window.location.reload();
-            // Fermer le modal
-            // const modalElement = document.getElementById('postulerModal');
-            // if (modalElement) {
-            //   const modalInstance = bootstrap.Modal.getInstance(modalElement);
-            //   if (modalInstance) {
-            //     modalInstance.hide();
-            //   }
-            // }
+
+            window.location.href = "/annonce";
           });
-
-          this.postulerForm.reset();
-          this.isSubmitting = false;
-
-          const modalElement = document.getElementById('postulerModal');
-          if (modalElement) {
-            const modalInstance = bootstrap.Modal.getInstance(modalElement);
-            if (modalInstance) {
-              modalInstance.hide();
-            }
-          } else {
-            console.error("Modal 'postulerModal' introuvable.");
-          }
         },
         error: err => {
           console.error("Erreur :", err);
-          Swal.fire("error", "Une erreur est survenue !", "error");
+          if (err.status === 401 || err.status === 403) {
+            Swal.fire({
+              title: "Session expirée",
+              text: "Votre session a expiré, veuillez vous reconnecter.",
+              icon: "warning",
+              confirmButtonColor: "#FF6600"
+            });
+          } else {
+            Swal.fire({
+              title: "Erreur",
+              text: err.error?.message || "Une erreur est survenue lors de la soumission de votre candidature.",
+              icon: "error",
+              confirmButtonColor: "#FF6600"
+            }).then(() => {
+              this.postulerForm.reset();
+              this.isSubmitting = false;
+              this.selectedAnnonce = null;
+            });
+          }
           this.isSubmitting = false;
         }
       });
-
     } catch (error) {
       console.error("Erreur de conversion :", error);
       Swal.fire("warning", "Impossible de traiter les fichiers !", "warning");
-
-
       this.isSubmitting = false;
     }
   }

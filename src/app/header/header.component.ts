@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { baseUrl } from '../services/url';
 import { LoginService } from '../services/login.service';
+import { Subscription } from 'rxjs';
+import { ProfileService } from '../services/profile.service';
 
 @Component({
   selector: 'app-header',
@@ -15,13 +17,14 @@ import { LoginService } from '../services/login.service';
 })
 export class HeaderComponent implements OnInit {
   isLoggedIn: boolean = false;
-  userAvatar: string = '/assets/images/annonce-1.png';
+  userAvatar: string = '/assets/images/avatar.png';
   private apiBaseUrl: string = `${baseUrl}/files/images/`;
   showDropdown: boolean = false;
+  private profileSubscription!: Subscription;
 
-  // constructor(private loginService: LoginService) { }
   constructor(
     private loginService: LoginService,
+    private profileService: ProfileService,
     private renderer: Renderer2,
     private el: ElementRef
   ) {
@@ -37,10 +40,17 @@ export class HeaderComponent implements OnInit {
     // Vérifier si l'utilisateur est connecté lors du chargement du composant
     this.checkLoginStatus();
 
-    // Écouter les changements dans localStorage (optionnel)
-    window.addEventListener('storage', () => {
+    // S'abonner aux mises à jour du profil
+    this.profileSubscription = this.profileService.profileUpdated$.subscribe(() => {
       this.checkLoginStatus();
     });
+  }
+
+  ngOnDestroy(): void {
+    // Se désabonner pour éviter les fuites de mémoire
+    if (this.profileSubscription) {
+      this.profileSubscription.unsubscribe();
+    }
   }
 
 
@@ -51,12 +61,15 @@ export class HeaderComponent implements OnInit {
       try {
         const userConnect = JSON.parse(localStorage.getItem('userConnect') || '{}');
 
-        if (userConnect && userConnect.picture) {
-          this.userAvatar = `${this.apiBaseUrl}${userConnect.picture}`;
+        // Vérifier à la fois picture et profilePicture
+        if (userConnect && (userConnect.profilePicture || userConnect.picture)) {
+          this.userAvatar = `${this.apiBaseUrl}${userConnect.profilePicture || userConnect.picture}`;
+        } else {
+          this.userAvatar = '/assets/images/avatar.png';
         }
       } catch (error) {
         console.error('Erreur:', error);
-        this.userAvatar = '/assets/images/annonce-1.png';
+        this.userAvatar = '/assets/images/avatar.png';
       }
     }
   }
@@ -64,14 +77,15 @@ export class HeaderComponent implements OnInit {
   // Méthode pour gérer l'erreur de chargement d'image
   onImageError(event: Event): void {
     const imgElement = event.target as HTMLImageElement;
-    imgElement.src = '/assets/images/annonce-1.png';
+    imgElement.src = '/assets/images/avatar.png';
   }
 
   // Méthode pour se déconnecter
   logout(): void {
     this.loginService.logout();
     this.isLoggedIn = false;
-    this.userAvatar = '/assets/images/annonce-1.png';
+    this.userAvatar = '/assets/images/avatar.png';
+    window.location.href = '/accueil';
   }
 
   toggleDropdown(event: Event): void {
@@ -79,4 +93,6 @@ export class HeaderComponent implements OnInit {
     event.stopPropagation();
     this.showDropdown = !this.showDropdown;
   }
+
+
 }

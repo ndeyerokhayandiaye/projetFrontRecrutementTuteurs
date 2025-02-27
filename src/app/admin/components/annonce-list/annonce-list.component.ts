@@ -14,7 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import Swal from 'sweetalert2';
 import * as bootstrap from 'bootstrap';
-import { AnnonceService } from '../../services/annonce.service';
+import { AnnonceService } from '../../../services/annonce.service';
 import { AcademicYear } from '../annee-academique-list/annee-academique-list.component';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContactComponent } from './contact.component';
+import { AdminProfilComponent } from './admin-profil.component';
 
-describe('ContactComponent', () => {
-  let component: ContactComponent;
-  let fixture: ComponentFixture<ContactComponent>;
+describe('AdminProfilComponent', () => {
+  let component: AdminProfilComponent;
+  let fixture: ComponentFixture<AdminProfilComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ContactComponent]
+      imports: [AdminProfilComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ContactComponent);
+    fixture = TestBed.createComponent(AdminProfilComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -7,7 +7,7 @@
   </div>
 
   <!-- Liens de navigation  -->
-  <div class="col-6 col-lg-10">
+  <div class="col-6 col-lg-10 px-xl-5">
     <nav class="navbar navbar-expand-lg">
       <div class="navbar-nav text-center text-lg-start w-100 py-2 d-flex justify-content-end align-items-center">
         <a routerLink="/accueil" routerLinkActive="color-me" class="nav-item nav-link text-black px-2">
@@ -16,38 +16,38 @@
         <a routerLink="/annonce" routerLinkActive="color-me" class="nav-item nav-link text-black px-2">
           Annonces
         </a>
-        <a routerLink="/about" routerLinkActive="color-me" class="nav-item nav-link text-black px-2">
+        <a routerLink="/about" routerLinkActive="color-me" class="nav-item nav-link text-black px-2 ">
           À propos
-        </a>
-        <a routerLink="/contact" routerLinkActive="color-me" class="nav-item nav-link text-black px-3">
-          Contact
         </a>
 
         <!-- Afficher le bouton de connexion ou le profil selon l'état de connexion -->
         <ng-container *ngIf="!isLoggedIn; else profileButtons">
-          <a routerLink="/login" class="login-btn btn btn-dark text-white py-md-1 px-md-2 font-weight-semi-bold">
+          <a routerLink="/login" class="login-btn btn btn-dark text-white mx-3 py-md-1 px-md-2 font-weight-semi-bold">
             Se connecter
           </a>
         </ng-container>
 
-        <div class="dropdown">
-          <a class="profile-btn" href="#" role="button" (click)="toggleDropdown($event)">
-            <img [src]="userAvatar" alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;"
-              (error)="onImageError($event)">
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" [class.show]="showDropdown">
-            <li><a class="dropdown-item" routerLink="/profil">
-                <i class="fas fa-user"></i> Profil
-              </a></li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item" href="javascript:void(0)" (click)="logout()">
-                <i class="fas fa-sign-out-alt"></i> Déconnexion
-              </a></li>
-          </ul>
-        </div>
-
+        <!-- Template pour les utilisateurs connectés -->
+        <ng-template #profileButtons>
+          <div class="dropdown position-relative">
+            <a class="profile-btn" href="#" role="button" (click)="toggleDropdown($event)">
+              <img [src]="userAvatar" alt="Avatar" style="height: 40px; width: 40px; border-radius: 50%;"
+                (error)="onImageError($event)">
+            </a>
+            <ul class="dropdown-menu" [class.show]="showDropdown"
+              style="position: absolute; top: 100%; right: 0; z-index: 1000; min-width: 10rem; margin-top: 0.10rem;">
+              <li><a class="dropdown-item" routerLink="/profil">
+                  <i class="fas fa-user" style="color: #FF6600;"></i> Profil
+                </a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="javascript:void(0)" (click)="logout()">
+                  <i class="fas fa-sign-out-alt" style="color: #FF6600;"></i> Déconnexion
+                </a></li>
+            </ul>
+          </div>
+        </ng-template>
       </div>
     </nav>
   </div>

@@ -1,22 +1,255 @@
-<div class="profile-container">
-  <h2>Mon Profil</h2>
-
-  <div class="profile-card">
-    <img [src]="user.profilePicture || 'assets/default-profile.png'" alt="Photo de profil" class="profile-pic" />
-
-    <div *ngIf="!isEditing">
-      <p><strong>Nom :</strong> {{ user.lastName }}</p>
-      <p><strong>Prénom :</strong> {{ user.firstName }}</p>
-      <p><strong>Email :</strong> {{ user.email }}</p>
-      <p><strong>Rôle :</strong> {{ user.role }}</p>
-      <button (click)="enableEditing()">Modifier</button>
+<app-header></app-header>
+<div class="container mt-5" style="padding-top: 100px;">
+  <div class="profile-container">
+    <!-- Chargement -->
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border" role="status" style="color: #FF6600;">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
     </div>
 
-    <div *ngIf="isEditing">
-      <input type="text" [(ngModel)]="user.lastName" placeholder="Nom">
-      <input type="text" [(ngModel)]="user.firstName" placeholder="Prénom">
-      <input type="file" (change)="onFileSelected($event)">
-      <button (click)="updateProfile()">Enregistrer</button>
+    <!-- Contenu du profil -->
+    <div *ngIf="!isLoading" class="row">
+      <!-- Section du profil -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow profile-card">
+          <div class="card-header bg-white text-center">
+            <h3 class="mb-0">Mon Profil</h3>
+          </div>
+          <div class="card-body text-center">
+            <div class="profile-pic-container mb-3">
+              <img [src]="user.profilePicture" alt="Photo de profil" class="profile-pic rounded-circle" />
+            </div>
+
+            <!-- Mode affichage -->
+            <div *ngIf="!isEditing" class="text-start">
+              <p><strong>Nom :</strong> {{ user.lastName }}</p>
+              <p><strong>Prénom :</strong> {{ user.firstName }}</p>
+              <p><strong>Email :</strong> {{ user.email }}</p>
+              <p><strong>Rôle :</strong> {{ user.role }}</p>
+              <div class="text-center mt-4">
+                <button class="btn w-100" (click)="enableEditing()" style="background-color: #FF6600; color: white;">
+                  <i class="bi bi-pencil-square me-2"></i> Modifier
+                </button>
+              </div>
+            </div>
+
+            <!-- Mode édition -->
+            <div *ngIf="isEditing" class="mt-3">
+              <div class="mb-3">
+                <label class="form-label">Nom</label>
+                <input type="text" class="form-control" [(ngModel)]="user.lastName" placeholder="Nom">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Prénom</label>
+                <input type="text" class="form-control" [(ngModel)]="user.firstName" placeholder="Prénom">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Photo de profil</label>
+                <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*">
+              </div>
+              <div class="d-flex justify-content-between mt-4">
+                <button class="btn btn-secondary" (click)="cancelEditing()">
+                  <i class="bi bi-x-circle me-2"></i> Annuler
+                </button>
+                <button class="btn" (click)="updateProfile()" style="background-color: #FF6600; color: white;">
+                  <i class="bi bi-check-circle me-2"></i> Enregistrer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section des candidatures -->
+      <div class="col-md-8">
+        <div class="card shadow">
+          <div class="card-header bg-white">
+            <h3 class="mb-0">Mes Candidatures</h3>
+          </div>
+          <div class="card-body">
+            <div *ngIf="applications.length === 0" class="text-center py-4">
+              <i class="bi bi-clipboard-x" style="font-size: 3rem; color: #ccc;"></i>
+              <p class="text-muted mt-3">Vous n'avez pas encore postulé à des annonces.</p>
+            </div>
+
+            <div *ngIf="applications.length > 0" class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Annonce</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Statut</th>
+                    <th>Documents</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let app of applications">
+                    <td class="title-cell">
+                      {{ truncateTitle(app.announcement?.title || 'Chargement...') }}
+                      <button class="btn btn-sm btn-link p-0 ms-1" (click)="showApplicationDetails(app)">
+                        <i class="bi bi-info-circle"></i>
+                      </button>
+                    </td>
+                    <td>
+                      <span class="badge bg-info text-dark">
+                        {{ getApplicationType(app.applicationType) }}
+                      </span>
+                    </td>
+                    <td>{{ getFormattedDate(app.applicationDate || app.createdAt) }}</td>
+                    <td>
+                      <span class="badge" [ngClass]="getStatusClass(app.status)">
+                        {{ applicationStatusMap[app.status] || app.status }}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" 
+                                type="button" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false"
+                                [disabled]="!app.documents || app.documents.length === 0">
+                          {{ getDocumentCount(app) }} document(s)
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li *ngFor="let doc of app.documents">
+                            <a class="dropdown-item" href="javascript:void(0)" (click)="viewDocument(doc)">
+                              <i class="bi bi-file-earmark-pdf me-2"></i>
+                              {{ getDocumentType(doc.documentType) }} - {{ doc.fileName }}
+                            </a>
+                          </li>
+                          <li *ngIf="!app.documents || app.documents.length === 0">
+                            <span class="dropdown-item text-muted">Aucun document</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                    <td>
+                      <button *ngIf="app.status === 'PENDING'" class="btn btn-sm btn-outline-danger" 
+                              (click)="cancelApplication(app.id)">
+                        <i class="bi bi-x-circle me-1"></i> Annuler
+                      </button>
+                      <span *ngIf="app.status !== 'PENDING'" class="text-muted">-</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de détails de candidature -->
+<div class="modal fade" id="applicationDetailsModal" tabindex="-1" aria-labelledby="applicationDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #FF6600; color: white;">
+        <h5 class="modal-title" id="applicationDetailsModalLabel">
+          <i class="bi bi-file-earmark-text me-2"></i>Détails de la candidature
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body" *ngIf="selectedApplication">
+        <!-- En-tête avec nom de l'annonce et statut -->
+        <div class="card mb-4 border-0 bg-light">
+          <div class="card-body p-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <h4 class="m-0">{{ selectedApplication.announcement?.title || 'Information non disponible' }}</h4>
+              <span class="badge fs-6" [ngClass]="getStatusClass(selectedApplication.status)">
+                {{ applicationStatusMap[selectedApplication.status] || selectedApplication.status }}
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row g-4">
+          <!-- Colonne d'informations générales -->
+          <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+              <div class="card-header bg-white">
+                <h5 class="m-0"><i class="bi bi-info-circle me-2"></i>Informations générales</h5>
+              </div>
+              <div class="card-body">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-between px-0">
+                    <span class="text-muted">Type de candidature</span>
+                    <span class="fw-medium">{{ getApplicationType(selectedApplication.applicationType) }}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between px-0">
+                    <span class="text-muted">Date de candidature</span>
+                    <span class="fw-medium">{{ getFormattedDate(selectedApplication.applicationDate || selectedApplication.createdAt) }}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between px-0">
+                    <span class="text-muted">Dernière mise à jour</span>
+                    <span class="fw-medium">{{ getFormattedDate(selectedApplication.updatedAt) }}</span>
+                  </li>
+                </ul>
+                
+                <div *ngIf="selectedApplication.rejectionReason" class="alert alert-danger mt-3">
+                  <h6 class="alert-heading"><i class="bi bi-exclamation-circle me-2"></i>Motif de rejet</h6>
+                  <p class="mb-0">{{ selectedApplication.rejectionReason }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Colonne des documents -->
+          <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+              <div class="card-header bg-white">
+                <h5 class="m-0"><i class="bi bi-file-earmark me-2"></i>Documents soumis</h5>
+              </div>
+              <div class="card-body">
+                <div *ngIf="!selectedApplication.documents || selectedApplication.documents.length === 0" class="text-center py-4">
+                  <i class="bi bi-file-earmark-x text-muted" style="font-size: 3rem;"></i>
+                  <p class="text-muted mt-3">Aucun document soumis</p>
+                </div>
+                
+                <div *ngIf="selectedApplication.documents && selectedApplication.documents.length > 0" class="document-list">
+                  <div *ngFor="let doc of selectedApplication.documents" class="card mb-2 border">
+                    <div class="card-body p-3">
+                      <div class="d-flex align-items-center justify-content-between">
+                        <div class="doc-info">
+                          <h6 class="mb-1">
+                            <i class="bi bi-file-earmark-pdf me-2 text-danger"></i>
+                            {{ getDocumentType(doc.documentType) }}
+                          </h6>
+                          <p class="mb-1 text-muted small">{{ doc.fileName }}</p>
+                          <span class="badge" 
+                                [ngClass]="doc.status === 'VALID' ? 'bg-success' : 'bg-warning text-dark'">
+                            {{ doc.status === 'VALID' ? 'Validé' : 'En attente' }}
+                          </span>
+                        </div>
+                        <a class="btn btn-sm btn-primary" href="javascript:void(0)" (click)="viewDocument(doc)">
+                          <i class="bi bi-eye me-1"></i> Voir
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer d-flex justify-content-between">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="bi bi-x me-1"></i> Fermer
+        </button>
+        <button *ngIf="selectedApplication && selectedApplication.status === 'PENDING'" 
+                type="button" 
+                class="btn btn-danger"
+                (click)="cancelApplicationFromModal()">
+          <i class="bi bi-x-circle me-1"></i> Annuler cette candidature
+        </button>
+      </div>
     </div>
   </div>
 </div>

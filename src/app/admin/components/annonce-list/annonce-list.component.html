@@ -1,5 +1,5 @@
 <div class="header">
-  <button mat-button class=" add-button" [routerLink]="'/admin/annonces/nouvelle'">Ajouter une Annonce</button>
+  <button mat-button class=" add-button text-white" [routerLink]="'/admin/annonces/nouvelle'">Ajouter une Annonce</button>
   <mat-form-field appearance="outline">
     <mat-label>Rechercher une annonce</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex: offre d'emploi">
@@ -49,53 +49,80 @@
 <mat-paginator class="mt-5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
 
-
 <!-- Modal pour modification annonce -->
 <div class="modal fade" id="annonceModal" tabindex="-1" aria-labelledby="annonceModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="annonceModalLabel">Modifier l'annonce</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <form [formGroup]="annonceForm">
-                  <div class="row g-3">
-                      <div class="col-md-6">
-                          <input type="text" class="form-control" formControlName="title" placeholder="Titre*" required>
-                      </div>
-                      <div class="col-md-6">
-                          <textarea class="form-control" formControlName="description" placeholder="Description*" required></textarea>
-                      </div>
-                      <div class="col-md-6">
-                          <input type="date" class="form-control" formControlName="publicationDate" placeholder="Date de publication*" required>
-                      </div>
-                      <div class="col-md-6">
-                          <input type="date" class="form-control" formControlName="closingDate" placeholder="Date limite*" required>
-                      </div>
-                      <div class="col-md-6">
-                          <select class="form-select" formControlName="status" required>
-                              <option value="DRAFT">DRAFT</option>
-                              <option value="PUBLISHED">PUBLISHED</option>
-                              <option value="CLOSED">CLOSED</option>
-                          </select>
-                      </div>
-                      <div class="col-md-6">
-                        <select class="form-select" formControlName="academicYearId" required>
-                          <option *ngFor="let year of filteredAcademicYears" [value]="year.id">
-                            {{ year.yearName }}
-                          </option>
-                        </select>
-
-                      </div>
-                  </div>
-                  <div class="d-flex justify-content-center mt-4">
-                      <button type="button" class="btn me-3 Sauvegarder" (click)="updateAnnonce()">Modifier</button>
-                      <button type="button" class="btn btn-secondary" (click)="closeModal()">Annuler</button>
-                  </div>
-              </form>
-          </div>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="annonceModalLabel">
+          <i class="fas fa-edit me-2"></i>Modifier l'annonce
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <div class="modal-body">
+        <form [formGroup]="annonceForm">
+          <div class="form-container">
+            <div class="form-group">
+              <label for="title">Titre<span class="text-danger">*</span></label>
+              <input type="text" id="title" class="form-control" formControlName="title" required>
+              <div class="form-text text-danger" *ngIf="annonceForm.get('title')?.invalid && annonceForm.get('title')?.touched">
+                Le titre est obligatoire
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="description">Description<span class="text-danger">*</span></label>
+              <textarea id="description" class="form-control" formControlName="description" required rows="4"></textarea>
+              <div class="form-text text-danger" *ngIf="annonceForm.get('description')?.invalid && annonceForm.get('description')?.touched">
+                La description est obligatoire
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="publicationDate">Date de publication<span class="text-danger">*</span></label>
+                <input type="date" id="publicationDate" class="form-control" formControlName="publicationDate" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="closingDate">Date limite<span class="text-danger">*</span></label>
+                <input type="date" id="closingDate" class="form-control" formControlName="closingDate" required>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="status">Statut<span class="text-danger">*</span></label>
+                <select id="status" class="form-select" formControlName="status" required>
+                  <option value="" disabled selected>Sélectionnez un statut</option>
+                  <option value="DRAFT">Brouillon</option>
+                  <option value="PUBLISHED">Publié</option>
+                  <option value="CLOSED">Fermé</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="academicYear">Année académique<span class="text-danger">*</span></label>
+                <select id="academicYear" class="form-select" formControlName="academicYearId" required>
+                  <option value="" disabled selected>Sélectionnez une année</option>
+                  <option *ngFor="let year of filteredAcademicYears" [value]="year.id">
+                    {{ year.yearName }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-save" [disabled]="annonceForm.invalid" (click)="updateAnnonce()">
+              <i class="fas fa-check me-2"></i>Enregistrer
+            </button>
+            <button type="button" class="btn btn-cancel" (click)="closeModal()">
+              <i class="fas fa-times me-2"></i>Annuler
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
-
