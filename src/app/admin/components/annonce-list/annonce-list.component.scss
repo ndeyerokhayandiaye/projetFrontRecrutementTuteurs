@@ -80,14 +80,19 @@ h2.text-center::after {
 
 .table th {
   text-align: left;
-  // padding: 1rem 1.5rem;
   background-color: var(--primary-color);
-  // color: var(--text-light);
   color: white;
   font-weight: 400;
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+.table th:last-of-type {
+  border-radius: 0px 8px 0px 0px;
+}
+
+.table th:first-of-type {
+  border-radius: 8px 0px 0px 0px;
 }
 
 .table td {

@@ -21,6 +21,7 @@ export class AnneeAcademiqueFormulaireComponent {
   academicYearForm: FormGroup;
   loading = false;
   errorMessage: string | null = null;
+  currentYear = new Date().getFullYear();
 
   constructor(
     private fb: FormBuilder,
@@ -28,14 +29,19 @@ export class AnneeAcademiqueFormulaireComponent {
     private router: Router
   ) {
     this.academicYearForm = this.fb.group({
-      yearName: ['', [Validators.required, Validators.pattern('^\\d{4}-\\d{4}$')]],
-      startDate: ['', Validators.required],
-      endDate: ['', [Validators.required]],
+      yearName: ['', [Validators.required, Validators.pattern('^\\d{4}-\\d{4}$'), this.validateYearNotInPast.bind(this)]],
+      startDate: ['', [Validators.required, this.validateDateNotInPast.bind(this)]],
+      endDate: ['', [Validators.required, this.validateDateNotInPast.bind(this)]],
       status: ['ACTIVE']
     }, { validators: this.validateDates });
 
-    // Surveille les changements de startDate pour revalider endDate
+    // Surveille les changements pour revalider le formulaire
     this.academicYearForm.get('startDate')?.valueChanges.subscribe(() => {
+      this.academicYearForm.get('endDate')?.updateValueAndValidity();
+    });
+    
+    this.academicYearForm.get('yearName')?.valueChanges.subscribe(() => {
+      this.academicYearForm.get('startDate')?.updateValueAndValidity();
       this.academicYearForm.get('endDate')?.updateValueAndValidity();
     });
   }
@@ -52,10 +58,60 @@ export class AnneeAcademiqueFormulaireComponent {
     return this.academicYearForm.get('endDate')!;
   }
 
+  // Validation pour s'assurer que l'année académique n'est pas dans le passé
+  validateYearNotInPast(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+    
+    const yearPattern = /^(\d{4})-(\d{4})$/;
+    const match = control.value.match(yearPattern);
+    
+    if (match) {
+      const startYear = parseInt(match[1], 10);
+      if (startYear < this.currentYear) {
+        return { yearInPast: true };
+      }
+    }
+    
+    return null;
+  }
+
+  // Validation pour s'assurer que les dates ne sont pas dans le passé
+  validateDateNotInPast(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+    
+    const inputDate = new Date(control.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Réinitialiser l'heure pour comparer uniquement la date
+    
+    if (inputDate < today) {
+      return { dateInPast: true };
+    }
+    
+    // Vérifier également que la date correspond à l'année académique sélectionnée
+    const yearNameControl = this.academicYearForm?.get('yearName');
+    if (yearNameControl && yearNameControl.valid && yearNameControl.value) {
+      const yearPattern = /^(\d{4})-(\d{4})$/;
+      const match = yearNameControl.value.match(yearPattern);
+      
+      if (match) {
+        const startYear = parseInt(match[1], 10);
+        const endYear = parseInt(match[2], 10);
+        
+        const inputYear = inputDate.getFullYear();
+        if (inputYear < startYear || inputYear > endYear) {
+          return { dateNotInAcademicYear: true };
+        }
+      }
+    }
+    
+    return null;
+  }
+
   // Validation globale : La date de fin doit être après la date de début
   validateDates(group: AbstractControl): ValidationErrors | null {
     const start = group.get('startDate')?.value;
     const end = group.get('endDate')?.value;
+    const yearName = group.get('yearName')?.value;
 
     if (start && end && new Date(start) >= new Date(end)) {
       return { dateInvalid: true };
@@ -94,12 +150,12 @@ export class AnneeAcademiqueFormulaireComponent {
     });
   }
 
-    Alert(title: string, text: string, icon: any) {
-      Swal.fire({
-        title,
-        text,
-        icon,
-        timer: 1500
-      });
-    }
+  Alert(title: string, text: string, icon: any) {
+    Swal.fire({
+      title,
+      text,
+      icon,
+      timer: 1500
+    });
+  }
 }

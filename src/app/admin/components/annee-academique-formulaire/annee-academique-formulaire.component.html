@@ -1,34 +1,42 @@
 <div class="form-container">
-   <!-- Icône de retour en arrière -->
- <button type="button" class=" btn-outline-secondary" ><i class="bi bi-arrow-left" [routerLink]="'/admin/annees-academiques'"></i></button>
-  <h2 class="mt-3"> Ajouter Année Académique</h2>
-  <form [formGroup]="academicYearForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="yearName">Année</label>
-      <input id="yearName" formControlName="yearName" type="text" class="form-control" placeholder="Ex: 2023-2024" [ngClass]="{'is-invalid': academicYearForm.get('yearName')?.invalid && academicYearForm.get('yearName')?.touched}">
-      <div *ngIf="academicYearForm.get('yearName')?.invalid && academicYearForm.get('yearName')?.touched" class="error-message">
-        <small *ngIf="academicYearForm.get('yearName')?.hasError('required')">L'année est obligatoire.</small>
-        <small *ngIf="academicYearForm.get('yearName')?.hasError('pattern')">Veuillez entrer une année valide (Ex: 2023-2024).</small>
-      </div>
-    </div>
+  <!-- Icône de retour en arrière -->
+<button type="button" class="" style="border:none; background-color: #FF6000;" ><i class="bi bi-arrow-left text-white"  [routerLink]="'/admin/annees-academiques'"></i></button>
+ <h2 class="mt-3" style="color: #FF6000;text-transform: capitalize;">Année Académique</h2>
+ <form [formGroup]="academicYearForm" (ngSubmit)="onSubmit()">
+   <div class="form-group">
+     <label for="yearName">Année</label>
+     <input id="yearName" formControlName="yearName" type="text" class="form-control" placeholder="Ex: 2023-2024" [ngClass]="{'is-invalid': academicYearForm.get('yearName')?.invalid && academicYearForm.get('yearName')?.touched}">
+     <div *ngIf="academicYearForm.get('yearName')?.invalid && academicYearForm.get('yearName')?.touched" class="error-message">
+       <small *ngIf="academicYearForm.get('yearName')?.hasError('required')">L'année est obligatoire.</small>
+       <small *ngIf="academicYearForm.get('yearName')?.hasError('pattern')">Veuillez entrer une année valide (Ex: 2023-2024).</small>
+       <small *ngIf="academicYearForm.get('yearName')?.hasError('yearInPast')">L'année académique ne peut pas être antérieure à l'année en cours.</small>
+     </div>
+   </div>
 
-    <div class="form-group">
-      <label for="startDate">Date de Début</label>
-      <input id="startDate" formControlName="startDate" type="date" class="form-control" [ngClass]="{'is-invalid': academicYearForm.get('startDate')?.invalid && academicYearForm.get('startDate')?.touched}">
-      <div *ngIf="academicYearForm.get('startDate')?.invalid && academicYearForm.get('startDate')?.touched" class="error-message">
-        <small *ngIf="academicYearForm.get('startDate')?.hasError('required')">La date de début est obligatoire.</small>
-      </div>
-    </div>
+   <div class="form-group">
+     <label for="startDate">Date de Début</label>
+     <input id="startDate" formControlName="startDate" type="date" class="form-control" [ngClass]="{'is-invalid': academicYearForm.get('startDate')?.invalid && academicYearForm.get('startDate')?.touched}">
+     <div *ngIf="academicYearForm.get('startDate')?.invalid && academicYearForm.get('startDate')?.touched" class="error-message">
+       <small *ngIf="academicYearForm.get('startDate')?.hasError('required')">La date de début est obligatoire.</small>
+       <small *ngIf="academicYearForm.get('startDate')?.hasError('dateInPast')">La date de début ne peut pas être antérieure à aujourd'hui.</small>
+       <small *ngIf="academicYearForm.get('startDate')?.hasError('dateNotInAcademicYear')">La date de début doit être dans l'année académique sélectionnée.</small>
+     </div>
+   </div>
 
-    <div class="form-group">
-      <label for="endDate">Date de Fin</label>
-      <input id="endDate" formControlName="endDate" type="date" class="form-control" [ngClass]="{'is-invalid': academicYearForm.get('endDate')?.invalid && academicYearForm.get('endDate')?.touched}">
-      <div *ngIf="academicYearForm.get('endDate')?.invalid && academicYearForm.get('endDate')?.touched" class="error-message">
-        <small *ngIf="academicYearForm.get('endDate')?.hasError('required')">La date de fin est obligatoire.</small>
-        <small *ngIf="academicYearForm.get('endDate')?.hasError('dateValidation')">La date de fin doit être postérieure à la date de début.</small>
-      </div>
-    </div>
+   <div class="form-group">
+     <label for="endDate">Date de Fin</label>
+     <input id="endDate" formControlName="endDate" type="date" class="form-control" [ngClass]="{'is-invalid': academicYearForm.get('endDate')?.invalid && academicYearForm.get('endDate')?.touched}">
+     <div *ngIf="academicYearForm.get('endDate')?.invalid && academicYearForm.get('endDate')?.touched" class="error-message">
+       <small *ngIf="academicYearForm.get('endDate')?.hasError('required')">La date de fin est obligatoire.</small>
+       <small *ngIf="academicYearForm.get('endDate')?.hasError('dateInPast')">La date de fin ne peut pas être antérieure à aujourd'hui.</small>
+       <small *ngIf="academicYearForm.get('endDate')?.hasError('dateNotInAcademicYear')">La date de fin doit être dans l'année académique sélectionnée.</small>
+     </div>
+   </div>
 
-    <button type="submit" class="btn" [disabled]="academicYearForm.invalid">Ajouter</button>
-  </form>
+   <div *ngIf="academicYearForm.hasError('dateInvalid')" class="error-message mb-2">
+     <small>La date de fin doit être postérieure à la date de début.</small>
+   </div>
+
+   <button type="submit" class="btn" [disabled]="academicYearForm.invalid">Ajouter</button>
+ </form>
 </div>
