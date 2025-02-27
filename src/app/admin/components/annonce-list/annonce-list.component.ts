@@ -9,7 +9,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import Swal from 'sweetalert2';
@@ -45,7 +45,7 @@ import { baseUrl } from '../../../services/url';
 export class AnnonceListComponent {
   isFormOpen: boolean = false;
   annonces: any[] = [];
-  displayedColumns: string[] = ['title', 'id', 'publicationDate', 'closingDate', 'actions'];
+  displayedColumns: string[] = ['title', 'id', 'publicationDate', 'closingDate', 'candidates',  'actions'];
   private modalInstance: any;
 
   dataSource: any[] = [];
@@ -58,7 +58,8 @@ export class AnnonceListComponent {
     private annonceService: AnnonceService,
     private academicYearService: AnnonceService,
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) { }
 
 
@@ -170,6 +171,13 @@ export class AnnonceListComponent {
           });
         }
       );
+  }
+
+  viewCandidates(announcementId: string) {
+    console.log("Naviguer vers la liste des candidats pour l'annonce", announcementId);
+    
+    // Naviguer vers la liste des candidats avec l'ID de l'annonce comme paramètre
+    this.router.navigate(['/admin/candidats'], { queryParams: { announcementId: announcementId } });
   }
 
   closeModal() {

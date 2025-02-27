@@ -32,10 +32,29 @@ export class AnnonceService {
     return this.http.get<any[]>(`${baseUrl}/job-announcements`, { headers });
   }
 
-
+  // Récupérer les candidatures pour une annonce spécifique
+  getApplicationsByAnnouncement(announcementId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${baseUrl}/applications/announcement/${announcementId}`,
+      { headers: this.getAuthHeaders() });
+  }
+  
+  // Récupérer les détails d'une annonce
+  getAnnouncementDetails(announcementId: string): Observable<any> {
+    return this.http.get<any>(`${baseUrl}/job-announcements/${announcementId}`, 
+      { headers: this.getAuthHeaders() });
+  }
   updateAnnonce(id: number, annonce: any): Observable<any> {
     return this.http.put<any>(`${baseUrl}/job-announcements/${id}`, annonce, { headers: this.getAuthHeaders() });
   }
+
+  updateApplicationStatus(applicationId: string, status: string, comments?: string): Observable<any> {
+    const payload = { 
+      status, 
+      ...(comments && { comments }) // Utiliser comments au lieu de rejectionReason
+    };
+    return this.http.patch<any>(`${baseUrl}/applications/${applicationId}/status`, payload, { headers: this.getAuthHeaders() });
+  }
+  
 
   deleteAnnonce(id: number): Observable<any> {
     return this.http.delete<any>(`${baseUrl}/job-announcements/${id}`, { headers: this.getAuthHeaders() });

@@ -12,7 +12,7 @@ import { HeaderComponent } from '../header/header.component';
 // Déclaration pour Bootstrap Modal
 declare var bootstrap: any;
 
-type ApplicationStatus = 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'CANCELED';
+type ApplicationStatus = 'PENDING' | 'UNDER_REVIEW' | 'ACCEPTED' | 'REJECTED' | 'CANCELED';
 type ApplicationType = 'NEW' | 'RENEWAL';
 
 interface Document {
@@ -90,6 +90,7 @@ export class ProfilComponent implements OnInit {
 
   applicationStatusMap: Record<ApplicationStatus, string> = {
     'PENDING': 'En attente',
+    'UNDER_REVIEW': 'En cours d\'examen',
     'ACCEPTED': 'Acceptée',
     'REJECTED': 'Rejetée',
     'CANCELED': 'Annulée'
@@ -274,6 +275,7 @@ export class ProfilComponent implements OnInit {
       case 'REJECTED': return 'status-rejected';
       case 'PENDING': return 'status-pending';
       case 'CANCELED': return 'status-canceled';
+      case 'UNDER_REVIEW': return 'bg-info';
       default: return '';
     }
   }

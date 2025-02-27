@@ -1,50 +1,219 @@
-<div class="d-flex justify-content-between align-items-center search-container mt-4 ">
- <div>
-
- </div>
-
-  <div class="form-group">
-    <input
-      type="text"
-      [(ngModel)]="searchQuery"
-      (ngModelChange)="onSearch()"
-      class="form-control search-input"
-      placeholder="Rechercher"
-    />
+<!-- Dans candidats-list.component.html -->
+<div class="d-flex justify-content-between align-items-center search-container mt-4">
+  <div>
+    <h4 *ngIf="announcementId" style="color: #ff600f;text-decoration: underline;">{{ announcementTitle }}</h4>
   </div>
 </div>
 
+<div class="form-group" style="display: flex;justify-content: end;margin-top: 20px;">
+  <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()" class="form-control search-input"
+    placeholder="Rechercher" style="width: 300px;" />
+</div>
+<!-- Affichage des candidatures si announcementId est présent -->
+<div *ngIf="announcementId">
+  <div *ngIf="loading" class="text-center mt-4">
+    <p>Chargement des candidatures...</p>
+  </div>
 
+  <table class="table table-striped mt-4" *ngIf="!loading && applications.length > 0">
+    <thead>
+      <tr>
+        <th>Candidat</th>
+        <th>Type</th>
+        <th>Statut</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let app of applications">
+        <td>
+          <div class="d-flex align-items-center">
+            <div *ngIf="app.candidate?.profilePicture" class="me-2">
+              <img [src]="getProfileImageUrl(app.candidate?.profilePicture)" alt="Photo de profil"
+                class="rounded-circle" width="30" height="30" />
+            </div>
+            <div>
+              <div>{{ app.candidate?.firstName }} {{ app.candidate?.lastName }}</div>
+              <small class="text-muted">{{ app.candidate?.email }}</small>
+            </div>
+          </div>
+        </td>
+        <td>{{ getApplicationTypeName(app.applicationType) }}</td>
+        <td>
+          <span class="badge" [ngClass]="getStatusClass(app.status)">
+            {{ getStatusName(app.status) }}
+          </span>
+        </td>
+        <td>{{ app.createdAt | date:'dd MMMM yyyy' }}</td>
+        <td>
+          <button class="btn btn-info" (click)="viewApplicationDetails(app)">
+            <i class="fas fa-eye"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-<!-- <div class="header">
-  <button mat-button class=" add-button" [routerLink]="'/admin/annonces/nouvelle'">Ajouter une Annonce</button>
-  <mat-form-field appearance="outline">
-    <mat-label>Rechercher une annonce</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ex: offre d'emploi">
-  </mat-form-field>
-</div> -->
+  <div *ngIf="!loading && applications.length === 0" class="text-center mt-4">
+    <p>Aucune candidature pour cette annonce.</p>
+  </div>
+</div>
 
-
-
-
-<div>
+<!-- Garder l'affichage existant pour la liste des utilisateurs -->
+<div *ngIf="!announcementId">
   <h2 class="mt-3">Liste des candidats</h2>
-  <table class="table-striped ">
+  <table class="table-striped">
     <tr>
-      <th>Email</th>
       <th>Nom</th>
+      <th>Email</th>
       <th>Actions</th>
     </tr>
     <tr *ngFor="let user of users">
-      <td>{{ user.firstName}}</td>
+      <td>{{ user.firstName }} {{ user.lastName }}</td>
       <td>{{ user.email }}</td>
-
       <td>
-        <!-- <button class="edit" (click)="editUser(user)">Modifier</button> -->
         <button class="delete" (click)="deleteUser(user.email)">Supprimer</button>
       </td>
     </tr>
   </table>
 </div>
 
-<mat-paginator class="mt-5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+<!-- Modal pour afficher les détails de la candidature -->
+<div class="modal fade" id="applicationDetailsModal" tabindex="-1" aria-labelledby="applicationDetailsModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="applicationDetailsModalLabel">
+          <i class="fas fa-info-circle me-2"></i>Détails de la candidature
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" *ngIf="selectedApplication">
+        <div class="row">
+          <!-- Information du candidat -->
+          <div class="col-md-4">
+            <div class="card shadow mb-4">
+              <div class="card-header bg-white">
+                <h6 class="m-0"><i class="fas fa-user me-2"></i>Informations du candidat</h6>
+              </div>
+              <div class="card-body text-center">
+                <div class="mb-3">
+                  <img [src]="getProfileImageUrl(selectedApplication.candidate?.profilePicture)" alt="Photo de profil"
+                    class="rounded-circle" width="80" height="80" />
+                </div>
+                <h5>{{ selectedApplication.candidate?.firstName }} {{ selectedApplication.candidate?.lastName }}</h5>
+                <p class="text-muted">{{ selectedApplication.candidate?.email }}</p>
+                <p class="text-muted">
+                  <small>Inscrit depuis: {{ selectedApplication.candidate?.createdAt | date:'dd MMMM yyyy' }}</small>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Informations générales -->
+          <div class="col-md-8">
+            <div class="card shadow mb-4">
+              <div class="card-header bg-white">
+                <h6 class="m-0"><i class="fas fa-info-circle me-2"></i>Informations de la candidature</h6>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <p><strong>Type candidature:</strong> {{ getApplicationTypeName(selectedApplication.applicationType)
+                      }}</p>
+                    <p><strong>Statut:</strong>
+                      <span class="badge" [ngClass]="getStatusClass(selectedApplication.status)">
+                        {{ getStatusName(selectedApplication.status) }}
+                      </span>
+                    </p>
+                    <p *ngIf="selectedApplication.rejectionReason">
+                      <strong>Raison de rejet:</strong> {{ selectedApplication.rejectionReason }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Documents -->
+          <div class="col-12">
+            <div class="card shadow">
+              <div class="card-header bg-white">
+                <h6 class="m-0"><i class="fas fa-file me-2"></i>Documents</h6>
+              </div>
+              <div class="card-body">
+                <div *ngIf="selectedApplication.documents && selectedApplication.documents.length > 0">
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Type de document</th>
+                          <th>Nom du fichier</th>
+                          <th>Statut</th>
+                          <th>Date de dépôt</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let doc of selectedApplication.documents">
+                          <td>{{ getDocumentTypeName(doc.documentType) }}</td>
+                          <td>{{ doc.fileName }}</td>
+                          <td>
+                            <span class="badge"
+                              [ngClass]="doc.status === 'VALID' ? 'bg-success' : 'bg-warning text-dark'">
+                              {{ doc.status === 'VALID' ? 'Validé' : 'En attente' }}
+                            </span>
+                          </td>
+                          <td>{{ doc.uploadDate | date:'dd MMMM yyyy' }}</td>
+                          
+                          <td>
+                            <button class="btn btn-sm btn-primary" (click)="viewDocument(doc)">
+                              <i class="fas fa-eye me-1"></i> Voir
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <p *ngIf="!selectedApplication.documents || selectedApplication.documents.length === 0">
+                  Aucun document soumis.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-2"></i>Fermer
+        </button>
+
+        <!-- Actions selon le statut actuel de la candidature -->
+        <ng-container *ngIf="selectedApplication">
+          <!-- Pour les candidatures en attente -->
+          <button *ngIf="selectedApplication.status === 'PENDING'" type="button" class="btn btn-info"
+            (click)="markAsUnderReview(selectedApplication.id)">
+            <i class="fas fa-search me-2"></i>Mettre en examen
+          </button>
+
+          <!-- Pour les candidatures en attente ou en cours d'examen -->
+          <button *ngIf="selectedApplication.status === 'PENDING' || selectedApplication.status === 'UNDER_REVIEW'"
+            type="button" class="btn btn-success" (click)="approveApplication(selectedApplication.id)">
+            <i class="fas fa-check me-2"></i>Approuver
+          </button>
+
+          <button *ngIf="selectedApplication.status === 'PENDING' || selectedApplication.status === 'UNDER_REVIEW'"
+            type="button" class="btn btn-danger" (click)="rejectApplication(selectedApplication.id)">
+            <i class="fas fa-times me-2"></i>Rejeter
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<mat-paginator class="mt-5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+  *ngIf="applications.length > 0 || users.length > 0"></mat-paginator>

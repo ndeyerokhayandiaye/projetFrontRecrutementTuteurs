@@ -50,3 +50,51 @@ button.delete {
 button:hover {
   opacity: 0.8;
 }
+
+
+/* Les styles pour les badges de statut */
+.bg-success {
+  background-color: #28a745 !important;
+  color: white;
+}
+
+.bg-danger {
+  background-color: #dc3545 !important;
+  color: white;
+}
+
+.bg-warning {
+  background-color: #ffc107 !important;
+}
+
+.bg-secondary {
+  background-color: #6c757d !important;
+  color: white;
+}
+
+.bg-info {
+  background-color: #17a2b8 !important;
+  color: white;
+}
+
+/* Style pour les colonnes du tableau */
+.table th, .table td {
+  vertical-align: middle;
+}
+
+/* Style pour la photo de profil */
+.rounded-circle {
+  object-fit: cover;
+}
+
+/* Style pour la liste de documents */
+.document-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Style pour les boutons d'action */
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
