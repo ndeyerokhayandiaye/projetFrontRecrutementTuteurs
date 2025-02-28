@@ -7,6 +7,7 @@ import { ProfilComponent } from './profil/profil.component';
 import { allGuardGuard } from './guards/all-guard.guard';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { AboutComponent } from './about/about.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'accueil', pathMatch: 'full' },
@@ -15,6 +16,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'annonce', component: AnnonceComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
 
   { path: 'profil', component: ProfilComponent, canActivate: [allGuardGuard] }, // Protégé par le guard
 
