@@ -51,4 +51,9 @@ export class ProfileService {
   cancelApplication(applicationId: string): Observable<any> {
     return this.http.delete<any>(`${baseUrl}/applications/${applicationId}/cancel`, { headers: this.getAuthHeaders() });
   }
+
+  updateApplication(applicationId: string, applicationData: any): Observable<any> {
+    return this.http.put<any>(`${baseUrl}/applications/${applicationId}`, applicationData, { headers: this.getAuthHeaders() });
+  }
+
 }

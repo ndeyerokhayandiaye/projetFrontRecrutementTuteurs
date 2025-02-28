@@ -80,17 +80,12 @@ export class LoginComponent implements OnInit {
     this.loginService.login(this.credentials).subscribe({
       next: (response) => {
         this.Alert("Connexion réussie !", "Bienvenue sur la plateforme", "success");
-
-        console.log('Réponse de connexion:', response);
         
         // Sauvegarde du rôle et des infos utilisateur
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('role', response.role);
         localStorage.setItem('token', response.token);
         localStorage.setItem('userConnect', JSON.stringify(response));
-
-        console.log('email:', localStorage.getItem('email'));
-        
 
         if (response.role === 'ADMIN') {
           this.router.navigate(['/admin/dashboard']);
@@ -114,7 +109,7 @@ export class LoginComponent implements OnInit {
       title,
       text,
       icon,
-      timer: 1500
+      timer: 3000
     });
   }
 }

@@ -19,7 +19,7 @@ export class UserService {
   createAdmin(adminData: any): Observable<any> {
     // Assurez-vous que le rôle est défini comme ADMIN
     adminData.role = 'ADMIN';
-    return this.http.post<any>(`${baseUrl}/users`, adminData, { 
+    return this.http.post<any>(`${baseUrl}/users`, adminData, {
       headers: this.getAuthHeaders(),
       responseType: 'text' as 'json'  // Accepter une réponse textuelle
     });
@@ -47,6 +47,18 @@ export class UserService {
 
   // Supprimer un utilisateur
   deleteUser(email: string): Observable<any> {
-    return this.http.delete<any>(`${baseUrl}/users/${email}`, { headers: this.getAuthHeaders() });
+    return this.http.delete<any>(`${baseUrl}/users/admins/${email}`, { headers: this.getAuthHeaders() });
+  }
+
+  deleteUserAccount(password: string) {
+    // Récupérer l'email de l'utilisateur depuis le localStorage ou d'une autre source
+    const userConnect = JSON.parse(localStorage.getItem('userConnect') || '{}');
+    const email = userConnect.email;
+
+    // Envoi de la requête DELETE avec le mot de passe dans le corps
+    return this.http.delete(`${baseUrl}/users/${email}`, {
+      headers: this.getAuthHeaders() ,
+      body: { password }
+    });
   }
 }

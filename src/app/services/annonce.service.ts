@@ -62,7 +62,6 @@ export class AnnonceService {
 
 
   postuler(payload: any): Observable<any> {
-    console.log('Données envoyées:', payload); // Vérifier ce qui est envoyé
     return this.http.post<any>(`${baseUrl}/applications/with-documents`, payload, { headers: this.getAuthHeaders() });
   }
 

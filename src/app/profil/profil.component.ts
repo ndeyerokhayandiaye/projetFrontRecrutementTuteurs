@@ -8,6 +8,8 @@ import { ProfileService } from '../services/profile.service';
 import Swal from 'sweetalert2';
 import { baseUrl } from '../services/url';
 import { HeaderComponent } from '../header/header.component';
+import { Router } from '@angular/router';
+import { UserService } from '../services/user-service.service';
 
 // Déclaration pour Bootstrap Modal
 declare var bootstrap: any;
@@ -60,7 +62,10 @@ export class ProfilComponent implements OnInit {
 
   constructor(
     private loginService: LoginService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private userService: UserService,
+
+    private router: Router
   ) { }
 
   user = {
@@ -71,6 +76,12 @@ export class ProfilComponent implements OnInit {
     role: ''
   };
 
+  passwordData = {
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  };
+
   originalUser = {
     profilePicture: ''
   };
@@ -78,9 +89,10 @@ export class ProfilComponent implements OnInit {
   newProfilePicture: boolean = false;
   isEditing = false;
   isLoading = true;
+  showPasswordFields = false; // Nouvelle variable pour gérer l'affichage des champs de mot de passe
 
   applications: Application[] = [];
-  announcements: Record<string, { title: string }> = {};
+  announcements: Record<string, { title: string, endDate?: string }> = {};
 
   // Variable pour stocker la candidature sélectionnée pour le modal
   selectedApplication: Application | null = null;
@@ -122,6 +134,20 @@ export class ProfilComponent implements OnInit {
     }
   }
 
+  // Nouvelle méthode pour basculer l'affichage des champs de mot de passe
+  togglePasswordFields() {
+    this.showPasswordFields = !this.showPasswordFields;
+
+    // Réinitialiser les champs si on les cache
+    if (!this.showPasswordFields) {
+      this.passwordData = {
+        oldPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      };
+    }
+  }
+
   loadUserProfile() {
     this.isLoading = true;
     this.profileService.getUserProfile().subscribe({
@@ -143,7 +169,6 @@ export class ProfilComponent implements OnInit {
   loadUserApplications() {
     this.profileService.getUserApplications().subscribe({
       next: (data: Application[]) => {
-        console.log('Candidatures', data);
 
         // Traitement des données d'applications
         this.applications = data.map(app => {
@@ -171,14 +196,21 @@ export class ProfilComponent implements OnInit {
       // Ajouter une méthode getAnnouncementDetails dans ProfileService
       this.profileService.getAnnouncementDetails(announcementId).subscribe({
         next: (data) => {
-          this.announcements[announcementId] = { title: data.title };
+          this.announcements[announcementId] = {
+            title: data.title,
+            endDate: data.closingDate // Supposons que l'API retourne endDate
+          };
 
-          // Mettre à jour les applications avec le titre de l'annonce
+          // Mettre à jour les applications avec le titre de l'annonce et sa date de fin
           this.applications = this.applications.map(app => {
             if (app.announcementId === announcementId) {
               return {
                 ...app,
-                announcement: { title: data.title, id: announcementId }
+                announcement: {
+                  title: data.title,
+                  id: announcementId,
+                  closingDate: data.endDate
+                }
               };
             }
             return app;
@@ -193,11 +225,39 @@ export class ProfilComponent implements OnInit {
     }
   }
 
+  editApplication(application: Application) {
+    if (application.status !== 'UNDER_REVIEW' && application.status !== 'PENDING') {
+      Swal.fire('Information', 'Seules les candidatures en cours d\'examen peuvent être modifiées.', 'info');
+      return;
+    }
+
+    // Rediriger vers la page de modification avec l'ID de la candidature
+    this.router.navigate(['/edit-application', application.id]);
+  }
+
+  // Méthode pour éditer une candidature depuis le modal
+  editApplicationFromModal() {
+    if (this.selectedApplication) {
+      this.editApplication(this.selectedApplication);
+      // Fermer le modal après redirection
+      if (this.detailsModal) {
+        this.detailsModal.hide();
+      }
+    }
+  }
+
+
   updateProfile() {
+    // Vérifier si les mots de passe correspondent
+    if (this.passwordData.newPassword && this.passwordData.newPassword !== this.passwordData.confirmPassword) {
+      Swal.fire('Erreur', 'Les mots de passe ne correspondent pas.', 'error');
+      return;
+    }
+
     this.isLoading = true;
 
     // Créer une copie des données à envoyer
-    const userData = {
+    const userData: any = {
       firstName: this.user.firstName,
       lastName: this.user.lastName,
       email: this.user.email,
@@ -206,8 +266,13 @@ export class ProfilComponent implements OnInit {
 
     // Ajouter la photo de profil uniquement si elle a été modifiée
     if (this.newProfilePicture) {
-      // @ts-ignore
       userData.profilePicture = this.user.profilePicture;
+    }
+
+    // Ajouter les informations de mot de passe si fournies
+    if (this.passwordData.oldPassword && this.passwordData.newPassword) {
+      userData.oldPassword = this.passwordData.oldPassword;
+      userData.password = this.passwordData.newPassword;
     }
 
     this.profileService.updateUserProfile(userData).subscribe({
@@ -234,12 +299,34 @@ export class ProfilComponent implements OnInit {
         this.isLoading = false;
         this.isEditing = false;
         this.newProfilePicture = false;
+        this.showPasswordFields = false; // Réinitialiser l'affichage des champs de mot de passe
+
+        // Réinitialiser les champs de mot de passe
+        this.passwordData = {
+          oldPassword: '',
+          newPassword: '',
+          confirmPassword: ''
+        };
+
         Swal.fire('Succès', 'Profil mis à jour avec succès', 'success');
       },
       error: (err) => {
         console.error('Erreur lors de la mise à jour', err);
         this.isLoading = false;
-        Swal.fire('Erreur', 'La mise à jour du profil a échoué.', 'error');
+
+        // Récupérer le message d'erreur du backend
+        let errorMessage = 'La mise à jour du profil a échoué.';
+
+        // Si l'erreur est une chaîne directe (comme dans votre cas)
+        if (typeof err.error === 'string') {
+          errorMessage = err.error;
+        }
+        // Si l'erreur est un objet avec une propriété message
+        else if (err.error && err.error.message) {
+          errorMessage = err.error.message;
+        }
+
+        Swal.fire('Erreur', errorMessage, 'error');
       }
     });
   }
@@ -259,14 +346,28 @@ export class ProfilComponent implements OnInit {
 
   enableEditing() {
     this.isEditing = true;
+    this.showPasswordFields = false; // Cacher les champs de mot de passe à l'activation du mode édition
+    // Réinitialiser les champs de mot de passe
+    this.passwordData = {
+      oldPassword: '',
+      newPassword: '',
+      confirmPassword: ''
+    };
   }
 
   cancelEditing() {
     this.isEditing = false;
+    this.showPasswordFields = false; // Réinitialiser l'affichage des champs de mot de passe
     // Restaurer l'image originale
     this.user.profilePicture = this.originalUser.profilePicture;
     this.newProfilePicture = false;
-    this.loadUserProfile(); 
+    // Réinitialiser les champs de mot de passe
+    this.passwordData = {
+      oldPassword: '',
+      newPassword: '',
+      confirmPassword: ''
+    };
+    this.loadUserProfile();
   }
 
   getStatusClass(status: string): string {
@@ -315,7 +416,6 @@ export class ProfilComponent implements OnInit {
   // Méthode pour visualiser les documents
   viewDocument(document: Document) {
     // Construire l'URL vers le document en utilisant le chemin relatif
-    // Le filePath commence par "/api/documents/..." donc on le concatène à l'URL de base
     const documentUrl = `http://localhost:8080${document.filePath}`;
     window.open(documentUrl, '_blank');
   }
@@ -367,4 +467,80 @@ export class ProfilComponent implements OnInit {
       }
     }
   }
+
+  // Méthode pour demander confirmation avant la suppression du compte
+confirmDeleteAccount() {
+  Swal.fire({
+    title: 'Supprimer votre compte ?',
+    text: "Cette action est irréversible. Toutes vos données seront définitivement supprimées.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Oui, supprimer mon compte',
+    cancelButtonText: 'Annuler',
+    footer: '<span class="text-muted">Vous ne pourrez pas récupérer vos données après cette action</span>'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Demander le mot de passe pour confirmation
+      Swal.fire({
+        title: 'Confirmation par mot de passe',
+        input: 'password',
+        inputLabel: 'Pour des raisons de sécurité, veuillez saisir votre mot de passe',
+        inputPlaceholder: 'Votre mot de passe',
+        confirmButtonText: 'Confirmer',
+        showCancelButton: true,
+        cancelButtonText: 'Annuler',
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Vous devez saisir votre mot de passe';
+          }
+          return null;
+        }
+      }).then((passwordResult) => {
+        if (passwordResult.isConfirmed) {
+          this.deleteAccount(passwordResult.value);
+        }
+      });
+    }
+  });
+}
+
+// Méthode pour effectuer la suppression du compte
+deleteAccount(password: string) {
+  this.isLoading = true;
+  
+  this.userService.deleteUserAccount(password).subscribe({
+    next: () => {
+      this.isLoading = false;
+      Swal.fire({
+        title: 'Compte supprimé',
+        text: 'Votre compte a été définitivement supprimé.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        // Déconnexion et redirection vers la page d'accueil
+        this.loginService.logout();
+        this.router.navigate(['/login']);
+      });
+    },
+    error: (err) => {
+      console.error('Erreur lors de la suppression du compte', err);
+      this.isLoading = false;
+      
+      // Récupérer le message d'erreur du backend
+      let errorMessage = 'La suppression du compte a échoué.';
+      
+      if (typeof err.error === 'string') {
+        errorMessage = err.error;
+      } else if (err.error && err.error.message) {
+        errorMessage = err.error.message;
+      } else if (err.status === 401) {
+        errorMessage = 'Mot de passe incorrect.';
+      }
+      
+      Swal.fire('Erreur', errorMessage, 'error');
+    }
+  });
+}
 }

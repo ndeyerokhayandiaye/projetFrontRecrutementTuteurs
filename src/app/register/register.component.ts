@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -36,7 +36,7 @@ export class RegisterComponent implements OnInit {
   verifPassword: string = '';
   verifConfirmationPassword: string = '';
 
-  constructor(private loginService: LoginService) {}
+  constructor(private loginService: LoginService, private router: Router) { }
 
   ngOnInit(): void {
     // code utilisé pour que Si L'utilisateur visite l'application pour la première fois et que certains paramètres doivent être sauvegardés dans localStorage...
@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
     }
 
   }
-     // Validation nom
+  // Validation nom
   validateNom() {
     const namePattern = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]{2,}$/;
     if (!this.user.lastName.trim()) {
@@ -56,7 +56,7 @@ export class RegisterComponent implements OnInit {
       this.verifNom = '';
     }
   }
- // Validation prenom
+  // Validation prenom
   validatePrenom() {
     const namePattern = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]{2,}$/;
     if (!this.user.firstName.trim()) {
@@ -67,7 +67,7 @@ export class RegisterComponent implements OnInit {
       this.verifPrenom = '';
     }
   }
- // Validation email
+  // Validation email
   validateEmail() {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!this.user.email.trim()) {
@@ -78,7 +78,7 @@ export class RegisterComponent implements OnInit {
       this.verifEmail = '';
     }
   }
- // Validation password
+  // Validation password
   validatePassword() {
     if (!this.user.password.trim()) {
       this.verifPassword = "Le mot de passe est requis.";
@@ -88,7 +88,7 @@ export class RegisterComponent implements OnInit {
       this.verifPassword = '';
     }
   }
- // Validation confirmation mot de passe
+  // Validation confirmation mot de passe
   validateConfirmationPassword() {
     if (!this.confirmationPassword.trim()) {
       this.verifConfirmationPassword = "Veuillez confirmer votre mot de passe.";
@@ -100,14 +100,14 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    // Vérifications des champs
+    // Vérifications des champs (reste inchangé)
     this.validateNom();
     this.validatePrenom();
     this.validateEmail();
     this.validatePassword();
     this.validateConfirmationPassword();
 
-    if (this.verifNom || this.verifPrenom || this.verifEmail || this.verifPassword || this.verifConfirmationPassword || !this.user.profilePicture) {
+    if (this.verifNom || this.verifPrenom || this.verifEmail || this.verifPassword || this.verifConfirmationPassword) {
       this.Alert('Erreur', 'Veuillez remplir tous les champs correctement', 'warning');
       return;
     }
@@ -117,10 +117,7 @@ export class RegisterComponent implements OnInit {
       next: (response) => {
         this.Alert("Inscription réussie👏🏽", "Vous êtes bien inscrit", "success");
 
-        // Sauvegarder l'email et le mot de passe dans le localStorage pour la connexion immédiate
-        localStorage.setItem('email', this.user.email);
-        localStorage.setItem('password', this.user.password);
-        localStorage.setItem('userId', response.id); // Stocke l'ID utilisateur renvoyé par l'API
+        this.router.navigate(['/login']);
 
         // Réinitialiser les champs après inscription
         this.user = {
@@ -134,12 +131,37 @@ export class RegisterComponent implements OnInit {
         this.confirmationPassword = '';
       },
       error: (err) => {
-        this.Alert('Erreur', 'Erreur lors de l\'inscription', 'warning');
+        let errorMessage = 'Erreur lors de l\'inscription';
+
+        // Tentative d'extraction du message d'erreur spécifique
+        if (err.error) {
+          try {
+            // Si l'erreur est une chaîne JSON
+            if (typeof err.error === 'string' && err.error.includes('errors=')) {
+              const errorRegex = /errors=([^,]+)/;
+              const match = err.error.match(errorRegex);
+              if (match && match[1]) {
+                errorMessage = match[1];
+              }
+            }
+            // Si l'erreur est un objet avec une propriété 'errors'
+            else if (err.error.errors) {
+              errorMessage = err.error.errors;
+            }
+            // Si l'erreur est un objet avec un message
+            else if (err.error.message) {
+              errorMessage = err.error.message;
+            }
+          } catch (e) {
+            console.error('Erreur lors du parsing du message d\'erreur', e);
+          }
+        }
+
+        this.Alert('Erreur', errorMessage, 'warning');
         console.error('Erreur lors de l\'inscription', err);
       }
     });
   }
-
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
@@ -157,7 +179,7 @@ export class RegisterComponent implements OnInit {
       title,
       text,
       icon,
-      timer: 1500
+      timer: 5000
     });
   }
 }

@@ -1,0 +1,126 @@
+<app-header></app-header>
+<div class="container mt-1" style="padding-top: 100px;">
+  <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border" role="status" style="color: #FF6600;">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && application" class="row">
+    <div class="col-md-12 mb-4">
+      <div class="card shadow">
+        <div class="card-header text-white d-flex justify-content-between align-items-center" style="background-color: #FF6600;">
+          <h3 class="mb-0" >Modifier votre candidature</h3>
+          <span class="badge" [ngClass]="application.status === 'PENDING' ? 'bg-warning text-dark' : 'bg-info'">
+            {{ application.status === 'PENDING' ? 'En attente' : 'En cours d\'examen' }}
+          </span>
+        </div>
+        <div class="card-body">
+          <!-- Information sur l'annonce -->
+          <div class="alert alert-light border mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0" >
+                <i class="bi bi-megaphone me-2"></i>
+                {{ application.announcement?.title || 'Chargement du titre de l\'annonce...' }}
+              </h5>
+            </div>
+          </div>
+
+          <form [formGroup]="editForm" (ngSubmit)="submitForm()">
+            <!-- Type de candidature -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Type de candidature</label>
+              <div class="d-flex">
+                <div class="form-check me-4">
+                  <input class="form-check-input" type="radio" id="typeNew" value="NEW" formControlName="applicationType"
+                    [checked]="application.applicationType === 'NEW'">
+                  <label class="form-check-label" for="typeNew">Nouvelle</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" id="typeRenewal" value="RENEWAL" formControlName="applicationType"
+                    [checked]="application.applicationType === 'RENEWAL'">
+                  <label class="form-check-label" for="typeRenewal">Renouvellement</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Documents actuels -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Documents actuels</label>
+              <div *ngIf="application.documents.length === 0" class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                Aucun document n'a été soumis avec cette candidature.
+              </div>
+
+              <div *ngIf="application.documents.length > 0" class="table-responsive">
+                <table class="table table-bordered table-hover">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Type</th>
+                      <th>Nom du fichier</th>
+                      <th>Statut</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let doc of application.documents">
+                      <td>{{ getDocumentType(doc.documentType) }}</td>
+                      <td>{{ doc.fileName }}</td>
+                      <td>
+                        <span class="badge" [ngClass]="doc.status === 'VALID' ? 'bg-success' : 'bg-warning text-dark'">
+                          {{ doc.status === 'VALID' ? 'Validé' : 'En attente' }}
+                        </span>
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-sm btn-outline-primary me-2" (click)="viewDocument(doc)">
+                          <i class="bi bi-eye"></i> Voir
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Ajouter de nouveaux documents -->
+            <div class="mb-4">
+              <label class="form-label fw-bold">Ajouter de nouveaux documents</label>
+              <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>
+                Les nouveaux documents que vous téléchargez remplaceront ou compléteront vos documents existants.
+                Seuls les fichiers PDF sont acceptés.
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Diplôme</label>
+                <input type="file" class="form-control" accept="application/pdf" (change)="onFileChange($event, 'diplome')">
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">CV</label>
+                <input type="file" class="form-control" accept="application/pdf" (change)="onFileChange($event, 'cv')">
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Lettre de motivation</label>
+                <input type="file" class="form-control" accept="application/pdf" (change)="onFileChange($event, 'lettreMotivation')">
+              </div>
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="d-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-secondary" (click)="cancel()">
+                <i class="bi bi-x-circle me-2"></i> Annuler
+              </button>
+              <button type="submit" class="btn" [disabled]="isSubmitting" style="background-color: #FF6600; color: white;">
+                <i class="bi bi-check-circle me-2"></i>
+                <span *ngIf="!isSubmitting">Enregistrer les modifications</span>
+                <span *ngIf="isSubmitting">Enregistrement en cours...</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

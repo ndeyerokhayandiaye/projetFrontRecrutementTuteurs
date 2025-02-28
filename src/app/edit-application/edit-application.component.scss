@@ -1,0 +1,66 @@
+.card-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  }
+  
+  .status-accepted {
+    background-color: #198754;
+    color: white;
+  }
+  
+  .status-rejected {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .status-pending {
+    background-color: #ffc107;
+    color: #212529;
+  }
+  
+  .status-canceled {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .alert-light {
+    background-color: #f8f9fa;
+    border-color: #f5f5f5;
+  }
+  
+  .table {
+    font-size: 0.95rem;
+  }
+  
+  .table .badge {
+    font-weight: 500;
+  }
+  
+  .document-list .card {
+    transition: all 0.2s ease;
+  }
+  
+  .document-list .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  input[type="file"] {
+    padding: 8px;
+  }
+  
+  button[type="submit"] {
+    min-width: 180px;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #ff8533 !important;
+  }
+  
+  // Style pour les notifications
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+    min-width: 300px;
+  }
