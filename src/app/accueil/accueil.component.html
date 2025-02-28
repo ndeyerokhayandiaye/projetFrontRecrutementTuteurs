@@ -97,72 +97,49 @@
     </div>
     <!-- About End -->
 
-
-    <div class="container-fluid py-5">
+    <!-- Section des annonces - visible uniquement s'il y a des annonces disponibles -->
+    <div class="container-fluid py-5" *ngIf="annoncesDisponibles">
         <div class="container py-5">
             <div class="text-center mb-5" data-animation="animate__fadeInDown">
                 <h5 class="text-primary text-uppercase mb-3" style="letter-spacing: 5px;">Opportunités</h5>
                 <h1>Postes de tutorat disponibles</h1>
             </div>
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4" data-animation="animate__fadeInUp" data-animation-delay="100">
+            <div class="row justify-content-center">
+                <!-- Affichage des annonces (max 3) -->
+                <div *ngFor="let annonce of annonces; let i = index" class="col-lg-4 col-md-6 mb-4"
+                    data-animation="animate__fadeInUp" [attr.data-animation-delay]="(i + 1) * 200">
                     <div class="rounded overflow-hidden mb-2 position-relative">
-                        <!-- Image en arrière-plan -->
+                        <!-- Image par défaut, basée sur l'index -->
                         <div class="position-relative"
-                            style="height: 250px; background: url('/assets/images/annonce-1.png') no-repeat center center; background-size: cover;">
+                            [style.background]="'url(\'/assets/images/annonce-' + ((i % 3) + 1) + '.png\') no-repeat center center'"
+                            style="height: 250px; background-size: cover;">
 
                             <div class="position-absolute w-100 h-100" style="background-color: rgba(0, 0, 0, 0.2);">
                             </div>
 
                             <div
                                 class="position-absolute text-white p-4 w-100 h-100 d-flex flex-column justify-content-end">
-                                <a class="h5 text-white" href="">Tuteur en Développement Web (HTML, CSS, JavaScript)</a>
+                                <a class="h5 text-white" [routerLink]="['/annonce']">{{ annonce.title }}</a>
+                                <div class="mt-2">
+                                    <small class="text-white-50">
+                                        <i class="bi bi-calendar-event me-1"></i>
+                                        Clôture: {{ annonce.closingDate | date:'dd/MM/yyyy' }}
+                                    </small>
+                                </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
-                <div class="col-lg-4 col-md-6 mb-4" data-animation="animate__fadeInUp" data-animation-delay="300">
-                    <div class="rounded overflow-hidden mb-2 position-relative">
-                        <!-- Image en arrière-plan -->
-                        <div class="position-relative"
-                            style="height: 250px; background: url('/assets/images/annonce-2.png') no-repeat center center; background-size: cover;">
+            </div>
 
-                            <div class="position-absolute w-100 h-100" style="background-color: rgba(0, 0, 0, 0.2);">
-                            </div>
-
-                            <div
-                                class="position-absolute text-white p-4 w-100 h-100 d-flex flex-column justify-content-end">
-                                <a class="h5 text-white" href="">Tuteur en Mathématiques pour L1 et L2</a>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4" data-animation="animate__fadeInUp" data-animation-delay="500">
-                    <div class="rounded overflow-hidden mb-2 position-relative">
-                        <!-- Image en arrière-plan -->
-                        <div class="position-relative"
-                            style="height: 250px; background: url('/assets/images/annonce-3.png') no-repeat center center; background-size: cover;">
-
-                            <div class="position-absolute w-100 h-100" style="background-color: rgba(0, 0, 0, 0.2);">
-                            </div>
-
-                            <div
-                                class="position-absolute text-white p-4 w-100 h-100 d-flex flex-column justify-content-end">
-                                <a class="h5 text-white" href="">Tuteur en Anglais académique et scientifique</a>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
+            <!-- Bouton pour voir toutes les annonces -->
+            <div class="text-center mt-4">
+                <a routerLink="/annonce" class="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold">
+                    Voir toutes les annonces
+                </a>
             </div>
         </div>
     </div>
-
     <!-- Footer -->
     <app-footer></app-footer>
 

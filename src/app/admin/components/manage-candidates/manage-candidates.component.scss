@@ -1,0 +1,212 @@
+/* Variables globales pour faciliter la cohérence des couleurs */
+:root {
+    --primary-color: #3f51b5;
+    --primary-light: #e8eaf6;
+    --primary-dark: #303f9f;
+    --accent-color: #ff4081;
+    --success-color: #4caf50;
+    --danger-color: #FF6600;
+    --text-dark: #333;
+    --text-light: #ffffff;
+    --border-radius: 8px;
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+  }
+  
+  /* Styles pour l'en-tête */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding: 1rem;
+    padding-bottom: 0px;
+    color: var(--text-dark) !important;
+  }
+  
+  /* Amélioration du bouton d'ajout */
+  .header .add-button {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: capitalize;
+    transition: var(--transition);
+  }
+  
+  /* Amélioration du champ de recherche */
+  mat-form-field {
+    width: 300px;
+  }
+  
+  mat-form-field.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: var(--primary-color);
+  }
+  
+  /* Style pour le titre principal */
+  h2.text-center {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    padding: 1rem 0;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  
+  h2.text-center::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 100px;
+    height: 3px;
+    background-color: var(--primary-color);
+    transform: translateX(-50%);
+  }
+  
+  /* Styles pour le tableau */
+  .table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 1.5rem;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+  }
+  
+  .table th {
+    text-align: left;
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 400;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .table th:last-of-type {
+    border-radius: 0px 8px 0px 0px;
+  }
+  
+  .table th:first-of-type {
+    border-radius: 8px 0px 0px 0px;
+  }
+  
+  .table td {
+    text-align: left;
+    vertical-align: middle;
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  .table tr:hover {
+    background-color: var(--primary-light);
+  }
+  
+  .gras {
+    font-weight: bold;
+  }
+  
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 1rem;
+    
+    @media (max-width: 576px) {
+      flex-direction: column;
+    }
+  }
+  
+  .form-group {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .btn-save {
+    background-color: #3f51b5;
+    color: white;
+    
+    &:hover:not(:disabled) {
+      background-color: #303f9f;
+    }
+  
+    &:disabled {
+      background-color: #c5cae9;
+      color: #9fa8da;
+    }
+  }
+  
+  .btn-cancel {
+    background-color: #f5f5f5;
+    color: #616161;
+    
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  
+    th {
+      background-color: #f5f5f5;
+      text-align: left;
+      padding: 1rem;
+    }
+  
+    td {
+      padding: 0.75rem 1rem;
+      vertical-align: middle;
+    }
+  }
+  
+  .modal-header {
+    background-color: #3f51b5;
+    color: white;
+  }
+  
+  .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .text-danger {
+    color: #f44336;
+  }
+  
+  // Styles pour les boutons d'action
+  .btn-primary {
+    background-color: #3f51b5;
+    border-color: #3f51b5;
+    color: white;
+    
+    &:hover:not(:disabled) {
+      background-color: #303f9f;
+      border-color: #303f9f;
+    }
+  }
+  
+  .btn-danger {
+    background-color: #f44336;
+    border-color: #f44336;
+    
+    &:hover:not(:disabled) {
+      background-color: #e53935;
+      border-color: #e53935;
+    }
+  
+    &:disabled {
+      background-color: #ffcdd2;
+      border-color: #ffcdd2;
+    }
+  }

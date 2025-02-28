@@ -5,7 +5,7 @@ import { LoginComponent } from '../login/login.component';
 import { RouterModule } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { FooterComponent } from '../footer/footer.component';
-
+import { AnnonceService } from '../services/annonce.service';
 
 @Component({
   selector: 'app-accueil',
@@ -20,11 +20,16 @@ import { FooterComponent } from '../footer/footer.component';
   styleUrl: './accueil.component.scss'
 })
 export class AccueilComponent implements OnInit, AfterViewInit {
+  annonces: any[] = [];
+  annoncesDisponibles = false;
+  
+  constructor(private annonceService: AnnonceService) {}
+  
   ngOnInit(): void {
+    // Initialiser le carousel
     setTimeout(() => {
       const carouselElement = document.getElementById('header-carousel');
       if (carouselElement) {
-        
         const carousel = new bootstrap.Carousel(carouselElement, {
           interval: 3000,
           ride: 'carousel',
@@ -37,9 +42,32 @@ export class AccueilComponent implements OnInit, AfterViewInit {
 
     // Initialiser les animations de défilement
     this.initScrollAnimations();
+    
+    // Charger les annonces
+    this.loadAnnonces();
   }
 
   ngAfterViewInit(): void {
+  }
+  
+  // Méthode pour charger les annonces depuis le service
+  loadAnnonces() {
+    this.annonceService.getAnnonces().subscribe({
+      next: (data) => {
+        // Filtrer uniquement les annonces avec status "PUBLISHED"
+        const annoncesPubliees = data.filter(annonce => annonce.status === 'PUBLISHED');
+        
+        // Vérifier si des annonces sont disponibles
+        this.annoncesDisponibles = annoncesPubliees.length > 0;
+        
+        // Limiter à 3 annonces pour la page d'accueil
+        this.annonces = annoncesPubliees.slice(0, 3);
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des annonces', error);
+        this.annoncesDisponibles = false;
+      }
+    });
   }
 
   private initScrollAnimations(): void {

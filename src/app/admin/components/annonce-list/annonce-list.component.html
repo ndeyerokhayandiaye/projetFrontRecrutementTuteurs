@@ -1,7 +1,7 @@
 <div class="header">
   <!-- <button mat-button class=" add-button text-white" [routerLink]="'/admin/annonces/nouvelle'" (click)="isFormOpen = true">Ajouter une Annonce</button> -->
   <button mat-button class="add-button text-white" [routerLink]="'/admin/annonces/nouvelle'"
-    (click)="isFormOpen = true">Ajouter une Annonce</button>
+    (click)="isFormOpen = true"><i class="fas fa-user-plus me-2"></i>Ajouter une Annonce</button>
 
   <mat-form-field appearance="outline">
     <mat-label>Rechercher une annonce</mat-label>
@@ -84,7 +84,7 @@
         <h5 class="modal-title" id="annonceModalLabel">
           <i class="fas fa-edit me-2"></i>Modifier l'annonce
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="annonceForm">

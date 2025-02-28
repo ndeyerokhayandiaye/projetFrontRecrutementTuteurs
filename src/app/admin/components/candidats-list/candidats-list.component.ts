@@ -278,49 +278,6 @@ export class CandidatsListComponent implements OnInit {
       });
     }, 300);
   }
-  // rejectApplication(applicationId: string) {
-  //   (async () => {
-  //     const { value: rejectionReason } = await Swal.fire({
-  //       title: 'Raison du rejet',
-  //       input: 'textarea',
-  //       inputLabel: 'Veuillez indiquer la raison du rejet',
-  //       inputPlaceholder: 'Entrez la raison du rejet...',
-  //       inputAttributes: {
-  //         'aria-label': 'Raison du rejet',
-  //         'style': 'height: 100px' // Style explicite pour le textarea
-  //       },
-  //       showCancelButton: true,
-  //       confirmButtonText: 'Rejeter',
-  //       cancelButtonText: 'Annuler',
-  //       didOpen: () => {
-  //         // Forcer le focus sur le textarea
-  //         const textarea = Swal.getInput();
-  //         if (textarea) textarea.focus();
-  //       }
-  //     });
-  //     if (rejectionReason) {
-  //       // const rejectionReason = result.value || 'Aucune raison spécifiée';
-  //       this.annonceService.updateApplicationStatus(applicationId, 'REJECTED', rejectionReason).subscribe(
-  //         (response) => {
-  //           Swal.fire('Succès', 'Candidature rejetée avec succès', 'success');
-  //           // Mettre à jour l'UI après la réponse
-  //           if (this.selectedApplication && this.selectedApplication.id === applicationId) {
-  //             this.selectedApplication.status = 'REJECTED';
-  //             this.selectedApplication.rejectionReason = rejectionReason;
-  //           }
-  //           // Recharger les candidatures
-  //           if (this.announcementId) {
-  //             this.loadApplicationsByAnnouncement(this.announcementId);
-  //           }
-  //         },
-  //         (error) => {
-  //           console.error('Erreur lors du rejet de la candidature', error);
-  //           Swal.fire('Erreur', 'Une erreur est survenue lors du rejet', 'error');
-  //         }
-  //       );
-  //     }
-  //   })();
-  // }
 
   // Ajouter une nouvelle fonction pour mettre à jour le statut à "UNDER_REVIEW"
   markAsUnderReview(applicationId: string) {

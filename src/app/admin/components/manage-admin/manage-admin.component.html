@@ -1,0 +1,134 @@
+<div class="header">
+    <button class="add-button text-white" data-bs-toggle="modal" data-bs-target="#adminModal" (click)="resetForm()">
+      <i class="fas fa-user-plus me-2"></i> Ajouter un Admin
+    </button>
+  
+    <mat-form-field appearance="outline">
+      <mat-label>Rechercher un administrateur</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex: nom, email...">
+    </mat-form-field>
+  </div>
+  
+  <h2 class="text-center mt-4">Gestion des Administrateurs</h2>
+  
+  <div class="alert alert-info mb-4" *ngIf="isSuperAdmin">
+    <i class="fas fa-info-circle me-2"></i>
+    Vous êtes connecté en tant que super administrateur. Vous avez accès à toutes les fonctionnalités de gestion.
+  </div>
+  
+  <table mat-table [dataSource]="dataSource" class="mt-4 table table-striped">
+    <!-- Colonne Prénom -->
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef class="gras">Prénom</th>
+      <td mat-cell *matCellDef="let admin">{{admin.firstName}}</td>
+    </ng-container>
+  
+    <!-- Colonne Nom -->
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef class="gras">Nom</th>
+      <td mat-cell *matCellDef="let admin">{{admin.lastName}}</td>
+    </ng-container>
+  
+    <!-- Colonne Email -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef class="gras">Email</th>
+      <td mat-cell *matCellDef="let admin">{{admin.email}}</td>
+    </ng-container>
+  
+    <!-- Colonne Date de création -->
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef class="gras">Date de création</th>
+      <td mat-cell *matCellDef="let admin">{{admin.createdAt | date:'dd/MM/yyyy'}}</td>
+    </ng-container>
+  
+    <!-- Colonne Actions -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef class="gras">Actions</th>
+      <td mat-cell *matCellDef="let admin" style="display: flex; align-items: center;  gap: 10px;">
+        <button class="btn btn-primary" [disabled]="admin.email === 'admin@admin.com' && currentUserEmail !== 'admin@admin.com'" (click)="editAdmin(admin)" 
+          style="display: flex; align-items: center;">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn btn-danger" [disabled]="admin.email === 'admin@admin.com'" (click)="deleteAdmin(admin.email)" 
+          style="display: flex; align-items: center;">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
+  <mat-paginator class="mt-5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  
+  <!-- Modal pour ajouter ou modifier un administrateur -->
+  <div class="modal fade" id="adminModal" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="adminModalLabel">
+            <i class="fas" [ngClass]="isEditMode ? 'fa-user-edit' : 'fa-user-plus'" class="me-2"></i>
+            {{ isEditMode ? 'Modifier un Administrateur' : 'Ajouter un Administrateur' }}
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="adminForm">
+            <div class="form-container">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="firstName">Prénom<span class="text-danger">*</span></label>
+                  <input type="text" id="firstName" class="form-control" formControlName="firstName" required>
+                  <div class="form-text text-danger"
+                    *ngIf="adminForm.get('firstName')?.invalid && adminForm.get('firstName')?.touched">
+                    Le prénom est obligatoire
+                  </div>
+                </div>
+  
+                <div class="form-group">
+                  <label for="lastName">Nom<span class="text-danger">*</span></label>
+                  <input type="text" id="lastName" class="form-control" formControlName="lastName" required>
+                  <div class="form-text text-danger"
+                    *ngIf="adminForm.get('lastName')?.invalid && adminForm.get('lastName')?.touched">
+                    Le nom est obligatoire
+                  </div>
+                </div>
+              </div>
+  
+              <div class="form-group">
+                <label for="email">Email<span class="text-danger">*</span></label>
+                <input type="email" id="email" class="form-control" formControlName="email" required>
+                <div class="form-text text-danger"
+                  *ngIf="adminForm.get('email')?.invalid && adminForm.get('email')?.touched">
+                  Veuillez entrer une adresse email valide
+                </div>
+              </div>
+  
+              <div class="form-group">
+                <label for="password">
+                  {{ isEditMode ? 'Mot de passe (laisser vide pour conserver l\'actuel)' : 'Mot de passe' }}
+                  <span class="text-danger" *ngIf="!isEditMode">*</span>
+                </label>
+                <input type="password" id="password" class="form-control" formControlName="password" [required]="!isEditMode">
+                <div class="form-text text-danger"
+                  *ngIf="adminForm.get('password')?.invalid && adminForm.get('password')?.touched && adminForm.get('password')?.value !== ''">
+                  Le mot de passe doit contenir au moins 6 caractères
+                </div>
+              </div>
+            </div>
+  
+            <div class="modal-footer">
+              <button type="button" class="btn btn-save" [disabled]="adminForm.invalid" (click)="createAdmin()">
+                <i class="fas" [ngClass]="isEditMode ? 'fa-check' : 'fa-save'" class="me-2"></i>
+                {{ isEditMode ? 'Mettre à jour' : 'Enregistrer' }}
+              </button>
+              <button type="button" class="btn btn-cancel" (click)="closeModal()">
+                <i class="fas fa-times me-2"></i>Annuler
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -45,7 +45,7 @@ import { baseUrl } from '../../../services/url';
 export class AnnonceListComponent {
   isFormOpen: boolean = false;
   annonces: any[] = [];
-  displayedColumns: string[] = ['title', 'id', 'publicationDate', 'closingDate', 'candidates',  'actions'];
+  displayedColumns: string[] = ['title', 'id', 'publicationDate', 'closingDate', 'candidates', 'actions'];
   private modalInstance: any;
 
   dataSource: any[] = [];
@@ -151,22 +151,17 @@ export class AnnonceListComponent {
           console.log("Annonce mise à jour avec succès !", response);
           Swal.fire('Succès', 'Annonce modifiée avec succès', 'success').then(() => {
             this.closeModal();
-            this.closeModal();
             this.loadAnnonces();
-            this.closeModal();
           }
           );
-          this.loadAnnonces();
           this.closeModal();
+          this.loadAnnonces();
         },
         (error: any) => {
           console.error("Erreur lors de la mise à jour :", error);
           Swal.fire('Erreur', 'Échec de la modification', 'error').then(() => {
             this.closeModal();
-            this.closeModal();
-            this.closeModal();
             this.loadAnnonces();
-            this.closeModal();
 
           });
         }
@@ -175,45 +170,90 @@ export class AnnonceListComponent {
 
   viewCandidates(announcementId: string) {
     console.log("Naviguer vers la liste des candidats pour l'annonce", announcementId);
-    
+
     // Naviguer vers la liste des candidats avec l'ID de l'annonce comme paramètre
     this.router.navigate(['/admin/candidats'], { queryParams: { announcementId: announcementId } });
   }
 
+  ngAfterViewInit() {
+    // Ajouter des écouteurs d'événements pour tous les modals
+    ['annonceModal', 'descriptionModal'].forEach(modalId => {
+      const modalElement = document.getElementById(modalId);
+      if (modalElement) {
+        modalElement.addEventListener('hidden.bs.modal', () => {
+          // Nettoyage après la fermeture du modal
+          this.cleanupModalElements();
+        });
+      }
+    });
+  }
+
+  cleanupModalElements() {
+    // Supprimer tous les backdrops
+    document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+      backdrop.remove();
+    });
+
+    // Rétablir l'état du body
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  }
+
+  // Modifiez votre méthode closeModal pour gérer tous les types de modals
   closeModal() {
     this.selectedAnnonce = null;
     this.isFormOpen = false;
     this.annonceForm.reset();
-  
-    // Utiliser l'instance stockée pour fermer le modal
-    if (this.modalInstance) {
-      this.modalInstance.hide();
-      this.modalInstance = null;
-    }
-  
-    // Nettoyage supplémentaire
+
+    // Fermer tous les modals possibles
+    const modals = ['annonceModal', 'descriptionModal'];
+
+    modals.forEach(modalId => {
+      const modalElement = document.getElementById(modalId);
+      if (modalElement) {
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        if (modalInstance) {
+          modalInstance.hide();
+        }
+      }
+    });
+
+    // Nettoyage du backdrop manuellement
+    document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+      backdrop.remove();
+    });
+
+    // Rétablir le scrolling
     document.body.classList.remove('modal-open');
     document.body.style.overflow = '';
     document.body.style.paddingRight = '';
-    
-    // Supprimer le backdrop manuellement si nécessaire
-    const backdrop = document.querySelector('.modal-backdrop');
-    if (backdrop) {
-      backdrop.remove();
-    }
   }
-
 
   showFullDescription(annonce: any) {
     this.selectedAnnonce = annonce;
 
-    // Utiliser setTimeout pour s'assurer que le modal est correctement initialisé
+    // Fermer tout modal existant d'abord
+    document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+      backdrop.remove();
+    });
+    document.body.classList.remove('modal-open');
+
+    // Puis ouvrir le nouveau modal
     setTimeout(() => {
-      const modal = new bootstrap.Modal(document.getElementById('descriptionModal')!);
-      modal.show();
+      const modalElement = document.getElementById('descriptionModal');
+      if (modalElement) {
+        // Vérifier s'il y a déjà une instance
+        let modalInstance = bootstrap.Modal.getInstance(modalElement);
+        if (modalInstance) {
+          modalInstance.dispose();
+        }
+        // Créer une nouvelle instance
+        modalInstance = new bootstrap.Modal(modalElement);
+        modalInstance.show();
+      }
     }, 100);
   }
-
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.dataSource = this.annonces.filter(annonce =>
