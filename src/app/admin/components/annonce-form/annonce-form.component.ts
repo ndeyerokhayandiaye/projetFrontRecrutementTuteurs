@@ -37,7 +37,7 @@ export function dateValidator(): ValidatorFn {
     }
     
     // Vérifie que les dates ne sont pas postérieures à la date actuelle
-    if (new Date(publicationDate) < today) {
+    if (new Date(publicationDate).getMonth() < today.getMonth()) {
       errors['publicationInFuture'] = true;
     }
     

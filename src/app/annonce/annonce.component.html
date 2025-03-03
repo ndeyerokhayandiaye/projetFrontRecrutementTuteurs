@@ -1,4 +1,4 @@
-<body class="container-fluid">
+<!-- <body class="container-fluid"> -->
   <app-header></app-header>
 
   <div class="annonces-header text-center my-5">
@@ -14,7 +14,7 @@
             <h5 class="card-title mb-0">{{ annonce.title }}</h5>
           </div>
           <div class="card-body">
-            <p class="card-text">{{ annonce.description }}</p>
+            <pre class="card-text">{{ annonce.description }}</pre>
             <div class="mb-2">
               <span class="badge bg-light text-dark mb-2">
                 <i class="bi bi-calendar-event me-1"></i>
@@ -38,7 +38,7 @@
   </div>
 
   <!-- Pagination améliorée -->
-  <nav aria-label="Navigation des annonces" class="my-5">
+  <nav aria-label="Navigation des annonces" class="mt-5"  style="margin-bottom: 200px;">
     <ul class="pagination justify-content-center">
       <li class="page-item" [class.disabled]="pageActuelle === 1">
         <button class="page-link" (click)="pageActuelle = pageActuelle - 1" aria-label="Précédent">
@@ -56,9 +56,9 @@
     </ul>
   </nav>
 
-</body>
-<!-- Footer -->
-<app-footer></app-footer>
+  <!-- Footer -->
+  <app-footer></app-footer>
+<!-- </body> -->
 
 <!-- Modal de candidature amélioré -->
 <div class="modal fade transparent-backdrop" id="postulerModal" tabindex="-1" aria-labelledby="postulerModalLabel"
