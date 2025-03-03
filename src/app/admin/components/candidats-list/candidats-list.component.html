@@ -193,19 +193,19 @@
 
         <!-- Actions selon le statut actuel de la candidature -->
         <ng-container *ngIf="selectedApplication">
-          <!-- Pour les candidatures en attente -->
-          <button *ngIf="selectedApplication.status === 'PENDING'" type="button" class="btn btn-info"
-            (click)="markAsUnderReview(selectedApplication.id)">
-            <i class="fas fa-search me-2"></i>Mettre en examen
-          </button>
-
           <!-- Pour les candidatures en attente ou en cours d'examen -->
-          <button *ngIf="selectedApplication.status === 'PENDING' || selectedApplication.status === 'UNDER_REVIEW'"
-            type="button" class="btn btn-success" (click)="approveApplication(selectedApplication.id)">
-            <i class="fas fa-check me-2"></i>Approuver
+          <button *ngIf="selectedApplication.status === 'PENDING'"
+            type="button" class="btn btn-info" (click)=" markAsUnderReview(selectedApplication.id)">
+            <i class="fas fa-check me-2"></i>Mettre en examen
+          </button>
+          <!-- Pour les candidatures en attente -->
+          <button *ngIf="selectedApplication.status !== 'REJECTED'" type="button" class="btn btn-success"
+            (click)="approveApplication(selectedApplication.id)">
+            <i class="fas fa-search me-2"></i>Approuver
           </button>
 
-          <button *ngIf="selectedApplication.status === 'PENDING' || selectedApplication.status === 'UNDER_REVIEW'"
+
+          <button *ngIf="selectedApplication.status !== 'ACCEPTED'"
             type="button" class="btn btn-danger" (click)="rejectApplication(selectedApplication.id)">
             <i class="fas fa-times me-2"></i>Rejeter
           </button>
